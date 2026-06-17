@@ -1,0 +1,2259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pride Learning — Free Education for Rural Kenya</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
+<style>
+  /* ── Root Variables ── */
+  :root {
+    --cream: #FFC4A4;
+    --blue: #6C91F1;
+    --lblue: #89B9F8;
+    --pink: #FF9EBF;
+    --purple: #C96BEB;
+    --green: #4CAF50;
+    --bg: #FFF8F4;
+    --card: #FFFFFF;
+    --text: #2D2D2D;
+    --muted: #7A7A7A;
+    --sidebar-w: 260px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); }
+  h1,h2,h3 { font-family: 'Playfair Display', serif; }
+
+  /* ── Views ── */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ── Gradients ── */
+  .hero-grad { background: linear-gradient(135deg, #FFC4A4 0%, #FFD9C2 40%, #FFEEE4 100%); }
+  .card-blue   { background: linear-gradient(135deg, #6C91F1 0%, #89B9F8 100%); }
+  .card-pink   { background: linear-gradient(135deg, #FF9EBF 0%, #FFBDD4 100%); }
+  .card-purple { background: linear-gradient(135deg, #C96BEB 0%, #DFA3F5 100%); }
+  .badge-green { background: linear-gradient(135deg, #4CAF50 0%, #81C784 100%); }
+  .badge-gold  { background: linear-gradient(135deg, #FFD700 0%, #FFEC6E 100%); color: #5a4000; }
+  .badge-blue  { background: linear-gradient(135deg, #6C91F1 0%, #89B9F8 100%); }
+
+  /* ── Shimmer Animation ── */
+  @keyframes shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position:  200% center; }
+  }
+  .shimmer {
+    background: linear-gradient(90deg, #FFD700 25%, #FFFACD 50%, #FFD700 75%);
+    background-size: 200% auto;
+    animation: shimmer 2s linear infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .shimmer-badge {
+    background: linear-gradient(90deg, #FFD700 25%, #fff8a0 50%, #FFD700 75%);
+    background-size: 200% auto;
+    animation: shimmer 1.5s linear infinite;
+    border-radius: 50px;
+    padding: 6px 18px;
+    display: inline-block;
+    font-weight: 800;
+    color: #5a4000;
+    box-shadow: 0 4px 15px rgba(255,215,0,0.4);
+  }
+
+  /* ── Toast ── */
+  #toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: #2D2D2D; color: #fff;
+    padding: 12px 22px; border-radius: 12px;
+    font-size: 14px; font-weight: 600;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    opacity: 0; transform: translateY(20px);
+    transition: all 0.35s ease; z-index: 9999;
+    pointer-events: none;
+  }
+  #toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ── IMPROVED SIDEBAR ── */
+  /* CHANGED: Wider sidebar (260px), smooth slide animation, profile section added */
+  #sidebar {
+    position: fixed; left: 0; top: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: #fff;
+    box-shadow: 3px 0 24px rgba(0,0,0,0.08);
+    overflow-y: auto; z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+    display: flex; flex-direction: column;
+  }
+  #sidebar.open { transform: translateX(0); }
+  @media(min-width:1024px){
+    #sidebar { transform: translateX(0); }
+    #dashboard-main { margin-left: var(--sidebar-w); }
+  }
+
+  /* CHANGED: Improved sidebar overlay — smooth fade */
+  #sidebar-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0); z-index: 150;
+    pointer-events: none;
+    transition: background 0.32s ease;
+    display: block !important;
+  }
+  #sidebar-overlay.active {
+    background: rgba(0,0,0,0.4);
+    pointer-events: all;
+  }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 18px; cursor: pointer;
+    border-radius: 10px; margin: 2px 10px;
+    font-weight: 700; font-size: 14px;
+    color: var(--muted);
+    transition: all 0.18s ease;
+  }
+  .nav-item:hover { background: #FFF0E8; color: var(--text); }
+  .nav-item.active { background: linear-gradient(135deg,#FFC4A4,#FFD9C2); color: var(--text); }
+  .nav-icon { font-size: 17px; width: 22px; text-align: center; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--card);
+    border-radius: 18px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.10); }
+
+  /* ── Buttons ── */
+  .btn-primary {
+    background: linear-gradient(135deg, #FF9E7A, #FF7D5A);
+    color: #fff; font-weight: 700;
+    padding: 12px 28px; border-radius: 50px;
+    border: none; cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255,125,90,0.35);
+    transition: all 0.2s ease;
+    display: inline-block; text-align: center;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,125,90,0.5); }
+  .btn-blue {
+    background: linear-gradient(135deg, #6C91F1, #89B9F8);
+    color: #fff; font-weight: 700;
+    padding: 10px 22px; border-radius: 50px;
+    border: none; cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-block; text-align: center;
+  }
+  .btn-blue:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(108,145,241,0.4); }
+  .btn-green {
+    background: linear-gradient(135deg, #4CAF50, #66BB6A);
+    color: #fff; font-weight: 700;
+    padding: 10px 22px; border-radius: 50px;
+    border: none; cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-block; text-align: center;
+  }
+  .btn-green:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(76,175,80,0.4); }
+  .btn-purple {
+    background: linear-gradient(135deg, #C96BEB, #DFA3F5);
+    color: #fff; font-weight: 700;
+    padding: 10px 22px; border-radius: 50px;
+    border: none; cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-block;
+  }
+  .btn-sm {
+    padding: 7px 18px; font-size: 13px;
+    border-radius: 50px; font-weight: 700;
+    border: none; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-ghost {
+    background: transparent; border: 2px solid #FFD9C2;
+    color: var(--text); font-weight: 700;
+    padding: 9px 22px; border-radius: 50px;
+    cursor: pointer; transition: all 0.2s;
+    font-size: 13px;
+  }
+  .btn-ghost:hover { background: #FFF0E8; }
+
+  /* ── COURSE SIDEBAR LAYOUT (new) ── */
+  /* CHANGED: Replaced week-tabs with left module sidebar */
+  .course-layout {
+    display: flex; gap: 0; min-height: calc(100vh - 64px);
+    position: relative;
+  }
+  .course-module-sidebar {
+    width: 280px; flex-shrink: 0;
+    background: #fff;
+    border-right: 1px solid #F0E8E0;
+    padding: 20px 0;
+    position: sticky; top: 64px;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+  }
+  .course-content-area {
+    flex: 1; padding: 32px;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  @media(max-width: 768px) {
+    .course-layout { flex-direction: column; }
+    .course-module-sidebar {
+      width: 100%; position: relative; top: 0;
+      max-height: none; border-right: none;
+      border-bottom: 2px solid #F0E8E0;
+      padding: 16px 0;
+    }
+    .course-content-area { padding: 20px 16px; }
+  }
+
+  /* Module list items in sidebar */
+  .module-list-item {
+    padding: 10px 20px; cursor: pointer;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 700; color: var(--muted);
+    border-left: 3px solid transparent;
+    transition: all 0.18s ease;
+  }
+  .module-list-item:hover { background: #FFF8F4; color: var(--text); border-left-color: #FFD9C2; }
+  .module-list-item.active {
+    background: #E8F5E9; color: #2E7D32;
+    border-left-color: var(--green); font-weight: 800;
+  }
+  .module-list-item.completed { color: var(--green); }
+  .module-list-item .mod-check {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid #ddd; display: flex; align-items: center; justify-content: center;
+    font-size: 10px; flex-shrink: 0; transition: all 0.2s;
+  }
+  .module-list-item.completed .mod-check,
+  .module-list-item.active .mod-check { background: var(--green); border-color: var(--green); color: #fff; }
+
+  /* Week group header in module sidebar */
+  .module-week-header {
+    padding: 8px 20px 4px;
+    font-size: 11px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: #B0B0B0;
+  }
+
+  /* ── Module Content Panel ── */
+  .module-notes { line-height: 1.75; font-size: 15px; color: #3D3D3D; }
+  .module-notes h4 { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 12px; color: var(--text); }
+  .module-notes p { margin-bottom: 12px; }
+  .module-notes ul { padding-left: 20px; margin-bottom: 14px; }
+  .module-notes ul li { margin-bottom: 6px; }
+  .module-notes .highlight-box {
+    background: linear-gradient(135deg, #FFF8F4, #FFF0E8);
+    border-left: 4px solid var(--cream);
+    padding: 14px 18px; border-radius: 0 12px 12px 0;
+    margin-bottom: 16px;
+  }
+  .module-notes .key-term { color: #C96BEB; font-weight: 800; }
+  .subtopic-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; border-radius: 10px;
+    cursor: pointer; transition: background 0.15s;
+    border: 1px solid #F0E8E0; margin-bottom: 8px; background: #FAFAFA;
+  }
+  .subtopic-item:hover { background: #FFF0E8; }
+  .subtopic-item.done { background: #E8F5E9; border-color: #A5D6A7; }
+  .subtopic-check {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 2px solid #ddd; display: flex; align-items: center;
+    justify-content: center; font-size: 11px; flex-shrink: 0; transition: all 0.2s;
+  }
+  .subtopic-item.done .subtopic-check { background: var(--green); border-color: var(--green); color: #fff; }
+
+  /* ── Accordion (scholarships) ── */
+  .accordion-btn {
+    width: 100%; text-align: left;
+    background: #FFF8F4; border: none; cursor: pointer;
+    padding: 18px 20px; border-radius: 14px;
+    font-weight: 700; font-size: 15px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background 0.2s;
+  }
+  .accordion-btn:hover { background: #FFE8D8; }
+  .accordion-content { display: none; padding: 0 20px 20px; }
+  .accordion-content.open { display: block; }
+
+  /* ── Quiz ── */
+  .quiz-option {
+    display: block; width: 100%; text-align: left;
+    padding: 13px 18px; margin-bottom: 8px;
+    border: 2px solid #e5e7eb; border-radius: 12px;
+    background: #fff; cursor: pointer; font-size: 14px;
+    font-weight: 600; transition: all 0.2s;
+  }
+  .quiz-option:hover { border-color: #89B9F8; background: #F0F6FF; }
+  .quiz-option.correct { border-color: #4CAF50; background: #E8F5E9; color: #2E7D32; }
+  .quiz-option.wrong   { border-color: #E53935; background: #FFEBEE; color: #C62828; }
+  .quiz-option:disabled { cursor: default; }
+
+  /* ── Progress Bar ── */
+  .progress-track { background: #e5e7eb; border-radius: 50px; height: 8px; overflow: hidden; }
+  .progress-fill  { height: 100%; border-radius: 50px; transition: width 0.6s ease; }
+
+  /* ── Input ── */
+  .input-field {
+    width: 100%; padding: 14px 20px;
+    border: 2px solid #FFD9C2; border-radius: 14px;
+    font-size: 15px; font-family: 'Nunito', sans-serif;
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    background: #fff;
+  }
+  .input-field:focus { border-color: #FF9EBF; box-shadow: 0 0 0 4px rgba(255,158,191,0.12); }
+
+  /* ── Modal ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45); z-index: 500;
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: #fff; border-radius: 24px;
+    max-width: 520px; width: 100%;
+    max-height: 88vh; overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    animation: popIn 0.3s ease;
+  }
+  @keyframes popIn {
+    from { transform: scale(0.88); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+  }
+
+  /* ── Fade-in ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.45s ease forwards; }
+  .delay-1 { animation-delay: 0.08s; opacity: 0; }
+  .delay-2 { animation-delay: 0.16s; opacity: 0; }
+  .delay-3 { animation-delay: 0.24s; opacity: 0; }
+  .delay-4 { animation-delay: 0.32s; opacity: 0; }
+
+  /* ── Hamburger ── */
+  #hamburger { display: block; }
+  @media(min-width:1024px){ #hamburger { display: none; } }
+
+  /* ── Points Store Card ── */
+  .store-card { border: 2px solid #FFD9C2; border-radius: 16px; padding: 18px; text-align: center; background: #fff; }
+
+  /* ── Community Post ── */
+  .post-card { border-left: 4px solid var(--cream); }
+
+  /* ── Pulse dot ── */
+  .pulse { animation: pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  /* ── IMPROVED CALENDAR ── */
+  /* CHANGED: Real calendar grid */
+  .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+  .cal-day-header { text-align: center; font-size: 11px; font-weight: 800; color: var(--muted); padding: 8px 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .cal-day {
+    min-height: 68px; padding: 6px; border-radius: 10px;
+    font-size: 12px; background: #fff; position: relative;
+    border: 1px solid #F5EEE9; transition: background 0.15s;
+  }
+  .cal-day:hover { background: #FFF8F4; }
+  .cal-day.today { background: #FFF0E8; border-color: #FFC4A4; }
+  .cal-day.other-month { background: #FAFAFA; color: #ccc; }
+  .cal-day .day-num { font-weight: 800; font-size: 13px; margin-bottom: 4px; }
+  .cal-day.today .day-num { color: #FF7D5A; }
+  .cal-event-dot {
+    display: block; font-size: 10px; font-weight: 700;
+    border-radius: 4px; padding: 1px 4px; margin-bottom: 2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  @media(max-width: 600px) {
+    .cal-day { min-height: 50px; padding: 4px; }
+    .cal-event-dot { display: none; }
+    .cal-day .day-num { font-size: 12px; }
+  }
+
+  /* ── Scholarship Accordion ── */
+  .scholarship-item {
+    background: #fff; border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    margin-bottom: 12px; overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .scholarship-item:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+  .scholarship-toggle {
+    width: 100%; padding: 18px 20px; background: none; border: none;
+    cursor: pointer; display: flex; align-items: center; gap: 14px; text-align: left;
+  }
+  .scholarship-body { display: none; padding: 0 20px 20px; border-top: 1px solid #F5EEE9; }
+  .scholarship-body.open { display: block; }
+
+  /* ── Section header with See More ── */
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .section-header h3 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; }
+  .see-more-btn {
+    font-size: 13px; font-weight: 800; color: #6C91F1;
+    background: none; border: none; cursor: pointer;
+    padding: 6px 14px; border-radius: 50px;
+    transition: background 0.15s;
+  }
+  .see-more-btn:hover { background: #EEF3FF; }
+
+  /* ── Scrollbar thin ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-thumb { background: #FFD9C2; border-radius: 6px; }
+
+  /* ── Sidebar Profile Section ── */
+  .sidebar-profile {
+    margin: 0 10px 4px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, #FFF8F4, #FFF0E8);
+    border-radius: 14px;
+  }
+  .sidebar-level-badge {
+    display: inline-block; font-size: 11px; font-weight: 800;
+    padding: 3px 10px; border-radius: 50px;
+    background: linear-gradient(135deg, #FFC4A4, #FFD9C2);
+    color: #5A3000; margin-top: 4px;
+  }
+  .sidebar-divider { height: 1px; background: #F0E8E0; margin: 8px 14px; }
+  .sidebar-points-chip {
+    margin: 4px 10px 8px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #6C91F1, #89B9F8);
+    border-radius: 14px; color: #fff; text-align: center;
+  }
+  .sidebar-footer-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 20px; margin: 2px 10px;
+    border-radius: 10px; cursor: pointer;
+    font-weight: 700; font-size: 13px; color: var(--muted);
+    transition: all 0.18s; background: none; border: none; width: calc(100% - 20px);
+  }
+  .sidebar-footer-btn:hover { background: #FFF0E8; color: var(--text); }
+
+  /* ── Library resource card ── */
+  .lib-card {
+    background: #fff; border-radius: 16px;
+    padding: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    border: 1px solid #F5EEE9; transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .lib-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.10); transform: translateY(-2px); }
+
+  /* ── Change Level Modal ── */
+  .level-select-btn {
+    width: 100%; padding: 14px 18px; border-radius: 14px;
+    border: 2px solid transparent; background: #FFF8F4;
+    cursor: pointer; font-weight: 700; font-size: 14px;
+    text-align: left; display: flex; align-items: center; gap: 12px;
+    transition: all 0.18s; margin-bottom: 8px;
+    font-family: 'Nunito', sans-serif;
+  }
+  .level-select-btn:hover { border-color: #FFC4A4; background: #FFF0E8; }
+  .level-select-btn.selected { border-color: #4CAF50; background: #E8F5E9; }
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- MODAL OVERLAY -->
+<div id="modal-overlay" class="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal-box" id="modal-box">
+    <div id="modal-content" class="p-6"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     VIEW: LANDING (unchanged layout, improved button contrast)
+═══════════════════════════════════════════ -->
+<div id="view-landing" class="view active">
+  <nav class="flex items-center justify-between px-6 py-4 bg-white shadow-sm sticky top-0 z-50">
+    <div class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-full flex items-center justify-center text-xl" style="background:linear-gradient(135deg,#FFC4A4,#FF9EBF)">🦁</div>
+      <span class="font-extrabold text-xl" style="font-family:'Playfair Display',serif">Pride Learning</span>
+    </div>
+    <div class="hidden md:flex gap-6 text-sm font-semibold text-gray-600">
+      <a href="#about" class="hover:text-orange-500 transition-colors">About</a>
+      <a href="#levels" class="hover:text-orange-500 transition-colors">Levels</a>
+      <a href="#partners" class="hover:text-orange-500 transition-colors">Partners</a>
+    </div>
+    <button class="btn-primary text-sm py-2 px-5" onclick="scrollToJoin()">Start Free</button>
+  </nav>
+
+  <section class="hero-grad px-6 py-20 md:py-32 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-10 right-10 w-64 h-64 rounded-full" style="background:#FF9EBF;filter:blur(60px)"></div>
+      <div class="absolute bottom-10 left-10 w-48 h-48 rounded-full" style="background:#6C91F1;filter:blur(50px)"></div>
+    </div>
+    <div class="max-w-3xl mx-auto text-center relative z-10">
+      <div class="inline-flex items-center gap-2 bg-white bg-opacity-70 rounded-full px-4 py-2 text-sm font-semibold mb-6 shadow-sm">
+        <span class="pulse inline-block w-2 h-2 rounded-full bg-green-500"></span>
+        Free for every learner in Kenya · SDG 4
+      </div>
+      <h1 class="text-4xl md:text-6xl font-extrabold mb-5 leading-tight" style="color:#2D2D2D">
+        Your Education.<br/>
+        <span style="color:#C96BEB">Your Future.</span><br/>
+        <span style="color:#6C91F1">Your Pride.</span>
+      </h1>
+      <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-xl mx-auto leading-relaxed">
+        Free, curriculum-aligned lessons for Primary, Secondary &amp; Tertiary learners across rural Kenya. No fees. No barriers. Just learning.
+      </p>
+      <div id="join-section" class="bg-white rounded-2xl shadow-lg p-6 max-w-md mx-auto">
+        <p class="font-bold text-base mb-3">What's your first name?</p>
+        <input id="name-input" class="input-field mb-4" placeholder="E.g. Amina, Juma, Wanjiku…" maxlength="40" />
+        <p class="text-sm text-gray-500 mb-4">Then choose your education level:</p>
+        <div class="flex flex-col gap-3 mb-5">
+          <button class="level-btn btn-sm text-left flex items-center gap-3 py-3 px-4 rounded-xl border-2 border-transparent bg-orange-50 hover:border-orange-300 transition-all" data-level="primary" onclick="selectLevel('primary',this)">
+            <span class="text-2xl">📚</span><span class="font-bold">Primary (Grades 1–6)</span>
+          </button>
+          <button class="level-btn btn-sm text-left flex items-center gap-3 py-3 px-4 rounded-xl border-2 border-transparent bg-blue-50 hover:border-blue-300 transition-all" data-level="secondary" onclick="selectLevel('secondary',this)">
+            <span class="text-2xl">🏫</span><span class="font-bold">Secondary (Grades 7–12)</span>
+          </button>
+          <button class="level-btn btn-sm text-left flex items-center gap-3 py-3 px-4 rounded-xl border-2 border-transparent bg-purple-50 hover:border-purple-300 transition-all" data-level="tertiary" onclick="selectLevel('tertiary',this)">
+            <span class="text-2xl">🎓</span><span class="font-bold">Tertiary &amp; Skills Development</span>
+          </button>
+        </div>
+        <button class="btn-primary w-full text-base" onclick="enterDashboard()">Begin My Journey 🚀</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="py-16 px-6 max-w-5xl mx-auto">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-extrabold mb-3">Why Pride Learning?</h2>
+      <p class="text-gray-500 max-w-xl mx-auto">Built for every child in rural Kenya — from the Rift Valley to the Coast.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card p-6 text-center fade-up delay-1">
+        <div class="text-4xl mb-3">🌐</div>
+        <h3 class="text-lg font-bold mb-2">100% Free, Always</h3>
+        <p class="text-sm text-gray-500">No subscriptions. No hidden charges. Education is a right, not a privilege.</p>
+      </div>
+      <div class="card p-6 text-center fade-up delay-2">
+        <div class="text-4xl mb-3">📋</div>
+        <h3 class="text-lg font-bold mb-2">Kenya CBC Aligned</h3>
+        <p class="text-sm text-gray-500">Content matches the Competency-Based Curriculum (CBC) from KICD — what your school teaches.</p>
+      </div>
+      <div class="card p-6 text-center fade-up delay-3">
+        <div class="text-4xl mb-3">🏆</div>
+        <h3 class="text-lg font-bold mb-2">Earn Real Rewards</h3>
+        <p class="text-sm text-gray-500">Collect Pride Points, earn badges, and access scholarships and competitions.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="levels" class="py-16 px-6 max-w-5xl mx-auto">
+    <h2 class="text-3xl font-extrabold text-center mb-10">Choose Your Level</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card overflow-hidden cursor-pointer" onclick="quickEnter('primary')">
+        <div class="h-3 card-blue"></div>
+        <div class="p-6">
+          <div class="text-4xl mb-3">📚</div>
+          <h3 class="text-xl font-bold mb-2">Primary Education</h3>
+          <p class="text-sm text-gray-500 mb-4">Grades 1–6 · CBC Curriculum · Mathematics, English, Science &amp; Technology, Social Studies, Kiswahili, Creative Arts</p>
+          <span class="text-blue-500 text-sm font-bold">8 Courses available →</span>
+        </div>
+      </div>
+      <div class="card overflow-hidden cursor-pointer" onclick="quickEnter('secondary')">
+        <div class="h-3 card-pink"></div>
+        <div class="p-6">
+          <div class="text-4xl mb-3">🏫</div>
+          <h3 class="text-xl font-bold mb-2">Secondary Education</h3>
+          <p class="text-sm text-gray-500 mb-4">Grades 7–12 · Junior &amp; Senior Secondary · Mathematics, Sciences, Languages, Humanities, Technical Subjects</p>
+          <span class="text-pink-500 text-sm font-bold">10 Courses available →</span>
+        </div>
+      </div>
+      <div class="card overflow-hidden cursor-pointer" onclick="quickEnter('tertiary')">
+        <div class="h-3 card-purple"></div>
+        <div class="p-6">
+          <div class="text-4xl mb-3">🎓</div>
+          <h3 class="text-xl font-bold mb-2">Tertiary &amp; Skills</h3>
+          <p class="text-sm text-gray-500 mb-4">TVET, University Prep, Digital Skills, Entrepreneurship, Healthcare, Agriculture Tech</p>
+          <span class="text-purple-500 text-sm font-bold">10 Courses available →</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="partners" class="py-12 px-6" style="background:#FFF0E8">
+    <p class="text-center text-sm font-bold text-gray-500 mb-6 uppercase tracking-widest">Certification Partners</p>
+    <div class="flex flex-wrap justify-center items-center gap-8 md:gap-14">
+      <span class="text-lg font-extrabold text-gray-600">Huawei</span>
+      <span class="text-lg font-extrabold text-gray-600">IBM</span>
+      <span class="text-lg font-extrabold text-gray-600">Google</span>
+      <span class="text-lg font-extrabold text-gray-600">Microsoft</span>
+      <span class="text-lg font-extrabold text-gray-600">Coursera</span>
+      <span class="text-lg font-extrabold text-gray-600">KICD</span>
+    </div>
+  </section>
+
+  <footer class="py-10 px-6 text-center text-sm text-gray-400">
+    <p class="font-bold text-gray-600 mb-1">🦁 Pride Learning</p>
+    <p>Empowering rural Kenya through free, quality education · SDG 4 · © 2025</p>
+  </footer>
+</div><!-- /view-landing -->
+
+
+<!-- ═══════════════════════════════════════════
+     VIEW: DASHBOARD
+═══════════════════════════════════════════ -->
+<div id="view-dashboard" class="view">
+
+  <!-- IMPROVED SIDEBAR with Profile Section -->
+  <div id="sidebar">
+    <!-- Logo Header -->
+    <div class="p-5 pb-4 border-b border-gray-100 flex-shrink-0">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-2xl">🦁</span>
+        <span class="font-extrabold text-lg" style="font-family:'Playfair Display',serif">Pride Learning</span>
+      </div>
+    </div>
+
+    <!-- CHANGED: Profile section in sidebar -->
+    <div class="p-4 flex-shrink-0">
+      <div class="sidebar-profile">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-extrabold text-sm flex-shrink-0"
+            style="background:linear-gradient(135deg,#FFC4A4,#C96BEB)" id="sidebar-avatar">?</div>
+          <div>
+            <p class="font-extrabold text-sm leading-tight" id="sidebar-name">Student</p>
+            <div id="sidebar-level-badge" class="sidebar-level-badge">Primary</div>
+          </div>
+        </div>
+        <!-- CHANGED: Change level option for families sharing device -->
+        <button class="sidebar-footer-btn mt-1" style="padding: 7px 0; font-size:12px; color:#6C91F1" onclick="openChangeLevelModal()">
+          🔄 Change Education Level
+        </button>
+      </div>
+    </div>
+
+    <!-- Points chip -->
+    <div class="sidebar-points-chip">
+      <p class="text-xs font-bold opacity-80 mb-0.5">Pride Points</p>
+      <p class="text-2xl font-extrabold" id="sidebar-points">120</p>
+      <p class="text-xs opacity-70 mt-0.5">⭐ Keep learning!</p>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <!-- Nav items -->
+    <nav class="py-2 flex-1" id="sidebar-nav"></nav>
+
+    <div class="sidebar-divider"></div>
+
+    <!-- Logout -->
+    <div class="pb-4">
+      <button class="sidebar-footer-btn" onclick="logout()">
+        <span>🚪</span><span>Logout</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- CHANGED: Sidebar overlay now uses class toggle (not hidden/unhidden) for smooth fade -->
+  <div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <!-- Main Content Area -->
+  <div id="dashboard-main" class="min-h-screen">
+    <!-- Top bar -->
+    <div class="sticky top-0 z-100 bg-white shadow-sm flex items-center gap-4 px-5 py-4" style="z-index:100">
+      <button id="hamburger" class="text-gray-600 p-1 rounded-lg hover:bg-gray-100 transition-colors" onclick="toggleSidebar()">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <h2 class="font-extrabold text-lg flex-1" id="page-title">Dashboard</h2>
+      <div class="flex items-center gap-3">
+        <span class="text-sm font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full" id="topbar-points">⭐ 120 pts</span>
+        <div class="w-9 h-9 rounded-full flex items-center justify-center text-white font-extrabold text-sm cursor-pointer"
+          style="background:linear-gradient(135deg,#FFC4A4,#C96BEB)" id="avatar-initials"
+          onclick="navigateTo('dashboard')">?</div>
+      </div>
+    </div>
+
+    <!-- Dynamic page content -->
+    <div id="page-content" class="p-5 md:p-8 max-w-5xl mx-auto"></div>
+  </div>
+</div><!-- /view-dashboard -->
+
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT — STATE & DATA
+═══════════════════════════════════════════ -->
+<script>
+/* ── Global State ── */
+const state = {
+  currentView: 'landing',
+  userName: '',
+  eduLevel: '',
+  enrolledCourses: [],
+  points: 120,
+  activePage: 'dashboard',
+  activeCourse: null,
+  activeModule: 0,         // CHANGED: track active module index instead of week
+  activeWeek: 1,
+  completedModules: {},    // CHANGED: track completed modules per course
+  quizAnswers: {},
+  quizSubmitted: false,
+  communityPosts: [],
+};
+
+/* ══════════════════════════════════════════
+   DATA: COURSES — level-exclusive
+══════════════════════════════════════════ */
+const COURSES = {
+  primary: [
+    { id:'p1', emoji:'🔢', title:'Mathematics Grade 4–6', sub:'Numbers, Fractions & Geometry', color:'card-blue',  weeks:15 },
+    { id:'p2', emoji:'📖', title:'English Language', sub:'Reading, Writing & Comprehension', color:'card-pink', weeks:15 },
+    { id:'p3', emoji:'🌍', title:'Social Studies', sub:'Kenya Geography, Citizenship & History', color:'card-purple', weeks:15 },
+    { id:'p4', emoji:'🔬', title:'Science & Technology', sub:'Living Things, Matter & Energy', color:'card-blue', weeks:15 },
+    { id:'p5', emoji:'🗣️', title:'Kiswahili', sub:'Sarufi, Ushairi & Insha', color:'card-pink', weeks:15 },
+    { id:'p6', emoji:'🎨', title:'Creative Arts & Crafts', sub:'Drawing, Music & Drama', color:'card-purple', weeks:12 },
+    { id:'p7', emoji:'🌱', title:'Agriculture', sub:'Crops, Animals & Soil', color:'card-blue', weeks:12 },
+    { id:'p8', emoji:'🏃', title:'Physical & Health Ed.', sub:'Fitness, Nutrition & Safety', color:'card-pink', weeks:10 },
+  ],
+  secondary: [
+    { id:'s1', emoji:'➕', title:'Mathematics', sub:'Algebra, Calculus & Statistics', color:'card-blue', weeks:15 },
+    { id:'s2', emoji:'⚗️', title:'Chemistry', sub:'Atomic Structure, Reactions & Organic', color:'card-purple', weeks:15 },
+    { id:'s3', emoji:'⚡', title:'Physics', sub:'Mechanics, Waves & Electricity', color:'card-blue', weeks:15 },
+    { id:'s4', emoji:'🧬', title:'Biology', sub:'Cell Biology, Genetics & Ecology', color:'card-pink', weeks:15 },
+    { id:'s5', emoji:'🌐', title:'Geography', sub:'Physical, Human & Environmental', color:'card-purple', weeks:15 },
+    { id:'s6', emoji:'📜', title:'History & Government', sub:'Kenya History, African & World History', color:'card-blue', weeks:15 },
+    { id:'s7', emoji:'💻', title:'Computer Studies', sub:'ICT Fundamentals, Programming & Networking', color:'card-pink', weeks:15 },
+    { id:'s8', emoji:'📐', title:'Technical Drawing', sub:'Geometry, Orthographic & Isometric', color:'card-purple', weeks:12 },
+    { id:'s9', emoji:'🏡', title:'Home Science', sub:'Nutrition, Clothing & Housing', color:'card-blue', weeks:12 },
+    { id:'s10',emoji:'🌿', title:'Agriculture & Nutrition', sub:'Crop Prod., Livestock & Farm Management', color:'card-pink', weeks:12 },
+  ],
+  tertiary: [
+    { id:'t1', emoji:'💻', title:'Digital Skills & ICT', sub:'MS Office, Internet Safety & Coding Basics', color:'card-blue', weeks:15 },
+    { id:'t2', emoji:'💼', title:'Entrepreneurship', sub:'Business Planning, Finance & Marketing', color:'card-pink', weeks:15 },
+    { id:'t3', emoji:'🤖', title:'Artificial Intelligence', sub:'Intro to AI, Machine Learning & Ethics', color:'card-purple', weeks:15 },
+    { id:'t4', emoji:'🌾', title:'Agricultural Technology', sub:'Precision Farming, Agroprocessing & Value Chains', color:'card-blue', weeks:12 },
+    { id:'t5', emoji:'🏥', title:'Community Health', sub:'Primary Health Care, Nutrition & First Aid', color:'card-pink', weeks:12 },
+    { id:'t6', emoji:'🔧', title:'Electrical Installation', sub:'TVET Certified · Wiring, Safety & Solar', color:'card-purple', weeks:15 },
+    { id:'t7', emoji:'📊', title:'Accounting & Finance', sub:'Bookkeeping, Tax & Financial Statements', color:'card-blue', weeks:15 },
+    { id:'t8', emoji:'🌍', title:'Environmental Science', sub:'Climate Change, Conservation & Sustainability', color:'card-pink', weeks:12 },
+    { id:'t9', emoji:'📡', title:'Networking (Cisco/Huawei)', sub:'CCNA Prep · Routing, Switching & Security', color:'card-purple', weeks:15 },
+    { id:'t10',emoji:'🎓', title:'University Entrance Prep', sub:'KCSE Revision · All Subjects', color:'card-blue', weeks:15 },
+  ],
+};
+
+/* ══════════════════════════════════════════
+   DATA: MODULES — CHANGED: full notes content
+══════════════════════════════════════════ */
+const MODULE_BANKS = {
+  p1: [
+    {
+      topic:'Whole Numbers & Place Value',
+      subs:['Reading & writing numbers up to 1,000,000','Rounding off numbers to nearest 10, 100, 1000','Number patterns and sequences'],
+      notes:`<h4>Whole Numbers & Place Value</h4>
+        <p>In Kenya's CBC Mathematics, Grade 4–6 learners explore the base-10 number system deeply. Every digit in a number has a <span class="key-term">place value</span> — its position tells us how much it is worth.</p>
+        <div class="highlight-box"><strong>Example:</strong> In 472,365 — the digit 7 is in the <em>ten-thousands</em> place, making its value 70,000.</div>
+        <p>We use place value charts to organize digits:</p>
+        <ul><li><strong>Millions | Hundred-thousands | Ten-thousands | Thousands | Hundreds | Tens | Ones</strong></li>
+          <li>Writing numbers in words: 472,365 = "Four hundred seventy-two thousand, three hundred sixty-five"</li>
+          <li>Rounding 3,847 to the nearest hundred → look at tens digit (4 < 5) → round down → 3,800</li></ul>
+        <p>Number patterns help us predict sequences. For example: 2, 5, 8, 11... (add 3 each time). Recognizing patterns is a key CBC skill connected to algebra later.</p>`
+    },
+    {
+      topic:'Fractions',
+      subs:['Equivalent fractions','Adding & subtracting fractions with different denominators','Multiplying fractions by whole numbers'],
+      notes:`<h4>Fractions</h4>
+        <p>A <span class="key-term">fraction</span> represents part of a whole. The <em>numerator</em> (top) tells how many parts we have; the <em>denominator</em> (bottom) tells how many equal parts the whole is divided into.</p>
+        <div class="highlight-box"><strong>Real-life example:</strong> A farmer in Nakuru cuts a piece of land into 8 equal plots and plants maize on 5 of them. The fraction planted is 5/8.</div>
+        <ul><li><strong>Equivalent fractions:</strong> ½ = 2/4 = 4/8 (multiply numerator and denominator by the same number)</li>
+          <li><strong>Adding fractions:</strong> ⅔ + ¼ → find common denominator (12) → 8/12 + 3/12 = 11/12</li>
+          <li><strong>Multiplying:</strong> ¾ × 4 = 12/4 = 3 (multiply numerator only, then simplify)</li></ul>
+        <p>Always simplify your answer to its lowest terms by dividing both numerator and denominator by their GCF (Greatest Common Factor).</p>`
+    },
+    {
+      topic:'Geometry — Shapes & Measurement',
+      subs:['Properties of 2D shapes (polygons)','Perimeter and area of rectangles and squares','Angles — right, acute, obtuse'],
+      notes:`<h4>Geometry — Shapes & Measurement</h4>
+        <p>Geometry is the study of shapes, sizes, and properties of figures. In primary CBC, we focus on 2D (flat) shapes called <span class="key-term">polygons</span> — closed figures made of straight sides.</p>
+        <ul><li><strong>Triangle:</strong> 3 sides, angles sum to 180°</li>
+          <li><strong>Rectangle:</strong> 4 sides, all angles = 90°, opposite sides equal</li>
+          <li><strong>Square:</strong> special rectangle — all 4 sides equal AND all angles = 90°</li>
+          <li><strong>Hexagon:</strong> 6 sides (like a honeycomb cell)</li></ul>
+        <div class="highlight-box"><strong>Formulas:</strong><br>Perimeter of rectangle = 2(length + width)<br>Area of rectangle = length × width<br>Area of square = side × side</div>
+        <p>Angles: A <em>right angle</em> is exactly 90°. Acute angles are less than 90°. Obtuse angles are between 90° and 180°.</p>`
+    },
+    {
+      topic:'Percentages & Decimals',
+      subs:['Converting fractions to percentages','Calculating percentage of a quantity','Decimals — addition and subtraction'],
+      notes:`<h4>Percentages & Decimals</h4>
+        <p>A <span class="key-term">percentage</span> means "out of 100." The symbol is <strong>%</strong>. Percentages are used everywhere — school grades, discounts at Naivas, VAT on receipts.</p>
+        <div class="highlight-box"><strong>To find percentage of a quantity:</strong><br>15% of 200 = (15 ÷ 100) × 200 = 0.15 × 200 = <strong>30</strong></div>
+        <p>Converting fractions: ¾ as a percentage = (3 ÷ 4) × 100 = 75%</p>
+        <p>Decimals work with the base-10 system: 0.1 = 1/10, 0.01 = 1/100. When adding decimals, always line up the decimal points before adding.</p>`
+    },
+    {
+      topic:'Data Handling & Statistics',
+      subs:['Reading and drawing bar graphs and pictographs','Finding mean, mode and median','Interpreting simple data tables'],
+      notes:`<h4>Data Handling & Statistics</h4>
+        <p>Statistics helps us collect, organize, and understand information. In CBC, we learn to represent data visually and find measures of <span class="key-term">central tendency</span>.</p>
+        <ul><li><strong>Mean (Average):</strong> Add all values ÷ number of values<br>Example: 4, 6, 8, 10 → Mean = 28 ÷ 4 = <strong>7</strong></li>
+          <li><strong>Mode:</strong> The value that appears most often</li>
+          <li><strong>Median:</strong> The middle value when data is arranged in order</li></ul>
+        <div class="highlight-box">Bar graphs show data using bars of different heights. Always label both axes and give your graph a title.</div>
+        <p>Pictographs use symbols to represent data — each symbol represents a set number (shown in a key).</p>`
+    },
+  ],
+  s1: [
+    {
+      topic:'Quadratic Equations',
+      subs:['Factorisation method','Completing the square','Quadratic formula and discriminant'],
+      notes:`<h4>Quadratic Equations</h4>
+        <p>A <span class="key-term">quadratic equation</span> has the form <strong>ax² + bx + c = 0</strong>. Unlike linear equations, quadratics can have two solutions (called roots).</p>
+        <div class="highlight-box"><strong>Method 1 — Factorisation:</strong><br>x² - 5x + 6 = 0<br>Find two numbers that multiply to +6 and add to -5: they are -2 and -3<br>(x - 2)(x - 3) = 0 → x = 2 or x = 3</div>
+        <p><strong>Method 2 — Quadratic Formula:</strong> x = (-b ± √(b²-4ac)) / 2a</p>
+        <p>The <em>discriminant</em> b² - 4ac tells us the nature of roots: if > 0, two real roots; if = 0, one repeated root; if < 0, no real roots.</p>
+        <p><strong>Method 3 — Completing the Square:</strong> Rearrange to (x + p)² = q form, then solve for x.</p>`
+    },
+    {
+      topic:'Coordinate Geometry',
+      subs:['Gradient and equation of a line','Distance between two points','Midpoint formula'],
+      notes:`<h4>Coordinate Geometry</h4>
+        <p>Coordinate geometry combines algebra and geometry using the <span class="key-term">Cartesian plane</span> — a grid with x-axis (horizontal) and y-axis (vertical).</p>
+        <div class="highlight-box"><strong>Key Formulas:</strong><br>
+          Gradient (slope) = (y₂ - y₁) / (x₂ - x₁)<br>
+          Distance = √[(x₂-x₁)² + (y₂-y₁)²]<br>
+          Midpoint = ((x₁+x₂)/2, (y₁+y₂)/2)
+        </div>
+        <p><strong>Equation of a line:</strong> y = mx + c, where m is the gradient and c is the y-intercept.</p>
+        <p>Example: A line through (0,2) and (4,10) has gradient = (10-2)/(4-0) = 8/4 = 2, and y-intercept = 2, so equation: y = 2x + 2.</p>`
+    },
+    {
+      topic:'Trigonometry',
+      subs:['Sine, Cosine, Tangent ratios (SOH-CAH-TOA)','Solving right-angled triangles','Trigonometric identities and applications'],
+      notes:`<h4>Trigonometry</h4>
+        <p>Trigonometry studies the relationships between angles and sides of triangles. For a right-angled triangle, we use three key ratios:</p>
+        <div class="highlight-box"><strong>SOH-CAH-TOA:</strong><br>
+          <strong>Sin θ</strong> = Opposite / Hypotenuse<br>
+          <strong>Cos θ</strong> = Adjacent / Hypotenuse<br>
+          <strong>Tan θ</strong> = Opposite / Adjacent
+        </div>
+        <ul><li>sin 30° = 0.5, cos 60° = 0.5, tan 45° = 1</li>
+          <li>To find an angle: use inverse function, e.g. θ = sin⁻¹(0.5) = 30°</li>
+          <li>Applications: finding heights of buildings, distances across rivers, navigation</li></ul>
+        <p>Trigonometric graphs: sin and cos repeat every 360° (period = 360°). The amplitude is 1 for basic sin/cos graphs.</p>`
+    },
+  ],
+  s4: [
+    {
+      topic:'Cell Biology',
+      subs:['Structure of plant and animal cells','Functions of organelles','Mitosis and Meiosis'],
+      notes:`<h4>Cell Biology</h4>
+        <p>The <span class="key-term">cell</span> is the basic unit of life. Every living organism — from a bacteria in the Tana River to a giraffe in Nairobi National Park — is made of cells.</p>
+        <div class="highlight-box"><strong>Key organelles and functions:</strong><br>
+          🔴 <strong>Nucleus</strong> — controls cell activities, contains DNA<br>
+          ⚡ <strong>Mitochondria</strong> — site of aerobic respiration (energy production) — the "powerhouse"<br>
+          🌿 <strong>Chloroplast</strong> — (plants only) site of photosynthesis, contains chlorophyll<br>
+          🔵 <strong>Cell membrane</strong> — controls what enters and exits the cell (selective permeability)
+        </div>
+        <p><strong>Mitosis</strong> produces 2 identical diploid daughter cells (growth and repair). <strong>Meiosis</strong> produces 4 haploid cells (for sexual reproduction — sperm and egg cells).</p>
+        <p>Plant cells have a cell wall (rigid, made of cellulose), large central vacuole, and chloroplasts. Animal cells lack these.</p>`
+    },
+    {
+      topic:'Digestion in Animals',
+      subs:['Structure of the human digestive system','Enzymes and their action','Absorption and assimilation in the small intestine'],
+      notes:`<h4>Digestion in Animals</h4>
+        <p>Digestion is the process of breaking down large, insoluble food molecules into small, soluble molecules that can be absorbed into the bloodstream.</p>
+        <div class="highlight-box"><strong>Digestive journey:</strong><br>
+          Mouth → Oesophagus → Stomach → Small Intestine → Large Intestine → Rectum → Anus
+        </div>
+        <p><strong>Key enzymes:</strong></p>
+        <ul><li><strong>Amylase</strong> (in saliva & pancreas) — breaks down starch → maltose</li>
+          <li><strong>Pepsin</strong> (in stomach, needs acid pH) — breaks down proteins → peptides</li>
+          <li><strong>Lipase</strong> (in pancreas) — breaks down fats → fatty acids + glycerol</li></ul>
+        <p>Absorption occurs mainly in the <strong>ileum</strong> (small intestine). Villi and microvilli increase the surface area for efficient absorption. Digested nutrients pass into the bloodstream (glucose, amino acids) or lymph system (fatty acids).</p>`
+    },
+    {
+      topic:'Genetics & Inheritance',
+      subs:["Mendel's laws of inheritance","Monohybrid crosses and Punnett squares","Co-dominance and sex-linkage"],
+      notes:`<h4>Genetics & Inheritance</h4>
+        <p>Genetics explains why children resemble their parents. Gregor Mendel's pea plant experiments (1860s) established the foundations of heredity.</p>
+        <div class="highlight-box"><strong>Key terms:</strong><br>
+          <strong>Gene</strong> — a section of DNA coding for a characteristic<br>
+          <strong>Allele</strong> — a version of a gene (e.g. T = tall, t = short)<br>
+          <strong>Dominant</strong> — expressed even with one copy (T)<br>
+          <strong>Recessive</strong> — only expressed when two copies present (tt)
+        </div>
+        <p><strong>Monohybrid cross Tt × Tt:</strong></p>
+        <p>Using a Punnett square: offspring ratio = 1TT : 2Tt : 1tt (phenotype ratio 3 tall : 1 short)</p>
+        <p><strong>Sex determination:</strong> Females = XX, Males = XY. Sex-linked traits (like red-green colour blindness) are carried on the X chromosome, which is why they are more common in males.</p>`
+    },
+  ],
+  t1: [
+    {
+      topic:'Introduction to ICT',
+      subs:['Hardware, software and networks','Input, output and storage devices','Careers in ICT in Kenya'],
+      notes:`<h4>Introduction to ICT</h4>
+        <p><span class="key-term">ICT</span> stands for Information and Communication Technology. It encompasses all technology used to handle information — computers, mobile phones, the internet, and more.</p>
+        <div class="highlight-box"><strong>Computer System Components:</strong><br>
+          🖥️ <strong>Hardware</strong> — physical parts (keyboard, monitor, CPU, RAM, hard drive)<br>
+          💿 <strong>Software</strong> — programs and applications (Windows, MS Word, apps)<br>
+          🌐 <strong>Network</strong> — connected computers that share resources and communicate
+        </div>
+        <p><strong>Input devices</strong> receive data: keyboard, mouse, scanner, microphone, camera.<br>
+        <strong>Output devices</strong> present results: monitor, printer, speakers.<br>
+        <strong>Storage devices</strong> hold data: HDD, SSD, USB drive, cloud storage.</p>
+        <p>In Kenya, ICT careers include software development, networking, data analysis, cybersecurity, and digital marketing. Platforms like Andela and Safaricom hire ICT professionals nationally.</p>`
+    },
+    {
+      topic:'Internet Safety & Digital Literacy',
+      subs:['Online safety and privacy best practices','Identifying misinformation and fake news','Digital citizenship and responsibility'],
+      notes:`<h4>Internet Safety & Digital Literacy</h4>
+        <p>As Kenya's internet access grows rapidly (over 22 million users), staying safe online is a critical skill. Digital literacy means using technology effectively AND responsibly.</p>
+        <div class="highlight-box"><strong>Key Online Threats:</strong><br>
+          🎣 <strong>Phishing</strong> — fake emails/messages tricking you into sharing passwords or bank details<br>
+          🦠 <strong>Malware</strong> — harmful software (viruses, ransomware) that damages your device<br>
+          👤 <strong>Identity theft</strong> — criminals using your personal information fraudulently
+        </div>
+        <p><strong>Stay safe by:</strong></p>
+        <ul><li>Using strong, unique passwords (mix of letters, numbers, symbols)</li>
+          <li>Enabling two-factor authentication (2FA) on all accounts</li>
+          <li>Not sharing personal details (ID number, location, banking info) online</li>
+          <li>Verifying news before sharing — check sources like Nation, Standard, KBC</li></ul>
+        <p>Misinformation spreads fast on WhatsApp groups. Always ask: Who wrote this? When? Is the source reliable?</p>`
+    },
+    {
+      topic:'Spreadsheets (MS Excel)',
+      subs:['Creating and formatting spreadsheets','Formulas and functions: SUM, AVERAGE, COUNT, IF','Creating charts and analysing data'],
+      notes:`<h4>Spreadsheets with MS Excel</h4>
+        <p>Microsoft Excel is the world's most-used spreadsheet software. It is used in businesses, schools, hospitals, and government offices across Kenya for data management and analysis.</p>
+        <div class="highlight-box"><strong>Essential formulas:</strong><br>
+          =SUM(B1:B10) — adds all values from B1 to B10<br>
+          =AVERAGE(B1:B10) — calculates the mean<br>
+          =COUNT(B1:B10) — counts how many cells have numbers<br>
+          =IF(A1>50,"Pass","Fail") — conditional logic
+        </div>
+        <p><strong>Formatting tips:</strong> Use bold for headers, freeze the top row so it stays visible when scrolling, and use cell borders to create clear tables.</p>
+        <p><strong>Charts:</strong> Select your data → Insert → Chart. Bar charts compare categories; line charts show trends over time; pie charts show proportions. Always add a title and label your axes.</p>`
+    },
+  ],
+};
+
+/* Default modules for courses without specific banks */
+function getDefaultModules(course) {
+  return [
+    {
+      topic:`Introduction to ${course.title}`,
+      subs:['Key definitions and core concepts','Historical background and Kenya context','Why this subject matters for your future'],
+      notes:`<h4>Introduction to ${course.title}</h4>
+        <p>Welcome to <strong>${course.title}</strong>! This course follows Kenya's CBC curriculum and is designed to build both knowledge and practical skills.</p>
+        <div class="highlight-box">This subject connects to real life in Kenya — from agriculture and business to health and technology. Every lesson builds on the last.</div>
+        <p><strong>What you will learn:</strong></p>
+        <ul><li>${course.sub}</li><li>Problem-solving and critical thinking skills valued by employers and universities</li><li>How to apply concepts to Kenyan society and communities</li></ul>
+        <p>Study consistently — aim for at least 30 minutes per day. Use the quiz at the end of each module to test yourself and earn Pride Points!</p>`
+    },
+    {
+      topic:`Core Concepts & Principles`,
+      subs:['Foundational theories and definitions','Key terminology you must know','Worked examples and case studies'],
+      notes:`<h4>Core Concepts & Principles</h4>
+        <p>Every subject has a set of fundamental ideas that everything else builds on. Mastering these early makes advanced topics much easier.</p>
+        <p>As you study, create a <em>vocabulary list</em> of key terms and their meanings. Quiz yourself on these regularly — this technique is proven to improve memory retention.</p>
+        <div class="highlight-box"><strong>Active Learning Strategy:</strong> After reading each section, close the notes and try to explain what you just learned in your own words. This is called the Feynman Technique and it's very effective.</div>
+        <p>Look for connections between this subject and others you are studying — cross-subject thinking is highly valued in CBC.</p>`
+    },
+    {
+      topic:`Practical Application & Review`,
+      subs:['Real-world applications in Kenya','Practice exercises and problems','Summary and self-assessment checklist'],
+      notes:`<h4>Practical Application & Review</h4>
+        <p>Learning is most powerful when you connect theory to real life. In Kenya, every subject has direct applications in communities, industries, and daily life.</p>
+        <p><strong>Before the quiz, make sure you can:</strong></p>
+        <ul><li>Define all key terms from this module without looking at notes</li>
+          <li>Solve at least 3 practice problems correctly</li>
+          <li>Explain the main concepts to a friend or family member in simple language</li></ul>
+        <div class="highlight-box">🏆 Students who review notes within 24 hours remember 80% more than those who wait a week. Review today!</div>
+        <p>You're ready for the quiz. Remember: it's not just about the points — understanding the material is what will help you in exams and in life. Good luck!</p>`
+    },
+  ];
+}
+
+function getAllModules(course) {
+  return MODULE_BANKS[course.id] || getDefaultModules(course);
+}
+
+/* ── 10-Question Quizzes per course ── */
+const QUIZZES = {
+  p1: [
+    { q:'What is the place value of digit 7 in 472,365?', opts:['Hundreds','Ten-thousands','Thousands','Tens'], ans:1 },
+    { q:'What is ⅔ + ¼?', opts:['5/6','7/12','11/12','3/4'], ans:2 },
+    { q:'A rectangle is 12 cm long and 5 cm wide. What is its area?', opts:['60 cm²','34 cm²','17 cm²','70 cm²'], ans:0 },
+    { q:'Which of these numbers is divisible by both 3 and 4?', opts:['14','22','24','26'], ans:2 },
+    { q:'Round 3,847 to the nearest hundred.', opts:['3,800','3,900','3,850','4,000'], ans:0 },
+    { q:'What is the perimeter of a square with side 9 cm?', opts:['18 cm','81 cm','36 cm','27 cm'], ans:2 },
+    { q:'A shopkeeper has 5/8 of a bag of maize. She sells 1/4. What fraction remains?', opts:['3/8','1/2','4/8','7/8'], ans:0 },
+    { q:'How many sides does a hexagon have?', opts:['5','6','7','8'], ans:1 },
+    { q:'What is 15% of 200?', opts:['20','25','30','35'], ans:2 },
+    { q:'Which shape has ALL sides equal AND all angles 90°?', opts:['Rectangle','Rhombus','Square','Parallelogram'], ans:2 },
+  ],
+  s1: [
+    { q:'Solve: x² - 5x + 6 = 0. What are the values of x?', opts:['x=2, x=3','x=-2, x=-3','x=1, x=6','x=-1, x=6'], ans:0 },
+    { q:'What is the gradient of the line y = 3x - 7?', opts:['-7','3','1/3','7'], ans:1 },
+    { q:'What is sin 30°?', opts:['√3/2','1/2','1','√2/2'], ans:1 },
+    { q:'Simplify: (2x³)(3x²)', opts:['6x⁵','6x⁶','5x⁵','6x'], ans:0 },
+    { q:'What is the midpoint of A(2,4) and B(6,8)?', opts:['(4,6)','(8,12)','(2,4)','(4,4)'], ans:0 },
+    { q:'Find the distance between (0,0) and (3,4).', opts:['5','7','√7','25'], ans:0 },
+    { q:'Which of these is a quadratic equation?', opts:['y=3x+1','y=x²+2x-5','y=2/x','y=x³-1'], ans:1 },
+    { q:'If tan θ = 1, what is θ (in degrees)?', opts:['30°','45°','60°','90°'], ans:1 },
+    { q:'Complete the square: x² + 6x + ? = (x+3)²', opts:['6','9','3','12'], ans:1 },
+    { q:'A line passes through (0,2) and (4,10). What is its equation?', opts:['y=2x+2','y=3x+1','y=2x','y=x+2'], ans:0 },
+  ],
+  s4: [
+    { q:'Which organelle is the powerhouse of the cell?', opts:['Nucleus','Ribosome','Mitochondria','Chloroplast'], ans:2 },
+    { q:'What enzyme breaks down starch in the mouth?', opts:['Pepsin','Amylase','Lipase','Trypsin'], ans:1 },
+    { q:'What is the function of the cell membrane?', opts:['Protein synthesis','Controls what enters/exits the cell','Energy production','Photosynthesis'], ans:1 },
+    { q:"In Mendel's laws, 'dominant' means the allele that:", opts:['Always causes disease','Is expressed even when only one copy is present','Only appears in females','Is found on the X chromosome'], ans:1 },
+    { q:'Where does digestion of proteins begin?', opts:['Mouth','Oesophagus','Stomach','Small intestine'], ans:2 },
+    { q:'What is the product of meiosis?', opts:['2 diploid cells','4 haploid cells','2 haploid cells','4 diploid cells'], ans:1 },
+    { q:'Which blood vessel carries oxygenated blood FROM the heart?', opts:['Vena Cava','Pulmonary vein','Aorta','Jugular vein'], ans:2 },
+    { q:'Chlorophyll is found in which organelle?', opts:['Vacuole','Nucleus','Mitochondria','Chloroplast'], ans:3 },
+    { q:'A cross of Tt × Tt gives offspring ratio of:', opts:['1:2:1 (TT:Tt:tt)','3:1 (T_:tt)','Both A and B','1:1'], ans:2 },
+    { q:'What is absorption in digestion?', opts:['Breaking down food physically','Passing of digested food into the bloodstream','Removing indigestible matter','Producing enzymes'], ans:1 },
+  ],
+  t1: [
+    { q:"What does 'ICT' stand for?", opts:['International Computer Technology','Information and Communication Technology','Integrated Circuit Technology','Internal Computer Transfer'], ans:1 },
+    { q:'Which of these is an OUTPUT device?', opts:['Keyboard','Mouse','Monitor','Scanner'], ans:2 },
+    { q:'What does a router do?', opts:['Stores files','Routes data between networks','Prints documents','Connects to power'], ans:1 },
+    { q:'Which formula calculates the average of B1:B10 in Excel?', opts:['=SUM(B1:B10)','=AVERAGE(B1:B10)','=MEAN(B1:B10)','=COUNT(B1:B10)'], ans:1 },
+    { q:"What is 'phishing'?", opts:['A fishing app','A fraudulent attempt to steal personal info online','A type of software update','A cloud service'], ans:1 },
+    { q:'What is the main function of RAM?', opts:['Long-term storage','Process graphics','Temporarily store data in use','Connect to the internet'], ans:2 },
+    { q:'Which of these is a web browser?', opts:['MS Word','WhatsApp','Google Chrome','Excel'], ans:2 },
+    { q:'"HTTPS" in a website URL means:', opts:['High-speed transfer','Secure encrypted connection','Hypertext transfer simple','Host transfer system'], ans:1 },
+    { q:'What is an operating system?', opts:['A word processor','Software that manages hardware and software resources','A social media app','An antivirus program'], ans:1 },
+    { q:'What does "cloud storage" mean?', opts:['Storing data on a USB drive','Storing data on remote servers via the internet','Weather-based data storage','Printing documents on the go'], ans:1 },
+  ],
+};
+
+function getDefaultQuiz(course) {
+  return [
+    { q:`${course.title}: Which of the following is a primary goal of this subject?`, opts:['Memorisation only','Developing critical and real-world skills','Passing exams only','Copying notes'], ans:1 },
+    { q:'Which curriculum framework does Kenya use in 2024?', opts:['8-4-4','Cambridge','CBC (Competency-Based Curriculum)','IB'], ans:2 },
+    { q:'What does SDG 4 stand for?', opts:['Sustainable Development Goal 4: Quality Education','SDG 4: Zero Hunger','SDG 4: Clean Water','SDG 4: Good Health'], ans:0 },
+    { q:'In Kenya, the junior secondary level covers which grades?', opts:['1–6','7–9','10–12','13–15'], ans:1 },
+    { q:"Which body develops Kenya's school curriculum?", opts:['KNEC','TSC','KICD','KIE'], ans:2 },
+    { q:'What does formative assessment mean?', opts:['End-of-year exam only','Ongoing assessment during learning','National exam only','Grading done by parents'], ans:1 },
+    { q:'What skill is most valued in CBC?', opts:['Rote memorization','Critical thinking and problem solving','Speed writing','Copying textbooks'], ans:1 },
+    { q:'A competency is best described as:', opts:['A grade on an exam','Knowledge, skills, values and attitudes combined','A textbook chapter','A class position'], ans:1 },
+    { q:'ICT is described as "cross-cutting" in CBC. This means:', opts:['It only applies to computer class','It is integrated across all subjects','It is optional','It is only for secondary students'], ans:1 },
+    { q:'What is the name of the Grade 6 national assessment in Kenya?', opts:['KCPE','KCSE','KPSEA','KNEC Final'], ans:2 },
+  ];
+}
+
+function getCourseQuiz(course) { return QUIZZES[course.id] || getDefaultQuiz(course); }
+
+/* ══════════════════════════════════════════
+   DATA: LIBRARY — level-filtered
+══════════════════════════════════════════ */
+const LIBRARY = [
+  { title:'Digestion in Animals — Full Notes', subject:'Biology', level:'Secondary', desc:'Detailed notes on the human digestive system, enzymes, and absorption for KCSE.', link:'https://www.kcse-online.info/', tags:['digestion','animals','biology','enzymes','gut'] },
+  { title:'Quadratic Equations — Worked Examples', subject:'Mathematics', level:'Secondary', desc:'Step-by-step solutions for factorisation, completing the square and quadratic formula.', link:'https://www.khanacademy.org/math/algebra', tags:['quadratic','algebra','equations','maths','mathematics'] },
+  { title:'Kenya Geography — Rift Valley & Climate', subject:'Geography', level:'Secondary', desc:'Physical geography of Kenya including the Great Rift Valley, climate zones and drainage.', link:'https://www.kcse-online.info/', tags:['geography','kenya','rift valley','climate','drainage'] },
+  { title:'CBC Mathematics Grade 4 — Fractions', subject:'Mathematics', level:'Primary', desc:'KICD-aligned lessons on fractions, equivalent fractions and operations for Grade 4–6.', link:'https://kicd.ac.ke/', tags:['fractions','mathematics','grade 4','primary','cbc'] },
+  { title:'Cell Biology — Structure & Function', subject:'Biology', level:'Secondary', desc:'Plant and animal cell organelles, functions, and comparison. Includes diagrams.', link:'https://www.khanacademy.org/science/ap-biology', tags:['cells','biology','organelles','structure','function','mitochondria'] },
+  { title:'English Comprehension Passages — Form 1–4', subject:'English', level:'Secondary', desc:'Practice comprehension passages with questions and model answers.', link:'https://www.kcse-online.info/', tags:['english','comprehension','reading','passages','form 1','form 2'] },
+  { title:'Kiswahili Insha na Fasihi', subject:'Kiswahili', level:'Secondary', desc:'Uandishi wa insha, mashairi, methali na fasihi simulizi kwa wanafunzi wa sekondari.', link:'https://kicd.ac.ke/', tags:['kiswahili','insha','fasihi','mashairi','lugha'] },
+  { title:'Introduction to Artificial Intelligence', subject:'ICT', level:'Tertiary', desc:'Beginner guide to AI, machine learning, and how AI is used in Kenya agriculture and healthcare.', link:'https://skillsbuild.org/', tags:['ai','artificial intelligence','machine learning','ict','technology'] },
+  { title:'Photosynthesis — Process & Experiments', subject:'Biology', level:'Secondary', desc:'Light and dark reactions, factors affecting photosynthesis, and laboratory experiments.', link:'https://www.khanacademy.org/', tags:['photosynthesis','biology','plants','light','chlorophyll'] },
+  { title:'Kenya History — Pre-Colonial to Independence', subject:'History', level:'Secondary', desc:'Comprehensive notes on Kenya history from pre-colonial communities to independence 1963.', link:'https://www.kcse-online.info/', tags:['history','kenya','independence','pre-colonial','mau mau'] },
+  { title:'Entrepreneurship Basics — Business Plan', subject:'Business', level:'Tertiary', desc:'How to write a business plan, market research, and funding opportunities in Kenya.', link:'https://www.kuccps.ac.ke/', tags:['entrepreneurship','business','business plan','finance','marketing'] },
+  { title:'Agricultural Technology — Drip Irrigation', subject:'Agriculture', level:'Tertiary', desc:'Modern irrigation methods for small-scale farmers in Kenya. Includes practical installation guide.', link:'https://www.kalro.org/', tags:['agriculture','irrigation','drip','farming','technology','water'] },
+  { title:'Electricity & Magnetism — Physics Notes', subject:'Physics', level:'Secondary', desc:"Current electricity, Ohm's law, magnetic fields and electromagnetic induction.", link:'https://www.kcse-online.info/', tags:['physics','electricity','magnetism','ohm','circuits'] },
+  { title:'Community Health — Malaria Prevention', subject:'Health', level:'Tertiary', desc:'Malaria causes, symptoms, prevention and treatment. Community health worker guide.', link:'https://www.who.int/kenya', tags:['health','malaria','prevention','community','disease'] },
+  { title:'Organic Chemistry — Functional Groups', subject:'Chemistry', level:'Secondary', desc:'Alkanes, alkenes, alcohols, carboxylic acids and their reactions for KCSE.', link:'https://www.kcse-online.info/', tags:['chemistry','organic','functional groups','alkanes','reactions'] },
+  { title:'Primary Science — Living Things Grade 5', subject:'Science', level:'Primary', desc:'CBC Grade 5 science covering plants, animals, habitats and the human body.', link:'https://kicd.ac.ke/', tags:['science','primary','living things','grade 5','cbc','plants','animals'] },
+  { title:'Primary English — Reading Comprehension Grade 4', subject:'English', level:'Primary', desc:'Reading passages and comprehension exercises for Grade 4 CBC learners.', link:'https://kicd.ac.ke/', tags:['english','reading','comprehension','grade 4','primary','cbc'] },
+  { title:'Networking Fundamentals — CCNA Prep', subject:'ICT', level:'Tertiary', desc:'IP addressing, subnetting, routing protocols and network troubleshooting for CCNA.', link:'https://www.netacad.com/', tags:['networking','ccna','cisco','routing','switching','ict'] },
+  { title:'Entrepreneurship — M-Pesa & Mobile Money in Kenya', subject:'Business', level:'Tertiary', desc:'How mobile money changed Kenya commerce. Business opportunities in fintech and digital payments.', link:'https://www.kuccps.ac.ke/', tags:['mpesa','mobile money','fintech','business','entrepreneurship','kenya'] },
+  { title:'Environmental Science — Climate Change in Kenya', subject:'Environment', level:'Tertiary', desc:'Impact of climate change on Kenya agriculture, water, and coastal areas. Mitigation strategies.', link:'https://www.nema.go.ke/', tags:['environment','climate change','kenya','conservation','sustainability'] },
+];
+
+/* ══════════════════════════════════════════
+   DATA: SCHOLARSHIPS
+══════════════════════════════════════════ */
+const SCHOLARSHIPS = [
+  { name:'Government of Kenya Bursary Fund', org:'Ministry of Education Kenya', amount:'KES 10,000–50,000/year', level:'Secondary & University', deadline:'Rolling — check each term', desc:'Means-tested bursaries for needy students in public secondary schools and universities. Apply through your school principal or CDF office.', requirements:['Kenyan citizen','Enrolled in public school/university','Demonstrated financial need','Letter from Chief/Sub-Chief'], contact:'education.go.ke | Toll-free: 0800 723 585', emoji:'🇰🇪' },
+  { name:'Rhodes Scholarship — Kenya', org:'Rhodes Trust / University of Oxford', amount:'Full funding (tuition + stipend)', level:'Postgraduate (University of Oxford)', deadline:'27 August annually', desc:'Two prestigious scholarships available each year for exceptional Kenyan graduates to study at Oxford University.', requirements:['Kenyan citizen','Undergraduate degree (minimum Upper Second)','Under 25 years of age','Demonstrated leadership and academic excellence'], contact:'rhodeshouse.ox.ac.uk/kenya', emoji:'🎓' },
+  { name:'DAAD Scholarship (Germany)', org:'German Academic Exchange Service', amount:'€850–1,200/month + tuition', level:'Masters & PhD', deadline:'October–November annually', desc:'Fully funded scholarships for Kenyan students to pursue Masters or PhD degrees at top German universities.', requirements:['Kenyan citizen','Bachelor degree with strong grades','German or English proficiency','Under 32 years (Masters), 36 (PhD)'], contact:'daad.de | Nairobi: +254 20 2715188', emoji:'🇩🇪' },
+  { name:'GREAT Scholarships — UK Universities', org:'British Council & UK Government', amount:'£10,000 towards tuition fees', level:'Postgraduate (1-year taught)', deadline:'April–May annually', desc:'Scholarships for Kenyan students to pursue one-year taught postgraduate courses at UK universities including Law, Science, Engineering.', requirements:['Kenyan passport holder','Accepted into eligible UK university','Not receiving other major funding','Demonstrated academic merit'], contact:'study-uk.britishcouncil.org/scholarships', emoji:'🇬🇧' },
+  { name:'Equity Bank Wings to Fly', org:'Equity Group Foundation', amount:'Full secondary school scholarship', level:'Form 1 Entry (Secondary)', deadline:'January–February annually', desc:"One of Kenya's largest scholarships — covers tuition, boarding, uniform and pocket money for talented students from poor families.", requirements:['Top KPSEA/KCPE results','Family income below poverty threshold','Kenyan citizen','Apply via Equity Bank branches or online'], contact:'equitygroupfoundation.com | 0719 027 000', emoji:'🦅' },
+  { name:'ISK Scholarship Programme', org:'International School of Kenya', amount:'Partial to full tuition waiver', level:'Grade 9 entry (Senior Secondary)', deadline:'Apply by March annually', desc:'Merit and need-based scholarships for talented Kenyan students from low-to-middle income families to access international education.', requirements:['Kenyan citizen','Strong academic performance','Demonstrated financial need','Finance Disclosure form required'], contact:'scholarships@isk.ac.ke | isk.ac.ke', emoji:'🏫' },
+  { name:'KEMRI-Wellcome Trust PhD Studentships', org:'KEMRI-Wellcome Trust Research Programme', amount:'Full stipend + research costs', level:'PhD (Research)', deadline:'Rolling — October intake', desc:"PhD studentships for Kenya's next generation of medical and public health researchers.", requirements:["Master's degree in relevant field",'Interest in health research','Research proposal required','Kenyan or East African nationality'], contact:'kemri-wellcome.org | Kilifi, Kenya', emoji:'🔬' },
+  { name:'Commonwealth Scholarship', org:'Ministry of Education / Commonwealth', amount:'Full tuition + living allowance', level:'Postgraduate (UK)', deadline:'December annually', desc:'Commonwealth scholarships for Kenyans to pursue postgraduate study in the UK in priority development areas.', requirements:['Kenyan citizen','Hold a degree (minimum Upper Second)','Work in development-related field','Not currently studying in UK'], contact:'education.go.ke | cscuk.fcdo.gov.uk', emoji:'🌍' },
+];
+
+/* ══════════════════════════════════════════
+   DATA: PARTNERSHIPS
+══════════════════════════════════════════ */
+const PARTNERSHIPS = [
+  { org:'Huawei ICT Academy Kenya', logo:'🔵', certs:['HCIA-Datacom (Networking)','HCIA-AI (Artificial Intelligence)','HCIA-Cloud Computing','HCIA-5G','HCIA-Cybersecurity'], desc:'Free certifications and ICT competition with prizes including laptops, internships, and trips to China. Partnered with 70+ Kenyan universities.', link:'https://e.huawei.com/en/talent/#/ict/home', free:true, tag:'Industry Recognized', color:'#006BB8' },
+  { org:'IBM SkillsBuild', logo:'🔷', certs:['Cybersecurity Fundamentals','Data Science Foundations','Cloud Computing Basics','AI for Everyone','Project Management'], desc:'Free digital skills platform from IBM. Earn IBM-issued digital badges recognized globally. Ideal for TVET and university students.', link:'https://skillsbuild.org/', free:true, tag:'Digital Badges', color:'#1F70C1' },
+  { org:'Google Career Certificates', logo:'🟢', certs:['IT Support Professional','Data Analytics','UX Design','Project Management','Cybersecurity'], desc:'Job-ready Google certificates on Coursera. Many are free for students in developing countries through Coursera for Africa.', link:'https://grow.google/certificates/', free:true, tag:'Job Ready', color:'#34A853' },
+  { org:'Microsoft Learn', logo:'🟦', certs:['Azure Fundamentals (AZ-900)','AI Fundamentals (AI-900)','Data Fundamentals (DP-900)','Microsoft 365 Fundamentals','Power Platform Fundamentals'], desc:'Free learning paths on Microsoft Learn platform with globally recognized certifications. Exam vouchers available through Microsoft TEALS program.', link:'https://learn.microsoft.com/', free:true, tag:'Cloud & AI', color:'#0078D4' },
+  { org:'Coursera — Coursera for Africa', logo:'🟠', certs:['Machine Learning Specialization','Python for Everybody','Financial Markets (Yale)','Learning How to Learn','Full Stack Web Development'], desc:'Top university courses free for African learners. Partner universities include Google, Stanford, Michigan, and Johns Hopkins.', link:'https://www.coursera.org/', free:true, tag:'University Courses', color:'#2A73CC' },
+  { org:'Open University of Kenya (OUK)', logo:'🎓', certs:['HCIA-AI (with Huawei)','Diploma in ICT','Certificate in Business Management','Certificate in Early Childhood Education'], desc:"Kenya's public open university offering fully online, affordable courses with government recognition. Accessible from rural areas.", link:'https://ouk.ac.ke/', free:false, tag:'Government Accredited', color:'#B5451B' },
+  { org:'CISCO Networking Academy', logo:'🌐', certs:['Introduction to Networks (CCNA Prep)','Cybersecurity Essentials','Python Essentials','IoT Fundamentals','Linux Essentials'], desc:'Free online networking and cybersecurity courses. CISCO certifications are globally recognized by employers in Kenya and internationally.', link:'https://www.netacad.com/', free:true, tag:'Networking Certs', color:'#00AEEF' },
+];
+
+/* ══════════════════════════════════════════
+   DATA: COMPETITIONS
+══════════════════════════════════════════ */
+const COMPETITIONS = [
+  { name:'Huawei ICT Competition Kenya 2025', org:'Huawei Kenya', prize:'Laptops, Smartphones, Cash & China Trip', deadline:'Open — check Huawei Kenya website', level:'University & TVET', desc:"Kenya's largest ICT student competition. Categories: Networking, AI, Cloud Computing.", link:'https://www.huawei.com/en/talent/ict-competition', emoji:'🖥️', tag:'Active' },
+  { name:'Google Science Fair (East Africa)', org:'Google', prize:'Scholarships, Google HQ trip & $50,000', deadline:'March annually', level:'Secondary (13–18 years)', desc:'International science competition open to Kenyan secondary students. Topics include environment, health, technology and social issues.', link:'https://edu.google.com/', emoji:'🔬', tag:'Annual' },
+  { name:'Africa Innovation Challenge', org:'African Development Bank', prize:'Up to $100,000 USD', deadline:'June annually', level:'Tertiary & Young Adults', desc:'Business and social innovation competition for African youth. Kenyan winners have included agriculture-tech and fintech startups.', link:'https://www.afdb.org/', emoji:'💡', tag:'Annual' },
+  { name:'Kenya National Science & Engineering Fair (KNSEF)', org:'KENIA / Ministry of Education', prize:'Trophies, Bursaries & International trips', deadline:'School submissions by Term 2', level:'Primary & Secondary', desc:'National science fair for Kenyan students. Winners represent Kenya at international science fairs including ISEF in the USA.', link:'https://www.education.go.ke/', emoji:'🏆', tag:'National' },
+  { name:'KICD Creativity & Innovation Award', org:'Kenya Institute of Curriculum Development', prize:'KES 50,000 & Certificate', deadline:'October annually', level:'Primary & Secondary', desc:'Annual award recognizing creative and innovative projects by Kenyan students aligned with CBC learning areas.', link:'https://kicd.ac.ke/', emoji:'🎨', tag:'Annual' },
+  { name:'Safaricom Youth Innovators Challenge', org:'Safaricom PLC', prize:'KES 500,000 + Mentorship', deadline:'Open — check safaricom.co.ke', level:'Tertiary & Young Adults (18–30)', desc:"Safaricom's flagship innovation challenge for Kenyan youth to develop mobile and tech solutions for Kenyan problems.", link:'https://www.safaricom.co.ke/', emoji:'📱', tag:'Active' },
+  { name:'Junior Achievement Kenya Business Challenge', org:'Junior Achievement Africa', prize:'Trophies, mentorship & seed funding', deadline:'Term 3 annually', level:'Secondary', desc:'Practical business education competition where students create and run a mini-company, compete for best business model.', link:'https://jaafrica.org/', emoji:'💼', tag:'Annual' },
+];
+
+/* ══════════════════════════════════════════
+   DATA: CALENDAR EVENTS
+══════════════════════════════════════════ */
+const EVENTS = [
+  { date:'2025-07-07', title:'Mathematics Quiz — Module 3', type:'quiz',   color:'#6C91F1' },
+  { date:'2025-07-09', title:'Live Class: Biology — Genetics', type:'class', color:'#4CAF50' },
+  { date:'2025-07-11', title:'English Assignment Submission', type:'deadline', color:'#FF9EBF' },
+  { date:'2025-07-14', title:'Live Class: Chemistry — Organic', type:'class', color:'#4CAF50' },
+  { date:'2025-07-15', title:'Huawei ICT Competition — Deadline', type:'competition', color:'#C96BEB' },
+  { date:'2025-07-18', title:'Pride Points Reward Weekend', type:'special', color:'#FFD700' },
+  { date:'2025-07-21', title:'Community Forum — STEM Discussion', type:'community', color:'#89B9F8' },
+  { date:'2025-07-25', title:'End of Term Mock Exams Begin', type:'exam', color:'#E53935' },
+  { date:'2025-07-28', title:'Scholarship Application: Equity Wings', type:'deadline', color:'#FF9EBF' },
+  { date:'2025-08-01', title:'New Term Courses Released', type:'special', color:'#FFD700' },
+];
+
+/* ══════════════════════════════════════════
+   DATA: PRIDE POINTS STORE
+══════════════════════════════════════════ */
+const STORE = [
+  { id:'st1', name:'KCSE Revision Book', emoji:'📚', pts:150, desc:'Top revision guide for KCSE students', category:'Books' },
+  { id:'st2', name:'CBC Mathematics Textbook', emoji:'📗', pts:200, desc:'Official KICD-aligned textbook', category:'Books' },
+  { id:'st3', name:'School Uniform Set', emoji:'👕', pts:500, desc:'Primary school uniform (shirt & shorts/skirt)', category:'Clothing' },
+  { id:'st4', name:'School Bag', emoji:'🎒', pts:350, desc:'Durable backpack for school supplies', category:'Clothing' },
+  { id:'st5', name:'Maize Flour (2kg)', emoji:'🌽', pts:100, desc:'Staple food support for learner families', category:'Meals' },
+  { id:'st6', name:'School Lunch — 5 days', emoji:'🍱', pts:200, desc:'Nutritious school lunches for one week', category:'Meals' },
+  { id:'st7', name:'Exercise Book Set (10)', emoji:'📓', pts:80, desc:'Set of 10 exercise books for notes', category:'Stationery' },
+  { id:'st8', name:'Drawing Set & Compass', emoji:'📐', pts:120, desc:'Geometry set for maths and technical drawing', category:'Stationery' },
+];
+
+/* ══════════════════════════════════════════
+   DATA: COMMUNITY POSTS
+══════════════════════════════════════════ */
+// CHANGED: Level-specific community posts
+const INITIAL_POSTS = {
+  primary: [
+    { id:101, author:'Teacher Njeri', avatar:'TN', role:'Educator, Kirinyaga', time:'1 day ago', content:'My Grade 5 pupils love the Mathematics fractions lessons. The quiz at the end really motivates them. Thank you Pride Learning! 📚', likes:28, level:'Primary' },
+    { id:102, author:'Zawadi M.', avatar:'ZM', role:'Grade 6 Student', time:'3 hours ago', content:'I got 10/10 on the fractions quiz! The notes really helped me understand how to add fractions with different denominators 🎉', likes:15, level:'Primary' },
+    { id:103, author:'Mwalimu Omondi', avatar:'MO', role:'Primary Teacher, Kisumu', time:'2 days ago', content:'Tip for Grade 5 learners: Always draw a diagram when solving geometry problems. It makes it much easier to find the area and perimeter!', likes:22, level:'Primary' },
+    { id:104, author:'Aisha K.', avatar:'AK', role:'Grade 4 Student', time:'5 hours ago', content:'Can someone explain equivalent fractions? I keep getting confused when the denominators are different 😅', likes:8, level:'Primary' },
+  ],
+  secondary: [
+    { id:201, author:'Amina W.', avatar:'AW', role:'Form 3 Student', time:'2 hours ago', content:'I finally understood photosynthesis! The Pride Learning Biology notes are so clear. Anyone else on the Biology course? 🌿', likes:12, level:'Secondary' },
+    { id:202, author:'Koech D.', avatar:'KD', role:'Form 3 Student', time:'2 days ago', content:'Anyone applied for the Equity Wings to Fly scholarship? What documents do you need? I want to apply next January.', likes:7, level:'Secondary' },
+    { id:203, author:'Teacher Wanjiku', avatar:'TW', role:'Mathematics Teacher, Nakuru', time:'1 day ago', content:'Form 2 students — remember the quadratic formula: x = (-b ± √(b²-4ac)) / 2a. Memorize this! It solves ALL quadratics 🔢', likes:41, level:'Secondary' },
+    { id:204, author:'Brian O.', avatar:'BO', role:'Form 4 Student', time:'4 hours ago', content:'Just finished the Chemistry organic module. Alkanes, alkenes, alkynes — it all makes sense now once you understand the carbon bonding rules!', likes:19, level:'Secondary' },
+    { id:205, author:'Sadia A.', avatar:'SA', role:'Form 2 Student', time:'6 hours ago', content:'The Geography notes on the Rift Valley are excellent. Did you know Kenya sits on the East African Rift System which is 6,000 km long? 🌋', likes:33, level:'Secondary' },
+  ],
+  tertiary: [
+    { id:301, author:'Juma O.', avatar:'JO', role:'TVET Student', time:'5 hours ago', content:"Just passed the Huawei HCIA-Datacom exam! Used the Networking course here to prepare. It's 100% free — highly recommend! 🎉", likes:34, level:'Tertiary' },
+    { id:302, author:'Fatuma A.', avatar:'FA', role:'University Student', time:'3 days ago', content:'The IBM SkillsBuild platform is amazing — I just earned my Cybersecurity Fundamentals badge. All free! 🔒', likes:19, level:'Tertiary' },
+    { id:303, author:'Prof. Kamau', avatar:'PK', role:'Lecturer, UoN', time:'1 day ago', content:'Students — the AI course here gives excellent foundations. Supplement it with Google ML Crash Course (also free) for a strong portfolio.', likes:52, level:'Tertiary' },
+    { id:304, author:'Grace N.', avatar:'GN', role:'TVET Trainee, Eldoret', time:'8 hours ago', content:'Completed the Electrical Installation module today. Solar panel wiring is so relevant — every village in Kenya needs this skill! ⚡', likes:27, level:'Tertiary' },
+  ],
+};
+
+/* ══════════════════════════════════════════
+   SIDEBAR NAVIGATION
+══════════════════════════════════════════ */
+const NAV_ITEMS = [
+  { id:'dashboard',    label:'Dashboard',      icon:'🏠' },
+  { id:'courses',      label:'My Courses',     icon:'📚' },
+  { id:'library',      label:'Library',        icon:'🔍' },
+  { id:'calendar',     label:'Calendar',       icon:'📅' },
+  { id:'points',       label:'Pride Points',   icon:'⭐' },
+  { id:'partnerships', label:'Partnerships',   icon:'🤝' },
+  { id:'community',    label:'Community',      icon:'💬' },
+  { id:'scholarships', label:'Scholarships',   icon:'🎓' },
+  { id:'competitions', label:'Competitions',   icon:'🏆' },
+];
+
+/* ══════════════════════════════════════════
+   CORE FUNCTIONS
+══════════════════════════════════════════ */
+function showToast(msg, duration=3000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function scrollToJoin() {
+  document.getElementById('join-section').scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+function selectLevel(level, btn) {
+  document.querySelectorAll('.level-btn').forEach(b => {
+    b.style.borderColor=''; b.style.background='';
+  });
+  btn.style.borderColor = '#FFC4A4';
+  btn.style.background = '#FFF0E8';
+  state.eduLevel = level;
+}
+
+function quickEnter(level) {
+  state.eduLevel = level;
+  scrollToJoin();
+  setTimeout(() => {
+    document.querySelectorAll('.level-btn').forEach(b => { if(b.dataset.level===level) b.click(); });
+  }, 400);
+}
+
+function enterDashboard() {
+  const nm = document.getElementById('name-input').value.trim();
+  if (!nm) { showToast('Please enter your first name 😊'); return; }
+  if (!state.eduLevel) { showToast('Please choose your education level!'); return; }
+  state.userName = nm.charAt(0).toUpperCase() + nm.slice(1);
+  state.currentView = 'dashboard';
+  initDashboard();
+  showView('dashboard');
+  showToast(`Welcome, ${state.userName}! 🎉 Your journey begins now.`);
+}
+
+function initDashboard() {
+  // CHANGED: Update profile section in sidebar
+  document.getElementById('sidebar-avatar').textContent = state.userName.charAt(0).toUpperCase();
+  document.getElementById('sidebar-name').textContent = state.userName;
+  document.getElementById('sidebar-level-badge').textContent = state.eduLevel.charAt(0).toUpperCase() + state.eduLevel.slice(1);
+
+  // Build nav
+  const nav = document.getElementById('sidebar-nav');
+  nav.innerHTML = NAV_ITEMS.map(item => `
+    <div class="nav-item ${item.id==='dashboard'?'active':''}" data-page="${item.id}" onclick="navigateTo('${item.id}')">
+      <span class="nav-icon">${item.icon}</span><span>${item.label}</span>
+    </div>
+  `).join('');
+
+  // Avatar initials
+  document.getElementById('avatar-initials').textContent = state.userName.charAt(0).toUpperCase();
+  updatePointsDisplay();
+  navigateTo('dashboard');
+}
+
+function navigateTo(page) {
+  state.activePage = page;
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.page === page);
+  });
+  const item = NAV_ITEMS.find(n => n.id === page);
+  document.getElementById('page-title').textContent = item ? item.label : page;
+  closeSidebar();
+  const pages = {
+    dashboard: renderDashboardHome,
+    courses: renderCoursesPage,
+    library: renderLibraryPage,
+    calendar: renderCalendarPage,
+    points: renderPointsPage,
+    partnerships: renderPartnershipsPage,
+    community: renderCommunityPage,
+    scholarships: renderScholarshipsPage,
+    competitions: renderCompetitionsPage,
+  };
+  if (pages[page]) pages[page]();
+  window.scrollTo(0,0);
+}
+
+/* CHANGED: Smooth sidebar toggle with overlay fade */
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('sidebar-overlay');
+  const isOpen = sb.classList.contains('open');
+  if (isOpen) {
+    closeSidebar();
+  } else {
+    sb.classList.add('open');
+    ov.classList.add('active');
+  }
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('active');
+}
+
+function logout() {
+  closeSidebar();
+  showView('landing');
+  state.enrolledCourses = [];
+  state.communityPosts = [];
+  state.activeCourse = null;
+}
+
+/* CHANGED: Open change level modal for families sharing a device */
+function openChangeLevelModal() {
+  closeSidebar();
+  openModal(`
+    <div>
+      <h3 class="text-xl font-extrabold mb-2">Change Education Level</h3>
+      <p class="text-gray-500 text-sm mb-5">Choose the level for the learner currently using this device.</p>
+      ${['primary','secondary','tertiary'].map(l => `
+        <button class="level-select-btn ${state.eduLevel===l?'selected':''}" onclick="changeLevel('${l}',this)">
+          <span class="text-2xl">${l==='primary'?'📚':l==='secondary'?'🏫':'🎓'}</span>
+          <div>
+            <p class="font-bold">${l.charAt(0).toUpperCase()+l.slice(1)}</p>
+            <p class="text-xs text-gray-400">${l==='primary'?'Grades 1–6':l==='secondary'?'Grades 7–12':'TVET & University'}</p>
+          </div>
+          ${state.eduLevel===l ? '<span class="ml-auto text-green-500 font-extrabold">✓ Active</span>' : ''}
+        </button>`).join('')}
+      <button class="btn-ghost w-full mt-3" onclick="closeModal()">Cancel</button>
+    </div>`);
+}
+
+function changeLevel(level, btn) {
+  state.eduLevel = level;
+  state.communityPosts = [];
+  document.getElementById('sidebar-level-badge').textContent = level.charAt(0).toUpperCase() + level.slice(1);
+  closeModal();
+  showToast(`Level changed to ${level.charAt(0).toUpperCase()+level.slice(1)} 🎓`);
+  navigateTo('dashboard');
+}
+
+function updatePointsDisplay() {
+  document.getElementById('sidebar-points').textContent = state.points;
+  document.getElementById('topbar-points').textContent = `⭐ ${state.points} pts`;
+}
+
+function addPoints(n, reason) {
+  state.points += n;
+  updatePointsDisplay();
+  showToast(`+${n} Pride Points earned! ${reason}`);
+}
+
+/* ══════════════════════════════════════════
+   PAGE: DASHBOARD HOME
+   CHANGED: Only 2 continue-learning cards + "See More", only 3 explore recommendations + "See More"
+══════════════════════════════════════════ */
+function renderDashboardHome() {
+  // CHANGED: filter enrolled courses by current level
+  const enrolled = (COURSES[state.eduLevel]||[]).filter(c => state.enrolledCourses.includes(c.id));
+  const levelCourses = COURSES[state.eduLevel] || [];
+  const notEnrolled = levelCourses.filter(c => !state.enrolledCourses.includes(c.id));
+  const pc = document.getElementById('page-content');
+  pc.innerHTML = `
+    <!-- Greeting -->
+    <div class="mb-8 fade-up">
+      <h2 class="text-2xl font-extrabold mb-1">Good day, ${state.userName}! 🌟</h2>
+      <p class="text-gray-500 text-sm">Continue learning — every lesson brings you closer to your goal.</p>
+    </div>
+
+    <!-- Stats — CHANGED: improved spacing -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 fade-up delay-1">
+      <div class="card p-5 text-center">
+        <p class="text-3xl font-extrabold" style="color:#6C91F1">${enrolled.length}</p>
+        <p class="text-xs text-gray-400 mt-1 font-semibold">Enrolled</p>
+      </div>
+      <div class="card p-5 text-center">
+        <p class="text-3xl font-extrabold" style="color:#FF7D5A">${state.points}</p>
+        <p class="text-xs text-gray-400 mt-1 font-semibold">Pride Points</p>
+      </div>
+      <div class="card p-5 text-center">
+        <p class="text-3xl font-extrabold" style="color:#C96BEB">${Object.keys(state.completedModules).length}</p>
+        <p class="text-xs text-gray-400 mt-1 font-semibold">Modules Done</p>
+      </div>
+      <div class="card p-5 text-center">
+        <p class="text-3xl font-extrabold" style="color:#4CAF50">A</p>
+        <p class="text-xs text-gray-400 mt-1 font-semibold">Avg. Grade</p>
+      </div>
+    </div>
+
+    <!-- CHANGED: Continue Learning — only 2 cards + See More -->
+    ${enrolled.length > 0 ? `
+    <div class="mb-10 fade-up delay-2">
+      <div class="section-header">
+        <h3>Continue Learning</h3>
+        ${enrolled.length > 2 ? `<button class="see-more-btn" onclick="navigateTo('courses')">See All ${enrolled.length} →</button>` : ''}
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        ${enrolled.slice(0,2).map(c => `
+          <div class="card p-5 flex items-center gap-4 cursor-pointer" onclick="openCourse('${c.id}')">
+            <div class="text-3xl">${c.emoji}</div>
+            <div class="flex-1 min-w-0">
+              <p class="font-bold text-sm truncate">${c.title}</p>
+              <p class="text-xs text-gray-400 truncate">${c.sub}</p>
+              <div class="progress-track mt-2">
+                <div class="progress-fill" style="width:${Math.round(((state.completedModules[c.id]?.length||0)/getAllModules(c).length)*100)}%;background:linear-gradient(90deg,#6C91F1,#89B9F8)"></div>
+              </div>
+              <p class="text-xs text-gray-400 mt-1">${Math.round(((state.completedModules[c.id]?.length||0)/getAllModules(c).length)*100)}% complete</p>
+            </div>
+            <span class="text-lg text-gray-300">›</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>` : ''}
+
+    <!-- CHANGED: Explore — only 3 cards + See More -->
+    <div class="mb-10 fade-up delay-3">
+      <div class="section-header">
+        <h3>Explore ${state.eduLevel.charAt(0).toUpperCase()+state.eduLevel.slice(1)} Courses</h3>
+        <button class="see-more-btn" onclick="navigateTo('courses')">See All →</button>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        ${notEnrolled.slice(0,3).map(c => courseCard(c)).join('')}
+      </div>
+    </div>
+
+    <!-- Upcoming Events -->
+    <div class="fade-up delay-4">
+      <div class="section-header">
+        <h3>📅 Upcoming Events</h3>
+        <button class="see-more-btn" onclick="navigateTo('calendar')">Full Calendar →</button>
+      </div>
+      <div class="space-y-3">
+        ${EVENTS.slice(0,3).map(e => `
+          <div class="card p-4 flex items-center gap-4">
+            <div class="w-11 h-11 rounded-xl flex flex-col items-center justify-center text-white font-bold text-xs flex-shrink-0" style="background:${e.color}">
+              <span class="text-base">${{quiz:'📝',class:'🎥',deadline:'⚠️',competition:'🏆',exam:'📋',special:'⭐',community:'💬'}[e.type]||'📌'}</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="font-bold text-sm truncate">${e.title}</p>
+              <p class="text-xs text-gray-400">${new Date(e.date).toLocaleDateString('en-KE',{weekday:'short',month:'short',day:'numeric'})}</p>
+            </div>
+            <span class="text-xs font-bold px-2 py-1 rounded-full" style="background:${e.color}20;color:${e.color}">${e.type}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function courseCard(c) {
+  const isEnrolled = state.enrolledCourses.includes(c.id);
+  const mods = getAllModules(c);
+  const done = (state.completedModules[c.id]||[]).length;
+  const pct = Math.round((done/mods.length)*100);
+  return `
+    <div class="card overflow-hidden">
+      <div class="h-2 ${c.color}"></div>
+      <div class="p-5">
+        <div class="text-2xl mb-3">${c.emoji}</div>
+        <h4 class="font-bold text-sm mb-1 leading-snug">${c.title}</h4>
+        <p class="text-xs text-gray-400 mb-3">${c.sub}</p>
+        <p class="text-xs text-gray-400 mb-4">⏱ ${c.weeks} weeks · ${mods.length} modules</p>
+        ${isEnrolled ? `
+          <div class="progress-track mb-3"><div class="progress-fill" style="width:${pct}%;background:linear-gradient(90deg,#4CAF50,#81C784)"></div></div>
+          <p class="text-xs text-gray-400 mb-3">${pct}% complete</p>
+          <button class="btn-blue btn-sm w-full text-sm" onclick="openCourse('${c.id}')">Continue →</button>`
+          : `<button class="btn-primary btn-sm w-full text-sm" onclick="enrollCourse('${c.id}')">Enroll Free</button>`}
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════
+   PAGE: MY COURSES
+   CHANGED: level-exclusive content only
+══════════════════════════════════════════ */
+function renderCoursesPage() {
+  const allCourses = COURSES[state.eduLevel] || [];
+  const pc = document.getElementById('page-content');
+
+  pc.innerHTML = `
+    <div class="mb-8 fade-up">
+      <h2 class="text-2xl font-extrabold mb-1">📚 My Courses</h2>
+      <p class="text-gray-500 text-sm">
+        Showing <strong>${state.eduLevel.charAt(0).toUpperCase()+state.eduLevel.slice(1)}</strong> courses.
+        <button class="text-blue-500 font-bold underline ml-1" onclick="openChangeLevelModal()">Change level</button>
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 fade-up delay-1">
+      ${allCourses.map(c => courseCard(c)).join('')}
+    </div>
+  `;
+}
+
+function enrollCourse(id) {
+  if (!state.enrolledCourses.includes(id)) {
+    state.enrolledCourses.push(id);
+    addPoints(20, 'for enrolling in a new course! 📚');
+    renderCoursesPage();
+  }
+}
+
+/* ══════════════════════════════════════════
+   PAGE: COURSE DETAIL
+   CHANGED: Left module sidebar replaces week tabs
+   Modules have full notes content + mark as complete
+══════════════════════════════════════════ */
+function openCourse(id) {
+  const all = Object.values(COURSES).flat();
+  const course = all.find(c => c.id === id);
+  if (!course) return;
+  state.activeCourse = course;
+  state.activeModule = 0;
+  state.quizAnswers = {};
+  state.quizSubmitted = false;
+  state.activePage = 'course-detail';
+  document.getElementById('page-title').textContent = course.title;
+  renderCourseDetail();
+}
+
+function renderCourseDetail() {
+  const course = state.activeCourse;
+  const modules = getAllModules(course);
+  const quiz = getCourseQuiz(course);
+  const completedMods = state.completedModules[course.id] || [];
+  const pct = Math.round((completedMods.length / modules.length) * 100);
+  const pc = document.getElementById('page-content');
+
+  // Build course detail with LEFT SIDEBAR for modules
+  pc.innerHTML = `
+    <!-- Back + Header -->
+    <div class="mb-6">
+      <button class="flex items-center gap-2 text-gray-400 font-bold text-sm mb-5 hover:text-gray-700 transition-colors" onclick="navigateTo('courses')">
+        ← Back to Courses
+      </button>
+      <div class="card p-5" style="background:linear-gradient(135deg,#FFF8F4,#FFF0E8)">
+        <div class="flex items-start gap-4 flex-wrap">
+          <span class="text-4xl">${course.emoji}</span>
+          <div class="flex-1 min-w-0">
+            <h2 class="text-xl font-extrabold mb-1">${course.title}</h2>
+            <p class="text-gray-500 text-sm mb-3">${course.sub}</p>
+            <div class="flex gap-2 flex-wrap">
+              <span class="bg-blue-100 text-blue-600 text-xs font-bold px-3 py-1 rounded-full">${modules.length} Modules</span>
+              <span class="bg-green-100 text-green-600 text-xs font-bold px-3 py-1 rounded-full">✓ Enrolled</span>
+              <span class="bg-orange-100 text-orange-600 text-xs font-bold px-3 py-1 rounded-full">${completedMods.length}/${modules.length} done</span>
+            </div>
+            <div class="progress-track mt-3 max-w-sm">
+              <div class="progress-fill" style="width:${pct}%;background:linear-gradient(90deg,#4CAF50,#81C784)"></div>
+            </div>
+            <p class="text-xs text-gray-400 mt-1">${pct}% complete</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHANGED: Course layout — left sidebar + content area -->
+    <div class="course-layout" style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.07)">
+
+      <!-- LEFT MODULE SIDEBAR -->
+      <div class="course-module-sidebar">
+        <div class="module-week-header">Course Modules</div>
+        ${modules.map((mod, mi) => {
+          const isDone = completedMods.includes(mi);
+          const isActive = mi === state.activeModule;
+          return `<div class="module-list-item ${isActive?'active':''} ${isDone?'completed':''}"
+            onclick="selectModule(${mi})">
+            <div class="mod-check">${isDone ? '✓' : (isActive ? '▶' : '')}</div>
+            <span class="flex-1 leading-snug">${mi+1}. ${mod.topic}</span>
+          </div>`;
+        }).join('')}
+        <div class="module-week-header mt-4">Assessment</div>
+        <div class="module-list-item ${state.activeModule === modules.length ? 'active' : ''}" onclick="selectModule(${modules.length})">
+          <div class="mod-check">📝</div>
+          <span class="flex-1">Module Quiz (10 Q)</span>
+        </div>
+      </div>
+
+      <!-- CONTENT AREA -->
+      <div class="course-content-area" id="course-content-panel">
+        ${renderModuleContent(course, modules, completedMods, quiz)}
+      </div>
+    </div>
+  `;
+}
+
+function selectModule(idx) {
+  state.activeModule = idx;
+  const course = state.activeCourse;
+  const modules = getAllModules(course);
+  const quiz = getCourseQuiz(course);
+  const completedMods = state.completedModules[course.id] || [];
+
+  // Update sidebar highlights
+  document.querySelectorAll('.module-list-item').forEach((el, i) => {
+    el.classList.toggle('active', i === idx);
+  });
+
+  // Update content panel
+  document.getElementById('course-content-panel').innerHTML = renderModuleContent(course, modules, completedMods, quiz);
+}
+
+function renderModuleContent(course, modules, completedMods, quiz) {
+  const idx = state.activeModule;
+  const isQuiz = idx === modules.length;
+
+  if (isQuiz) {
+    // QUIZ PANEL
+    state.quizAnswers = {};
+    state.quizSubmitted = false;
+    return `
+      <div>
+        <div class="flex items-center gap-3 mb-6">
+          <span class="text-3xl">📝</span>
+          <div>
+            <h3 class="text-xl font-extrabold">${course.title} — Quiz</h3>
+            <p class="text-sm text-gray-500">10 questions · Auto-graded · Earn up to 50 Pride Points</p>
+          </div>
+        </div>
+        <div id="quiz-questions">
+          ${quiz.map((q, qi) => `
+            <div class="mb-6 p-5 rounded-2xl" style="background:#FAFAFA;border:1px solid #F0E8E0">
+              <p class="font-bold text-sm mb-4">${qi+1}. ${q.q}</p>
+              ${q.opts.map((opt, oi) => `
+                <button class="quiz-option" id="opt-${qi}-${oi}" onclick="selectAnswer(${qi},${oi},${q.ans},this)">
+                  ${String.fromCharCode(65+oi)}. ${opt}
+                </button>`).join('')}
+            </div>`).join('')}
+        </div>
+        <button class="btn-primary mt-4" id="submit-quiz-btn" onclick="submitQuiz(${quiz.length})">Submit Quiz ✓</button>
+        <div id="quiz-result" class="hidden mt-6"></div>
+      </div>`;
+  }
+
+  // MODULE CONTENT PANEL
+  const mod = modules[idx];
+  const isDone = completedMods.includes(idx);
+  return `
+    <div>
+      <!-- Module Header -->
+      <div class="flex items-start justify-between gap-4 mb-6 flex-wrap">
+        <div>
+          <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Module ${idx+1} of ${modules.length}</p>
+          <h3 class="text-xl font-extrabold">${mod.topic}</h3>
+        </div>
+        <button class="btn-sm ${isDone ? 'btn-green' : 'btn-ghost'} flex items-center gap-2 flex-shrink-0"
+          onclick="markModuleComplete(${idx})">
+          ${isDone ? '✓ Completed' : 'Mark as Complete'}
+        </button>
+      </div>
+
+      <!-- Subtopics -->
+      <div class="mb-6">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Topics Covered</p>
+        ${mod.subs.map((s, si) => `
+          <div class="subtopic-item ${(state.completedModules[course.id+'_sub_'+idx]||[]).includes(si)?'done':''}"
+            onclick="markSubtopic(this,'${course.id}',${idx},${si})">
+            <div class="subtopic-check">✓</div>
+            <span class="text-sm font-medium">${s}</span>
+          </div>`).join('')}
+      </div>
+
+      <!-- Notes -->
+      <div class="module-notes p-5 rounded-2xl mb-6" style="background:#FDFBF8;border:1px solid #F5EEE9">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Learning Notes</p>
+        ${mod.notes}
+      </div>
+
+      <!-- Navigation buttons -->
+      <div class="flex gap-3 flex-wrap">
+        ${idx > 0 ? `<button class="btn-ghost btn-sm" onclick="selectModule(${idx-1})">← Previous Module</button>` : ''}
+        ${idx < modules.length - 1
+          ? `<button class="btn-blue btn-sm" onclick="selectModule(${idx+1})">Next Module →</button>`
+          : `<button class="btn-primary btn-sm" onclick="selectModule(${modules.length})">📝 Take Quiz</button>`}
+      </div>
+    </div>`;
+}
+
+/* CHANGED: Mark entire module complete */
+function markModuleComplete(idx) {
+  const course = state.activeCourse;
+  const key = course.id;
+  if (!state.completedModules[key]) state.completedModules[key] = [];
+  const already = state.completedModules[key].includes(idx);
+  if (!already) {
+    state.completedModules[key].push(idx);
+    addPoints(10, `for completing Module ${idx+1}! 🎉`);
+  } else {
+    state.completedModules[key] = state.completedModules[key].filter(i => i !== idx);
+  }
+  // Re-render
+  renderCourseDetail();
+  // Re-select same module
+  setTimeout(() => selectModule(idx), 50);
+}
+
+/* CHANGED: Mark subtopic */
+function markSubtopic(el, courseId, modIdx, subIdx) {
+  const key = courseId + '_sub_' + modIdx;
+  if (!state.completedModules[key]) state.completedModules[key] = [];
+  const already = state.completedModules[key].includes(subIdx);
+  if (!already) {
+    state.completedModules[key].push(subIdx);
+    el.classList.add('done');
+    addPoints(2, 'for completing a subtopic!');
+  } else {
+    state.completedModules[key] = state.completedModules[key].filter(i => i !== subIdx);
+    el.classList.remove('done');
+  }
+}
+
+function selectAnswer(qi, oi, correct, btn) {
+  if (state.quizSubmitted) return;
+  state.quizAnswers[qi] = { selected: oi, correct };
+  const parent = btn.closest('div.mb-6');
+  parent.querySelectorAll('.quiz-option').forEach(b => {
+    b.style.borderColor = ''; b.style.background = ''; b.style.color = '';
+  });
+  btn.style.borderColor = '#6C91F1'; btn.style.background = '#EEF3FF';
+}
+
+function submitQuiz(total) {
+  if (state.quizSubmitted) return;
+  const answered = Object.keys(state.quizAnswers).length;
+  if (answered < total) { showToast(`Please answer all ${total} questions! (${answered}/${total} done)`); return; }
+  state.quizSubmitted = true;
+  let score = 0;
+  for (let qi = 0; qi < total; qi++) {
+    const { selected, correct } = state.quizAnswers[qi];
+    document.querySelectorAll(`[id^="opt-${qi}-"]`).forEach((b, oi) => {
+      b.disabled = true;
+      if (oi === correct) b.classList.add('correct');
+      else if (oi === selected && selected !== correct) b.classList.add('wrong');
+    });
+    if (selected === correct) score++;
+  }
+  document.getElementById('submit-quiz-btn').style.display = 'none';
+  const pct = Math.round(score/total*100);
+  let badge='', pts=0, msg='', feedback='';
+  if (pct >= 90) { badge=`<div class="shimmer-badge text-lg mt-2">🏆 EXCELLENCE BADGE — ${pct}%</div>`; pts=50; msg='Outstanding!'; feedback="You have mastered this module's content. Excellent work!"; }
+  else if (pct >= 70) { badge=`<div class="inline-block badge-blue text-white font-extrabold rounded-full px-5 py-2 mt-2 text-sm">🎖️ MERIT BADGE — ${pct}%</div>`; pts=30; msg='Great job!'; feedback='Solid understanding. Review the missed questions to strengthen your knowledge.'; }
+  else if (pct >= 50) { badge=`<div class="inline-block bg-orange-100 text-orange-700 font-extrabold rounded-full px-5 py-2 mt-2 text-sm">📘 PASS — ${pct}%</div>`; pts=15; msg='Good effort!'; feedback="You're on the right track. Re-read the module notes and try again."; }
+  else { badge=`<div class="inline-block bg-red-100 text-red-600 font-extrabold rounded-full px-5 py-2 mt-2 text-sm">📖 Keep Practicing — ${pct}%</div>`; pts=5; msg='Keep going!'; feedback='Review the module content carefully. Every attempt helps you improve!'; }
+  addPoints(pts, 'for completing the quiz!');
+  document.getElementById('quiz-result').classList.remove('hidden');
+  document.getElementById('quiz-result').innerHTML = `
+    <div class="text-center p-6 rounded-2xl" style="background:linear-gradient(135deg,#FFF8F4,#FFF0E8)">
+      <p class="text-4xl mb-2">${pct>=90?'🏆':pct>=70?'🎉':pct>=50?'👍':'💪'}</p>
+      <h3 class="text-2xl font-extrabold mb-1">${msg}</h3>
+      <p class="text-gray-500 text-sm mb-3">${feedback}</p>
+      <p class="text-lg font-extrabold" style="color:#6C91F1">${score} / ${total} correct</p>
+      ${badge}
+      <p class="text-sm text-green-600 font-bold mt-3">+${pts} Pride Points earned!</p>
+      <button class="btn-blue mt-4" onclick="state.quizAnswers={};state.quizSubmitted=false;selectModule(${getAllModules(state.activeCourse).length})">Retry Quiz</button>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════
+   PAGE: LIBRARY
+   CHANGED: Level-filtered by default, improved results
+══════════════════════════════════════════ */
+function renderLibraryPage() {
+  // CHANGED: Pre-filter by user's level
+  const levelResources = LIBRARY.filter(r => r.level.toLowerCase() === state.eduLevel || r.level === 'All');
+  const pc = document.getElementById('page-content');
+  pc.innerHTML = `
+    <div class="mb-6">
+      <h2 class="text-xl font-extrabold mb-1">📚 Learning Library</h2>
+      <p class="text-gray-500 text-sm">Free educational resources for <strong>${state.eduLevel.charAt(0).toUpperCase()+state.eduLevel.slice(1)}</strong> learners — Kenyan curriculum aligned.</p>
+    </div>
+    <div class="flex gap-3 mb-5">
+      <input id="library-search" class="input-field flex-1" placeholder='Search e.g. "biology", "fractions", "entrepreneurship"…' oninput="searchLibrary()" />
+      <button class="btn-blue px-5 py-2 rounded-xl flex-shrink-0" onclick="searchLibrary()">Search</button>
+    </div>
+    <div class="mb-6" id="search-meta">
+      <p class="text-sm text-gray-400">${levelResources.length} resources for your level</p>
+    </div>
+    <div id="library-results" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      ${levelResources.map(r => libraryCard(r)).join('')}
+    </div>
+  `;
+}
+
+function libraryCard(r) {
+  return `
+    <div class="lib-card">
+      <div class="flex items-start justify-between gap-2 mb-2">
+        <h4 class="font-bold text-sm leading-snug">${r.title}</h4>
+        <span class="text-xs px-2 py-0.5 rounded-full font-bold flex-shrink-0"
+          style="background:#FFF0E8;color:#E55A00">${r.level}</span>
+      </div>
+      <p class="text-xs font-semibold text-gray-400 mb-2">📂 ${r.subject}</p>
+      <p class="text-sm text-gray-600 mb-4 leading-relaxed">${r.desc}</p>
+      <a href="${r.link}" target="_blank" class="btn-blue btn-sm inline-block no-underline text-xs"
+        onclick="addPoints(2,'for accessing a library resource!')">
+        Open Resource →
+      </a>
+    </div>`;
+}
+
+function searchLibrary() {
+  const q = (document.getElementById('library-search')?.value || '').toLowerCase().trim();
+  // CHANGED: search within user's level by default
+  let pool = LIBRARY.filter(r => r.level.toLowerCase() === state.eduLevel);
+  const results = q ? pool.filter(r =>
+    r.title.toLowerCase().includes(q) || r.subject.toLowerCase().includes(q) ||
+    r.desc.toLowerCase().includes(q) || r.tags.some(tag => tag.includes(q))
+  ) : pool;
+
+  const container = document.getElementById('library-results');
+  const meta = document.getElementById('search-meta');
+  if (!container) return;
+
+  if (results.length === 0) {
+    container.innerHTML = `<div class="col-span-2 text-center py-16 text-gray-400">
+      <p class="text-4xl mb-3">🔍</p>
+      <p class="font-bold text-gray-600">No results for "${q}"</p>
+      <p class="text-sm mt-1">Try: "biology", "maths", "fractions", "chemistry"</p>
+    </div>`;
+    if (meta) meta.innerHTML = `<p class="text-sm text-gray-400">0 results found</p>`;
+  } else {
+    container.innerHTML = results.map(r => libraryCard(r)).join('');
+    if (meta) meta.innerHTML = `<p class="text-sm text-gray-400">${results.length} result${results.length>1?'s':''} found</p>`;
+  }
+}
+
+/* ══════════════════════════════════════════
+   PAGE: CALENDAR
+   CHANGED: Real calendar grid + event list
+══════════════════════════════════════════ */
+function renderCalendarPage() {
+  const typeMap = { quiz:'📝',class:'🎥',deadline:'⚠️',competition:'🏆',exam:'📋',special:'⭐',community:'💬' };
+  const pc = document.getElementById('page-content');
+
+  // Build July 2025 calendar grid
+  const year = 2025, month = 6; // July (0-indexed)
+  const firstDay = new Date(year, month, 1).getDay(); // 0=Sun
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const today = new Date();
+
+  // Map events to day numbers
+  const eventsByDay = {};
+  EVENTS.forEach(e => {
+    const d = new Date(e.date);
+    if (d.getFullYear()===year && d.getMonth()===month) {
+      const day = d.getDate();
+      if (!eventsByDay[day]) eventsByDay[day] = [];
+      eventsByDay[day].push(e);
+    }
+  });
+
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  let gridCells = '';
+  // Empty cells before first day
+  for (let i=0; i<firstDay; i++) gridCells += `<div class="cal-day other-month"><div class="day-num text-gray-200">${new Date(year,month,-(firstDay-i-1)).getDate()}</div></div>`;
+  // Actual days
+  for (let d=1; d<=daysInMonth; d++) {
+    const isToday = today.getFullYear()===year && today.getMonth()===month && today.getDate()===d;
+    const evs = eventsByDay[d]||[];
+    gridCells += `<div class="cal-day${isToday?' today':''}">
+      <div class="day-num">${d}</div>
+      ${evs.slice(0,2).map(e => `<span class="cal-event-dot" style="background:${e.color}20;color:${e.color}">${typeMap[e.type]||'📌'} ${e.type}</span>`).join('')}
+      ${evs.length>2?`<span class="cal-event-dot" style="background:#f3f4f6;color:#6b7280">+${evs.length-2}</span>`:''}
+    </div>`;
+  }
+
+  pc.innerHTML = `
+    <div class="mb-6">
+      <h2 class="text-xl font-extrabold mb-1">📅 My Calendar</h2>
+      <p class="text-gray-500 text-sm">Classes, quizzes, deadlines and competitions.</p>
+    </div>
+
+    <!-- CHANGED: Real calendar grid -->
+    <div class="card p-5 mb-8">
+      <div class="flex items-center justify-between mb-5">
+        <button class="btn-ghost btn-sm" onclick="showToast('Navigation coming soon!')">‹ June</button>
+        <h3 class="font-extrabold text-lg">July 2025</h3>
+        <button class="btn-ghost btn-sm" onclick="showToast('Navigation coming soon!')">August ›</button>
+      </div>
+      <div class="cal-grid mb-2">
+        ${dayNames.map(d=>`<div class="cal-day-header">${d}</div>`).join('')}
+      </div>
+      <div class="cal-grid">${gridCells}</div>
+    </div>
+
+    <!-- Event Legend -->
+    <div class="flex flex-wrap gap-3 mb-6">
+      ${Object.entries(typeMap).map(([t,icon])=>`<span class="text-xs font-bold px-3 py-1 rounded-full bg-gray-100 text-gray-600">${icon} ${t}</span>`).join('')}
+    </div>
+
+    <!-- Upcoming events list -->
+    <div class="section-header">
+      <h3>Upcoming Events</h3>
+    </div>
+    <div class="space-y-3 mb-8">
+      ${EVENTS.map(e => `
+        <div class="card p-4 flex items-center gap-4">
+          <div class="w-12 h-14 rounded-xl flex flex-col items-center justify-center flex-shrink-0 text-white" style="background:${e.color}">
+            <span class="text-lg">${typeMap[e.type]||'📌'}</span>
+            <span class="text-xs font-bold">${new Date(e.date).getDate()}</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-bold text-sm truncate">${e.title}</p>
+            <p class="text-xs text-gray-400 mt-0.5">${new Date(e.date).toLocaleDateString('en-KE',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}</p>
+          </div>
+          <span class="text-xs font-bold capitalize px-3 py-1 rounded-full flex-shrink-0" style="background:${e.color}18;color:${e.color}">${e.type}</span>
+        </div>`).join('')}
+    </div>
+
+    <div class="card p-5" style="background:#E8F5E9">
+      <h4 class="font-extrabold text-green-700 mb-2">🎥 Today's Live Class</h4>
+      <p class="text-sm text-green-800 mb-1">Biology — Genetics & Inheritance</p>
+      <p class="text-xs text-green-600 mb-3">10:00 AM – 11:00 AM EAT · Zoom</p>
+      <button class="btn-green btn-sm" onclick="showToast('Joining virtual class… 🎥 Opening Zoom link')">Join Class Now</button>
+    </div>
+  `;
+}
+
+/* ══════════════════════════════════════════
+   PAGE: PRIDE POINTS
+══════════════════════════════════════════ */
+function renderPointsPage() {
+  const pc = document.getElementById('page-content');
+  pc.innerHTML = `
+    <div class="card p-6 mb-8 text-center" style="background:linear-gradient(135deg,#FF9E7A,#FF7D5A)">
+      <p class="text-sm font-bold text-white opacity-80 mb-1">Your Pride Points Balance</p>
+      <p class="text-5xl font-extrabold text-white" id="pts-display">${state.points}</p>
+      <p class="text-sm text-white opacity-70 mt-1">⭐ Keep learning to earn more!</p>
+    </div>
+
+    <div class="card p-6 mb-8">
+      <h3 class="font-extrabold text-lg mb-5">How to Earn Points</h3>
+      <div class="space-y-4">
+        ${[
+          ['Enroll in a course','20 pts','📚'],
+          ['Complete a subtopic','2 pts','✅'],
+          ['Mark module as complete','10 pts','🏅'],
+          ['Quiz score 50–69%','15 pts','📝'],
+          ['Quiz score 70–89%','30 pts','🎖️'],
+          ['Quiz score 90–100%','50 pts','🏆'],
+          ['Access library resource','2 pts','🔍'],
+          ['Post in Community','10 pts','💬'],
+          ['Like a community post','1 pt','👍'],
+        ].map(([act,pts,emoji]) => `
+          <div class="flex items-center justify-between py-2 border-b border-gray-50">
+            <span class="text-sm font-semibold text-gray-600">${emoji} ${act}</span>
+            <span class="font-extrabold text-sm" style="color:#FF7D5A">${pts}</span>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="section-header mb-6">
+      <h3>🛒 Redemption Store</h3>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      ${STORE.map(item => `
+        <div class="store-card">
+          <div class="text-3xl mb-2">${item.emoji}</div>
+          <p class="font-bold text-sm mb-1">${item.name}</p>
+          <p class="text-xs text-gray-400 mb-3">${item.desc}</p>
+          <p class="font-extrabold mb-4" style="color:#C96BEB">${item.pts} pts</p>
+          <button class="btn-sm w-full text-xs font-bold rounded-xl py-2
+            ${state.points >= item.pts ? 'btn-purple' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}"
+            onclick="redeemItem('${item.id}',${item.pts},'${item.name}')">
+            ${state.points >= item.pts ? 'Redeem' : `Need ${item.pts - state.points} more`}
+          </button>
+        </div>`).join('')}
+    </div>
+  `;
+}
+
+function redeemItem(id, pts, name) {
+  if (state.points < pts) { showToast(`Not enough points to redeem ${name}`); return; }
+  openModal(`
+    <div class="text-center">
+      <p class="text-4xl mb-3">🎁</p>
+      <h3 class="text-xl font-extrabold mb-2">Confirm Redemption</h3>
+      <p class="text-gray-500 text-sm mb-5">Redeem <strong>${name}</strong> for <strong>${pts} Pride Points</strong>?</p>
+      <div class="flex gap-3 justify-center">
+        <button class="btn-primary" onclick="confirmRedeem(${pts},'${name}')">Confirm</button>
+        <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>`);
+}
+
+function confirmRedeem(pts, name) {
+  state.points -= pts;
+  updatePointsDisplay();
+  closeModal();
+  showToast(`✅ "${name}" redeemed! Your reward will be delivered. 🎉`);
+  renderPointsPage();
+}
+
+/* ══════════════════════════════════════════
+   PAGE: PARTNERSHIPS
+══════════════════════════════════════════ */
+function renderPartnershipsPage() {
+  const pc = document.getElementById('page-content');
+  pc.innerHTML = `
+    <div class="mb-8">
+      <h2 class="text-xl font-extrabold mb-1">🤝 Certification Partners</h2>
+      <p class="text-gray-500 text-sm">Earn globally recognized, free certifications from top technology companies.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      ${PARTNERSHIPS.map(p => `
+        <div class="card p-6">
+          <div class="flex items-start gap-3 mb-4">
+            <span class="text-3xl">${p.logo}</span>
+            <div>
+              <h3 class="font-extrabold text-base">${p.org}</h3>
+              <div class="flex gap-2 mt-1 flex-wrap">
+                ${p.free ? '<span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">Free</span>' : '<span class="bg-orange-100 text-orange-700 text-xs font-bold px-2 py-0.5 rounded-full">Affordable</span>'}
+                <span class="text-xs font-bold px-2 py-0.5 rounded-full" style="background:#F3E8FF;color:#9333EA">${p.tag}</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-sm text-gray-500 mb-4 leading-relaxed">${p.desc}</p>
+          <div class="mb-5">
+            <p class="text-xs font-bold text-gray-400 mb-3 uppercase tracking-wide">Certifications Available</p>
+            <ul class="space-y-2">
+              ${p.certs.map(c => `<li class="text-xs text-gray-600 flex items-center gap-2"><span style="color:${p.color}">◆</span>${c}</li>`).join('')}
+            </ul>
+          </div>
+          <a href="${p.link}" target="_blank" class="btn-blue btn-sm inline-block no-underline text-xs"
+            onclick="addPoints(5,'for exploring a certification partner!')">
+            Visit & Enroll Free →
+          </a>
+        </div>`).join('')}
+    </div>
+  `;
+}
+
+/* ══════════════════════════════════════════
+   PAGE: COMMUNITY
+   CHANGED: Level-filtered posts only
+══════════════════════════════════════════ */
+function renderCommunityPage() {
+  // CHANGED: only show posts for current level
+  if (state.communityPosts.length === 0) {
+    state.communityPosts = JSON.parse(JSON.stringify(INITIAL_POSTS[state.eduLevel] || INITIAL_POSTS.secondary));
+  }
+  const pc = document.getElementById('page-content');
+  const levelLabel = state.eduLevel.charAt(0).toUpperCase() + state.eduLevel.slice(1);
+  pc.innerHTML = `
+    <div class="mb-6">
+      <h2 class="text-xl font-extrabold mb-1">💬 Community Forum</h2>
+      <p class="text-gray-500 text-sm">Discussions for <strong>${levelLabel}</strong> learners across Kenya. 
+        <span class="text-blue-400 cursor-pointer font-semibold" onclick="openChangeLevelModal()">Not your level?</span>
+      </p>
+    </div>
+
+    <div class="card p-5 mb-6">
+      <h3 class="font-bold mb-3">Share with the community</h3>
+      <textarea id="new-post-text" rows="3" class="input-field mb-3" placeholder="Ask a question, share a tip, or celebrate a milestone…"></textarea>
+      <div class="flex gap-3 items-center justify-between">
+        <span class="text-xs text-gray-400">Posting as <strong>${state.userName}</strong> · ${levelLabel}</span>
+        <button class="btn-primary btn-sm" onclick="postToCommunity()">Post 💬</button>
+      </div>
+    </div>
+
+    <div id="posts-container" class="space-y-4">
+      ${state.communityPosts.map(p => communityPost(p)).join('')}
+    </div>
+  `;
+}
+
+function communityPost(p) {
+  return `
+    <div class="card p-5 post-card" id="post-${p.id}">
+      <div class="flex items-start gap-3 mb-3">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-extrabold text-sm flex-shrink-0"
+          style="background:linear-gradient(135deg,#FFC4A4,#C96BEB)">${p.avatar}</div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="font-bold text-sm">${p.author}</span>
+            <span class="text-xs text-gray-400">· ${p.role}</span>
+          </div>
+          <p class="text-xs text-gray-400">${p.time}</p>
+        </div>
+      </div>
+      <p class="text-sm text-gray-700 mb-4 leading-relaxed">${p.content}</p>
+      <div class="flex gap-4">
+        <button class="text-sm text-gray-400 font-bold hover:text-red-400 transition-colors" onclick="likePost(${p.id},this)">
+          ❤️ ${p.likes}
+        </button>
+        <button class="text-sm text-gray-400 font-bold hover:text-blue-400 transition-colors" onclick="replyPost(${p.id},'${p.author}')">
+          💬 Reply
+        </button>
+      </div>
+    </div>`;
+}
+
+function likePost(id, btn) {
+  const post = state.communityPosts.find(p => p.id === id);
+  if (post) { post.likes++; btn.textContent = `❤️ ${post.likes}`; addPoints(1,'for liking a post!'); }
+}
+
+function replyPost(id, author) {
+  openModal(`
+    <div>
+      <h3 class="font-extrabold text-lg mb-3">Reply to ${author}</h3>
+      <textarea id="reply-text" rows="4" class="input-field mb-4" placeholder="Write your reply…"></textarea>
+      <div class="flex gap-3">
+        <button class="btn-primary" onclick="submitReply(${id})">Post Reply</button>
+        <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>`);
+}
+
+function submitReply(parentId) {
+  const text = document.getElementById('reply-text').value.trim();
+  if (!text) { showToast('Please write something!'); return; }
+  const levelLabel = state.eduLevel.charAt(0).toUpperCase()+state.eduLevel.slice(1);
+  const newPost = {
+    id:Date.now(), author:state.userName, avatar:state.userName.charAt(0).toUpperCase(),
+    role:`${levelLabel} Student`, time:'Just now',
+    content:`↩ Replying: ${text}`, likes:0, level:levelLabel,
+  };
+  state.communityPosts.unshift(newPost);
+  closeModal();
+  addPoints(10,'for contributing to the community!');
+  renderCommunityPage();
+}
+
+function postToCommunity() {
+  const text = document.getElementById('new-post-text').value.trim();
+  if (!text) { showToast('Please write something first!'); return; }
+  const levelLabel = state.eduLevel.charAt(0).toUpperCase()+state.eduLevel.slice(1);
+  const newPost = {
+    id:Date.now(), author:state.userName, avatar:state.userName.charAt(0).toUpperCase(),
+    role:`${levelLabel} Student`, time:'Just now', content:text, likes:0, level:levelLabel,
+  };
+  state.communityPosts.unshift(newPost);
+  addPoints(10,'for sharing with the community!');
+  renderCommunityPage();
+}
+
+/* ══════════════════════════════════════════
+   PAGE: SCHOLARSHIPS
+   CHANGED: Accordion-style — summary first, expand for details
+══════════════════════════════════════════ */
+function renderScholarshipsPage() {
+  const pc = document.getElementById('page-content');
+  pc.innerHTML = `
+    <div class="mb-8">
+      <h2 class="text-xl font-extrabold mb-1">🎓 Scholarships in Kenya</h2>
+      <p class="text-gray-500 text-sm">Real scholarships for Kenyan students — click any to see full details.</p>
+    </div>
+    <div>
+      ${SCHOLARSHIPS.map((s, i) => `
+        <div class="scholarship-item">
+          <!-- Summary toggle — CHANGED: accordion style -->
+          <button class="scholarship-toggle" onclick="toggleScholarship(${i})">
+            <span class="text-2xl">${s.emoji}</span>
+            <div class="flex-1 text-left">
+              <p class="font-extrabold text-sm leading-tight">${s.name}</p>
+              <p class="text-xs text-gray-400 mt-0.5">${s.org}</p>
+            </div>
+            <div class="flex items-center gap-3 flex-shrink-0">
+              <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full hidden sm:inline">${s.amount}</span>
+              <span class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded-full hidden sm:inline">${s.level}</span>
+              <span class="text-gray-300 font-bold" id="sch-arr-${i}">▼</span>
+            </div>
+          </button>
+          <!-- Full details — CHANGED: hidden by default -->
+          <div class="scholarship-body" id="sch-body-${i}">
+            <div class="flex flex-wrap gap-2 mb-3 mt-3">
+              <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">${s.amount}</span>
+              <span class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded-full">${s.level}</span>
+            </div>
+            <p class="text-sm text-gray-600 mb-4 leading-relaxed">${s.desc}</p>
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">Key Requirements</p>
+            <ul class="space-y-1 mb-4">
+              ${s.requirements.map(r => `<li class="text-xs text-gray-600 flex items-center gap-2"><span class="text-green-500">✓</span>${r}</li>`).join('')}
+            </ul>
+            <div class="bg-orange-50 rounded-xl p-3 mb-3">
+              <p class="text-xs font-bold text-orange-700">📅 Deadline: ${s.deadline}</p>
+            </div>
+            <p class="text-xs text-gray-400">📞 ${s.contact}</p>
+          </div>
+        </div>`).join('')}
+    </div>
+  `;
+}
+
+function toggleScholarship(i) {
+  const body = document.getElementById(`sch-body-${i}`);
+  const arr = document.getElementById(`sch-arr-${i}`);
+  const isOpen = body.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.scholarship-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('[id^="sch-arr-"]').forEach(a => { a.textContent = '▼'; a.style.transform = ''; });
+  // Open clicked (toggle)
+  if (!isOpen) {
+    body.classList.add('open');
+    arr.textContent = '▲';
+  }
+}
+
+/* ══════════════════════════════════════════
+   PAGE: COMPETITIONS
+══════════════════════════════════════════ */
+function renderCompetitionsPage() {
+  const pc = document.getElementById('page-content');
+  pc.innerHTML = `
+    <div class="mb-8">
+      <h2 class="text-xl font-extrabold mb-1">🏆 Competitions & Challenges</h2>
+      <p class="text-gray-500 text-sm">Compete for prizes, scholarships, and represent Kenya on the world stage.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      ${COMPETITIONS.map(c => `
+        <div class="card p-5">
+          <div class="flex items-start justify-between gap-2 mb-3">
+            <div class="flex items-start gap-3">
+              <span class="text-3xl">${c.emoji}</span>
+              <div>
+                <h3 class="font-extrabold text-base leading-tight">${c.name}</h3>
+                <p class="text-xs text-gray-400">${c.org}</p>
+              </div>
+            </div>
+            <span class="text-xs font-bold px-2 py-1 rounded-full flex-shrink-0
+              ${c.tag==='Active'?'bg-green-100 text-green-700':'bg-blue-100 text-blue-700'}">${c.tag}</span>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-3">
+            <span class="bg-yellow-100 text-yellow-700 text-xs font-bold px-2 py-0.5 rounded-full">🏅 ${c.prize}</span>
+            <span class="bg-purple-100 text-purple-700 text-xs font-bold px-2 py-0.5 rounded-full">${c.level}</span>
+          </div>
+          <p class="text-sm text-gray-600 mb-3 leading-relaxed">${c.desc}</p>
+          <div class="bg-orange-50 rounded-xl p-3 mb-4">
+            <p class="text-xs font-bold text-orange-700">📅 ${c.deadline}</p>
+          </div>
+          <a href="${c.link}" target="_blank" class="btn-purple btn-sm inline-block no-underline text-xs"
+            onclick="addPoints(5,'for exploring a competition!')">
+            Learn More & Enter →
+          </a>
+        </div>`).join('')}
+    </div>
+  `;
+}
+
+/* ══════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════ */
+function openModal(html) {
+  document.getElementById('modal-content').innerHTML = html;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+/* ══════════════════════════════════════════
+   INIT
+══════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  // Pre-enroll a couple of sample courses for demo
+  state.enrolledCourses = ['s4','t1'];
+});
+</script>
+</body>
+</html>

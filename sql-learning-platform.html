@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Pro Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#1a9e8f;--teal-light:#2dc9b6;--teal-dark:#0d6e63;--teal-faint:#e0f7f5;--teal-mid:#a8e6e1;
+  --green:#84cc16;--navy:#0f2540;--navy-mid:#1a3a5c;--white:#ffffff;--off-white:#f4fafa;
+  --gray:#64748b;--gray-light:#e2eef0;--correct:#16a34a;--correct-bg:#dcfce7;
+  --wrong:#dc2626;--wrong-bg:#fee2e2;--sidebar-w:290px;--header-h:64px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Sora',sans-serif;background:var(--off-white);color:var(--navy);min-height:100vh;}
+
+/* LANDING */
+#landing{display:flex;flex-direction:column;min-height:100vh;background:linear-gradient(135deg,var(--navy) 0%,var(--teal-dark) 55%,var(--teal) 100%);position:relative;overflow:hidden;}
+#landing::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(45,201,182,.18) 0%,transparent 70%);pointer-events:none;}
+#landing::after{content:'';position:absolute;bottom:-150px;left:-150px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(132,204,22,.12) 0%,transparent 70%);pointer-events:none;}
+.landing-nav{padding:24px 48px;display:flex;align-items:center;gap:12px;position:relative;z-index:2;}
+.logo-mark{width:36px;height:36px;background:var(--teal-light);border-radius:8px;display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:6px;}
+.logo-mark span{background:var(--navy);border-radius:2px;}
+.logo-name{color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:-.02em;}
+.landing-hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 32px;position:relative;z-index:2;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(45,201,182,.15);border:1px solid rgba(45,201,182,.4);color:var(--teal-light);border-radius:100px;padding:6px 18px;font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:32px;}
+.hero-badge::before{content:'◆';font-size:.6rem;}
+.hero-title{font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;color:#fff;line-height:1.08;letter-spacing:-.03em;margin-bottom:24px;max-width:720px;}
+.hero-title em{font-style:normal;color:var(--teal-light);}
+.hero-sub{font-size:1rem;color:rgba(255,255,255,.72);max-width:520px;line-height:1.75;margin-bottom:48px;font-weight:300;}
+.hero-cards{display:flex;gap:14px;margin-bottom:48px;flex-wrap:wrap;justify-content:center;}
+.hero-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:18px 22px;text-align:left;min-width:170px;max-width:210px;backdrop-filter:blur(8px);}
+.hero-card-icon{font-size:1.5rem;margin-bottom:10px;}
+.hero-card-title{color:#fff;font-weight:600;font-size:.88rem;margin-bottom:4px;}
+.hero-card-desc{color:rgba(255,255,255,.5);font-size:.74rem;line-height:1.5;}
+.btn-start{display:inline-flex;align-items:center;gap:10px;background:var(--teal-light);color:var(--navy);border:none;border-radius:12px;padding:16px 36px;font-size:1rem;font-weight:700;font-family:'Sora',sans-serif;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 8px 32px rgba(45,201,182,.35);}
+.btn-start:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(45,201,182,.45);}
+.hero-stats{display:flex;gap:40px;margin-top:48px;flex-wrap:wrap;justify-content:center;}
+.hero-stat{text-align:center;}
+.hero-stat-val{font-size:1.8rem;font-weight:800;color:var(--teal-light);}
+.hero-stat-label{font-size:.75rem;color:rgba(255,255,255,.5);margin-top:2px;text-transform:uppercase;letter-spacing:.06em;}
+
+/* APP SHELL */
+#app{display:none;min-height:100vh;}
+.top-bar{position:fixed;top:0;left:0;right:0;height:var(--header-h);background:var(--white);border-bottom:1px solid var(--gray-light);display:flex;align-items:center;padding:0 24px;z-index:100;gap:16px;}
+.top-bar-logo{display:flex;align-items:center;gap:10px;}
+.top-bar-logo .logo-mark{width:30px;height:30px;background:var(--teal);}
+.top-bar-logo .logo-mark span{background:white;}
+.top-bar-logo .logo-name{color:var(--navy);font-size:.95rem;}
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;border-radius:8px;color:var(--navy);}
+.hamburger svg{width:22px;height:22px;}
+.top-bar-module{margin-left:auto;font-size:.78rem;font-weight:600;color:var(--gray);background:var(--teal-faint);padding:6px 14px;border-radius:100px;white-space:nowrap;}
+.top-bar-progress{font-size:.8rem;color:var(--gray);display:flex;align-items:center;gap:8px;}
+.progress-pill{height:6px;width:80px;background:var(--gray-light);border-radius:99px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--teal-light);border-radius:99px;transition:width .4s ease;}
+
+/* SIDEBAR */
+.sidebar{position:fixed;top:var(--header-h);left:0;bottom:0;width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--gray-light);overflow-y:auto;padding:20px 0;z-index:90;transition:transform .3s ease;}
+.sidebar-section{margin-bottom:6px;}
+.sidebar-section-title{font-size:.65rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.1em;padding:0 18px 8px;}
+.sidebar-item{display:flex;align-items:flex-start;gap:10px;padding:9px 18px;cursor:pointer;font-size:.81rem;font-weight:500;color:var(--gray);border-left:3px solid transparent;transition:all .15s;line-height:1.4;}
+.sidebar-item:hover{background:var(--teal-faint);color:var(--teal-dark);}
+.sidebar-item.active{background:var(--teal-faint);color:var(--teal-dark);border-left-color:var(--teal);font-weight:600;}
+.sidebar-item .si-icon{width:26px;height:26px;min-width:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.82rem;background:var(--gray-light);margin-top:1px;}
+.sidebar-item.active .si-icon{background:var(--teal);color:white;}
+.sidebar-divider{height:1px;background:var(--gray-light);margin:10px 18px;}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:89;}
+.sidebar-overlay.show{display:block;}
+
+/* MAIN */
+.main{margin-left:var(--sidebar-w);padding-top:var(--header-h);min-height:100vh;}
+.content-area{max-width:840px;margin:0 auto;padding:48px 40px;}
+
+/* TOPICS */
+.topic{display:none;}
+.topic.active{display:block;animation:fadeSlide .3s ease;}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* TYPOGRAPHY */
+.topic-badge{display:inline-flex;align-items:center;gap:6px;background:var(--teal-faint);color:var(--teal-dark);border-radius:100px;padding:5px 14px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;}
+.topic-title{font-size:1.9rem;font-weight:800;color:var(--navy);letter-spacing:-.03em;line-height:1.15;margin-bottom:12px;}
+.topic-intro{font-size:.95rem;color:var(--gray);line-height:1.78;margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--gray-light);}
+.section-heading{font-size:1.1rem;font-weight:700;color:var(--navy);margin:36px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--teal-faint);display:flex;align-items:center;gap:8px;}
+.section-heading::before{content:'';display:inline-block;width:4px;height:18px;background:var(--teal);border-radius:2px;}
+
+/* CALLOUT */
+.callout{border-radius:14px;padding:18px 22px;margin-bottom:20px;display:flex;gap:14px;}
+.callout.teal{background:var(--teal-faint);border-left:4px solid var(--teal);}
+.callout.navy{background:#e8eef5;border-left:4px solid var(--navy);}
+.callout.green{background:#f1f8e9;border-left:4px solid var(--green);}
+.callout.red{background:#fff1f2;border-left:4px solid #f43f5e;}
+.callout-icon{font-size:1.4rem;flex-shrink:0;}
+.callout-title{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--teal-dark);margin-bottom:6px;}
+.callout.navy .callout-title{color:var(--navy-mid);}
+.callout.green .callout-title{color:#4d7c0f;}
+.callout.red .callout-title{color:#be123c;}
+.callout p{font-size:.88rem;color:var(--navy);line-height:1.68;}
+
+/* CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-bottom:20px;}
+.card{background:white;border-radius:14px;padding:18px;border:1px solid var(--gray-light);box-shadow:0 1px 4px rgba(0,0,0,.04);transition:box-shadow .2s,transform .2s;}
+.card:hover{box-shadow:0 4px 16px rgba(26,158,143,.12);transform:translateY(-2px);}
+.card-num{width:30px;height:30px;border-radius:7px;background:var(--teal);color:white;font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+.card-title{font-size:.88rem;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.card-desc{font-size:.8rem;color:var(--gray);line-height:1.62;}
+
+/* ENV BLOCKS */
+.env-block{border-radius:16px;padding:22px;margin-bottom:18px;border:1.5px solid;position:relative;overflow:hidden;}
+.env-block::before{content:attr(data-label);position:absolute;top:14px;right:18px;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;opacity:.45;}
+.env-block.dev{background:#f0fdf8;border-color:var(--teal-light);}
+.env-block.test{background:#fff7ed;border-color:#fb923c;}
+.env-block.prod{background:#f0f9ff;border-color:#38bdf8;}
+.env-block-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.env-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;}
+.env-block.dev .env-icon{background:var(--teal);}
+.env-block.test .env-icon{background:#ea580c;}
+.env-block.prod .env-icon{background:#0284c7;}
+.env-block-title{font-size:.98rem;font-weight:700;color:var(--navy);}
+.env-block-alias{font-size:.72rem;color:var(--gray);font-weight:500;}
+.env-block p{font-size:.85rem;color:var(--navy);line-height:1.65;margin-bottom:12px;}
+.env-traits{display:flex;flex-direction:column;gap:6px;}
+.env-trait{display:flex;align-items:flex-start;gap:8px;font-size:.81rem;color:var(--navy-mid);line-height:1.5;}
+.env-trait::before{content:'▶';font-size:.52rem;margin-top:4px;color:var(--teal);flex-shrink:0;}
+.env-example{margin-top:12px;background:rgba(0,0,0,.04);border-radius:8px;padding:10px 14px;font-size:.78rem;color:var(--gray);line-height:1.62;}
+.env-example strong{color:var(--navy);font-weight:600;}
+
+/* CODE */
+.code-block{background:var(--navy);border-radius:12px;padding:20px;margin:18px 0;overflow-x:auto;}
+.code-block pre{font-family:'JetBrains Mono',monospace;font-size:.76rem;line-height:1.75;color:#a8e6e1;white-space:pre;}
+.code-block .comment{color:#546e7a;}
+.code-block .kw{color:#80cbc4;}
+.code-block .fn{color:#a5d6a7;}
+.code-block .str{color:#f48fb1;}
+.code-tag{display:inline-block;background:rgba(45,201,182,.2);color:var(--teal-light);border-radius:4px;padding:1px 8px;font-size:.7rem;font-weight:700;margin-bottom:6px;}
+
+/* BEST PRACTICES */
+.bp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.bp-card{background:white;border-radius:12px;padding:16px;border:1px solid var(--gray-light);}
+.bp-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.bp-num{width:28px;height:28px;border-radius:7px;background:var(--navy);color:white;font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.bp-name{font-size:.87rem;font-weight:700;color:var(--navy);}
+.bp-card p{font-size:.79rem;color:var(--gray);line-height:1.62;}
+
+/* INDUSTRY */
+.industry-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.industry-card{background:white;border-radius:12px;padding:14px 16px;border:1px solid var(--gray-light);border-top:3px solid var(--teal);}
+.industry-label{font-size:.74rem;font-weight:700;color:var(--teal-dark);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px;}
+.industry-card p{font-size:.79rem;color:var(--navy-mid);line-height:1.62;}
+
+/* LIBS */
+.lib-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.lib-card{background:white;border-radius:10px;padding:14px 15px;border:1px solid var(--gray-light);}
+.lib-name{font-size:.87rem;font-weight:700;color:var(--teal-dark);margin-bottom:4px;}
+.lib-desc{font-size:.76rem;color:var(--gray);line-height:1.5;}
+.lib-tag{display:inline-block;background:var(--teal-faint);color:var(--teal-dark);border-radius:4px;padding:1px 7px;font-size:.65rem;font-weight:600;margin-bottom:5px;}
+
+/* VENV DIAGRAM */
+.venv-diagram{background:var(--navy);border-radius:14px;padding:22px;margin:18px 0;}
+.venv-os-label{font-size:.68rem;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;}
+.venv-row{display:flex;gap:10px;}
+.venv-box{flex:1;background:rgba(45,201,182,.12);border:1px solid rgba(45,201,182,.3);border-radius:10px;padding:12px;text-align:center;}
+.venv-box-title{color:var(--teal-light);font-size:.74rem;font-weight:700;margin-bottom:2px;}
+.venv-box-sub{color:rgba(255,255,255,.4);font-size:.63rem;margin-bottom:8px;}
+.venv-libs{display:flex;flex-direction:column;gap:4px;}
+.venv-lib{background:rgba(255,255,255,.07);border-radius:5px;padding:3px 7px;font-size:.66rem;color:rgba(255,255,255,.75);font-family:'JetBrains Mono',monospace;}
+
+/* CONFLICT DIAGRAM */
+.conflict-diagram{background:#fef2f2;border:1.5px solid #fca5a5;border-radius:14px;padding:20px;margin:16px 0;}
+.conflict-row{display:flex;gap:12px;justify-content:center;margin-bottom:14px;}
+.conflict-box{background:white;border:1px solid var(--gray-light);border-radius:10px;padding:12px 16px;text-align:center;min-width:140px;}
+.conflict-box-title{font-size:.8rem;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.conflict-box-lib{font-size:.72rem;color:var(--wrong);background:var(--wrong-bg);border-radius:4px;padding:2px 8px;display:inline-block;}
+.conflict-arrow{display:flex;align-items:center;justify-content:center;color:var(--wrong);font-size:1.2rem;margin-bottom:8px;}
+.conflict-result{background:var(--wrong-bg);border-radius:8px;padding:10px 14px;font-size:.8rem;color:#7f1d1d;text-align:center;line-height:1.5;}
+
+/* SDG STEPS */
+.sdg-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.sdg-step{display:flex;gap:12px;align-items:flex-start;background:white;border:1px solid var(--gray-light);border-radius:10px;padding:12px 14px;}
+.sdg-num{width:30px;height:30px;border-radius:7px;flex-shrink:0;background:var(--teal);color:white;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.sdg-body{flex:1;}
+.sdg-title{font-size:.87rem;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.sdg-desc{font-size:.8rem;color:var(--gray);line-height:1.6;}
+
+/* APPS OF PROGRAMMING */
+.app-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.app-card{background:white;border-radius:12px;padding:16px;border:1px solid var(--gray-light);}
+.app-card-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.app-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;}
+.app-title{font-size:.9rem;font-weight:700;color:var(--navy);}
+.app-card ul{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.app-card ul li{font-size:.79rem;color:var(--navy-mid);line-height:1.55;padding-left:14px;position:relative;}
+.app-card ul li::before{content:'•';position:absolute;left:0;color:var(--teal);font-weight:700;}
+.app-card ul li strong{color:var(--navy);font-weight:600;}
+
+/* LANG CARDS */
+.lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.lang-card{background:white;border-radius:12px;padding:16px;border:1px solid var(--gray-light);border-top:3px solid;}
+.lang-card.python{border-top-color:#3b82f6;}
+.lang-card.r{border-top-color:#22c55e;}
+.lang-card.julia{border-top-color:#a855f7;}
+.lang-card.scala{border-top-color:#f97316;}
+.lang-badge{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:4px;margin-bottom:8px;}
+.lang-card.python .lang-badge{background:#eff6ff;color:#1d4ed8;}
+.lang-card.r .lang-badge{background:#f0fdf4;color:#15803d;}
+.lang-card.julia .lang-badge{background:#faf5ff;color:#7e22ce;}
+.lang-card.scala .lang-badge{background:#fff7ed;color:#c2410c;}
+.lang-name{font-size:.92rem;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.lang-desc{font-size:.78rem;color:var(--gray);line-height:1.58;}
+.lang-use{margin-top:8px;font-size:.73rem;color:var(--teal-dark);font-weight:600;}
+
+/* QUIZ */
+.quiz-section{margin-top:40px;}
+.quiz-header{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,var(--navy),var(--teal-dark));border-radius:14px 14px 0 0;padding:18px 22px;}
+.quiz-header-icon{font-size:1.4rem;}
+.quiz-header-title{color:white;font-size:1rem;font-weight:700;}
+.quiz-header-sub{color:rgba(255,255,255,.6);font-size:.76rem;margin-top:2px;}
+.quiz-body{background:white;border:1px solid var(--gray-light);border-top:none;border-radius:0 0 14px 14px;padding:26px;}
+.quiz-q{margin-bottom:30px;padding-bottom:28px;border-bottom:1px solid var(--gray-light);}
+.quiz-q:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+.q-label{font-size:.67rem;font-weight:700;color:var(--teal-dark);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;}
+.q-text{font-size:.93rem;font-weight:600;color:var(--navy);line-height:1.55;margin-bottom:14px;}
+.q-subtext{font-size:.78rem;color:var(--gray);font-weight:400;line-height:1.55;margin-top:5px;}
+.q-options{display:flex;flex-direction:column;gap:7px;}
+.q-opt{display:flex;align-items:flex-start;gap:12px;padding:11px 14px;border-radius:10px;border:1.5px solid var(--gray-light);cursor:pointer;font-size:.84rem;color:var(--navy);line-height:1.5;transition:border-color .15s,background .15s;user-select:none;}
+.q-opt:hover:not(.locked){border-color:var(--teal-light);background:var(--teal-faint);}
+.q-opt.correct{border-color:var(--correct);background:var(--correct-bg);color:#14532d;}
+.q-opt.wrong{border-color:var(--wrong);background:var(--wrong-bg);color:#7f1d1d;}
+.q-opt .opt-letter{width:22px;height:22px;border-radius:5px;background:var(--gray-light);color:var(--gray);font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.q-opt.correct .opt-letter{background:var(--correct);color:white;}
+.q-opt.wrong .opt-letter{background:var(--wrong);color:white;}
+.q-feedback{display:none;margin-top:10px;padding:11px 14px;border-radius:9px;font-size:.81rem;line-height:1.62;}
+.q-feedback.show{display:block;}
+.q-feedback.correct{background:var(--correct-bg);color:#14532d;border:1px solid #86efac;}
+.q-feedback.wrong{background:var(--wrong-bg);color:#7f1d1d;border:1px solid #fca5a5;}
+.q-feedback strong{font-weight:700;}
+
+/* NAV */
+.topic-nav{display:flex;align-items:center;justify-content:space-between;margin-top:48px;padding-top:22px;border-top:1px solid var(--gray-light);}
+.btn-nav{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;font-size:.84rem;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;transition:all .15s;border:none;}
+.btn-nav.prev{background:var(--gray-light);color:var(--navy);}
+.btn-nav.prev:hover{background:#d0dde0;}
+.btn-nav.next{background:var(--teal);color:white;box-shadow:0 4px 14px rgba(26,158,143,.3);}
+.btn-nav.next:hover{background:var(--teal-dark);}
+.btn-nav:disabled{opacity:.3;cursor:not-allowed;}
+.btn-nav svg{width:15px;height:15px;}
+
+/* STEP LIST */
+.step-list{display:flex;flex-direction:column;gap:0;margin-bottom:20px;}
+.step-item{display:flex;gap:0;position:relative;}
+.step-item:not(:last-child)::after{content:'';position:absolute;left:15px;top:32px;width:2px;bottom:-8px;background:var(--gray-light);}
+.step-dot{width:32px;height:32px;border-radius:50%;background:var(--teal);color:white;font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:14px;margin-top:2px;}
+.step-body{flex:1;padding-bottom:16px;}
+.step-title{font-size:.9rem;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.step-desc{font-size:.81rem;color:var(--gray);line-height:1.62;}
+
+/* TABLE */
+.info-table{width:100%;border-collapse:collapse;margin-bottom:20px;background:white;border-radius:12px;overflow:hidden;border:1px solid var(--gray-light);}
+.info-table th{background:var(--navy);color:white;padding:10px 14px;font-size:.78rem;font-weight:600;text-align:left;}
+.info-table td{padding:10px 14px;font-size:.79rem;color:var(--navy-mid);border-bottom:1px solid var(--gray-light);line-height:1.55;}
+.info-table tr:last-child td{border-bottom:none;}
+.info-table tr:hover td{background:var(--teal-faint);}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hamburger{display:flex;}
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0;}
+  .content-area{padding:28px 18px;}
+  .bp-grid,.app-grid{grid-template-columns:1fr;}
+  .lib-grid,.lang-grid{grid-template-columns:1fr 1fr;}
+  .industry-grid{grid-template-columns:1fr;}
+  .venv-row{flex-direction:column;}
+  .conflict-row{flex-direction:column;align-items:center;}
+  .top-bar-module{display:none;}
+}
+@media(max-width:480px){
+  .lib-grid,.lang-grid{grid-template-columns:1fr;}
+  .topic-title{font-size:1.55rem;}
+  .hero-cards{flex-direction:column;align-items:center;}
+  .hero-card{max-width:100%;width:100%;}
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== LANDING ==================== -->
+<div id="landing">
+  <nav class="landing-nav">
+    <div class="logo-mark"><span></span><span></span><span></span><span></span></div>
+    <span class="logo-name">Data Pro Academy</span>
+  </nav>
+  <div class="landing-hero">
+    <div class="hero-badge">Lesson 05 · Interactive Learning Platform</div>
+    <h1 class="hero-title">SQL in the Wild &amp; <em>Programming</em> for Data Professionals</h1>
+    <p class="hero-sub">Complete interactive notes covering SQL environments, Python, virtual environments, libraries, and real-world applications — with instant-feedback quizzes.</p>
+    <div class="hero-cards">
+      <div class="hero-card"><div class="hero-card-icon">🗄️</div><div class="hero-card-title">SQL Environments</div><div class="hero-card-desc">DEV, Testing &amp; Production — why, how, and best practices</div></div>
+      <div class="hero-card"><div class="hero-card-icon">🐍</div><div class="hero-card-title">Python &amp; Libraries</div><div class="hero-card-desc">NumPy, Pandas, Matplotlib, Scikit-Learn, TensorFlow &amp; more</div></div>
+      <div class="hero-card"><div class="hero-card-icon">📦</div><div class="hero-card-title">Virtual Environments</div><div class="hero-card-desc">Isolate dependencies, prevent conflicts, work cleanly</div></div>
+      <div class="hero-card"><div class="hero-card-icon">🌍</div><div class="hero-card-title">Real-World Cases</div><div class="hero-card-desc">ShopEase &amp; UN SDG Zero Hunger applied examples</div></div>
+      <div class="hero-card"><div class="hero-card-icon">🌐</div><div class="hero-card-title">Other Languages</div><div class="hero-card-desc">R, Julia, Scala — when to use each and why</div></div>
+      <div class="hero-card"><div class="hero-card-icon">✅</div><div class="hero-card-title">Quizzes</div><div class="hero-card-desc">Instant feedback — green for right, red for wrong + explanations</div></div>
+    </div>
+    <button class="btn-start" onclick="startApp()">
+      Get Started
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-val">8</div><div class="hero-stat-label">Topics</div></div>
+      <div class="hero-stat"><div class="hero-stat-val">7</div><div class="hero-stat-label">Quiz Questions</div></div>
+      <div class="hero-stat"><div class="hero-stat-val">2</div><div class="hero-stat-label">Modules</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== APP ==================== -->
+<div id="app">
+  <header class="top-bar">
+    <button class="hamburger" onclick="toggleSidebar()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    </button>
+    <div class="top-bar-logo">
+      <div class="logo-mark"><span></span><span></span><span></span><span></span></div>
+      <span class="logo-name">Data Pro Academy</span>
+    </div>
+    <div class="top-bar-module" id="top-module">SQL in the Wild</div>
+    <div class="top-bar-progress">
+      <span id="progress-label">1 / 8</span>
+      <div class="progress-pill"><div class="progress-fill" id="progress-fill" style="width:12%"></div></div>
+    </div>
+  </header>
+
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Module 1 · SQL in the Wild</div>
+      <div class="sidebar-item active" onclick="goTo(0)" id="nav-0"><span class="si-icon">🏗️</span>Why SQL Environments?</div>
+      <div class="sidebar-item" onclick="goTo(1)" id="nav-1"><span class="si-icon">🔬</span>The 3 SQL Environments</div>
+      <div class="sidebar-item" onclick="goTo(2)" id="nav-2"><span class="si-icon">⚙️</span>Integration &amp; Best Practices</div>
+      <div class="sidebar-item" onclick="goTo(3)" id="nav-3"><span class="si-icon">🏭</span>Real-World SQL Usage</div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Module 2 · Programming for Data</div>
+      <div class="sidebar-item" onclick="goTo(4)" id="nav-4"><span class="si-icon">💡</span>Why Programming?</div>
+      <div class="sidebar-item" onclick="goTo(5)" id="nav-5"><span class="si-icon">🐍</span>Python, Libraries &amp; Languages</div>
+      <div class="sidebar-item" onclick="goTo(6)" id="nav-6"><span class="si-icon">📦</span>Virtual Environments</div>
+      <div class="sidebar-item" onclick="goTo(7)" id="nav-7"><span class="si-icon">📝</span>Quizzes</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="content-area">
+
+      <!-- ======== TOPIC 0: Why SQL Environments ======== -->
+      <div class="topic active" id="topic-0">
+        <div class="topic-badge">Module 1 · SQL in the Wild</div>
+        <h1 class="topic-title">Why Do We Use Different SQL Environments?</h1>
+        <p class="topic-intro">Professional SQL is never built directly on live systems. Just as a musician rehearses in a private studio before a world tour, a database moves through isolated environments to ensure stability. Development, testing, and deployment environments are essential in the lifecycle of a database in order to ensure controlled progression, minimize risk, and maintain data integrity.</p>
+
+        <div class="callout teal">
+          <div class="callout-icon">🛒</div>
+          <div class="callout-body">
+            <div class="callout-title">Practical Example: ShopEase</div>
+            <p>To understand SQL environments, we explore the database creation of <strong>ShopEase</strong> — a prominent online marketplace with millions of daily users conducting transactions. All product listings, customer data, and order histories must be kept safe and accessible. ShopEase uses SQL to manage, store, retrieve, and analyze this data.</p>
+          </div>
+        </div>
+
+        <h2 class="section-heading">The Three Core Reasons</h2>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-num">🔒</div>
+            <div class="card-title">Risk Mitigation</div>
+            <div class="card-desc">Changes can be thoroughly tested before reaching the production environment, reducing the likelihood of critical issues that affect real users.</div>
+          </div>
+          <div class="card">
+            <div class="card-num">🎯</div>
+            <div class="card-title">Isolation</div>
+            <div class="card-desc">Different environments prevent interference between development, testing, and production stages. It's like creating a <em>safe zone</em> for each step — changes are contained until ready to go live.</div>
+          </div>
+          <div class="card">
+            <div class="card-num">⚙️</div>
+            <div class="card-title">Controlled Changes</div>
+            <div class="card-desc">Environments provide controlled channels for introducing new features or modifications — ensuring changes are well-thought-out, thoroughly tested, and won't unexpectedly affect users or system stability.</div>
+          </div>
+        </div>
+
+        <h2 class="section-heading">The ShopEase Solution</h2>
+        <p style="font-size:.87rem;color:var(--gray);line-height:1.7;margin-bottom:16px;">In modern software development, different environments play a crucial role in ensuring the quality and reliability of a database. These environments are tailored to specific stages of the development lifecycle and are designed to address various needs and challenges.</p>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-num">01</div>
+            <div class="card-title">Implement an Efficient Database Schema</div>
+            <div class="card-desc">ShopEase uses SQL to manage, store, retrieve, and analyze data in databases — streamlining operations to improve user experiences and decision-making. In SQL-based projects, having distinct environments becomes essential for efficient development, testing, and deployment.</div>
+          </div>
+          <div class="card">
+            <div class="card-num">02</div>
+            <div class="card-title">Integrate SQL in the Application Production Environment</div>
+            <div class="card-desc">Programming languages like Python, Java, or PHP are used to integrate SQL queries within application code — connecting the database logic to the application layer running in production.</div>
+          </div>
+        </div>
+
+        <div class="topic-nav">
+          <button class="btn-nav prev" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Previous</button>
+          <button class="btn-nav next" onclick="goTo(1)">Next: The 3 Environments<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ======== TOPIC 1: The 3 Environments ======== -->
+      <div class="topic" id="topic-1">
+        <div class="topic-badge">Module 1 · SQL in the Wild</div>
+        <h1 class="topic-title">The Three SQL Environments</h1>
+        <p class="topic-intro">Every database passes through three distinct environments before going live. Each has a specific purpose in the development lifecycle. Understanding each environment — what happens there, its characteristics, and its limitations — is essential for any data professional.</p>
+
+        <table class="info-table">
+          <thead><tr><th>Environment</th><th>Also Called</th><th>Primary Purpose</th><th>Access Level</th></tr></thead>
+          <tbody>
+            <tr><td>Development</td><td>DEV</td><td>Design, create, modify schema &amp; queries</td><td>Full — experiment freely</td></tr>
+            <tr><td>Testing</td><td>QA Environment</td><td>Rigorous validation of database changes</td><td>Near-production replica</td></tr>
+            <tr><td>Production</td><td>PROD / Live</td><td>Serve real users and business processes</td><td>Restricted — limited tampering</td></tr>
+          </tbody>
+        </table>
+
+        <!-- DEV -->
+        <div class="env-block dev" data-label="ENV 1 · DEV">
+          <div class="env-block-header">
+            <div class="env-icon">🔨</div>
+            <div><div class="env-block-title">Development Environment</div><div class="env-block-alias">Also called: DEV</div></div>
+          </div>
+          <p>The SQL development environment serves as the <strong>foundation for designing, creating, and modifying</strong> the database schema and SQL queries. In this environment, developers have the freedom to experiment, make changes, and iterate without affecting other stages of the development lifecycle.</p>
+          <div class="env-traits">
+            <div class="env-trait">Developers can work on their tasks <strong>independently</strong> without affecting the production system</div>
+            <div class="env-trait">Frequent <strong>changes and experimentation</strong> are encouraged to refine database structures and query performance</div>
+            <div class="env-trait">Supports <strong>rapid iteration and prototyping</strong> of SQL code for upcoming features</div>
+          </div>
+          <div class="env-example">
+            <strong>ShopEase DEV Example:</strong> Developers create tables optimized for product information storage, customer data, and order histories. They write SQL scripts to create and modify tables, define relationships, and set indexes. They also implement features such as caching mechanisms to optimize frequent queries for product listings and customer carts.
+          </div>
+        </div>
+
+        <!-- TESTING -->
+        <div class="env-block test" data-label="ENV 2 · QA">
+          <div class="env-block-header">
+            <div class="env-icon" style="background:#ea580c;">🧪</div>
+            <div><div class="env-block-title">Testing Environment</div><div class="env-block-alias">Also called: QA Environment</div></div>
+          </div>
+          <p>The SQL test environment is an <strong>exact or representative copy of the production environment</strong>, set up specifically for rigorous testing and validation of database changes. This environment allows development teams to catch and resolve issues before changes are deployed to the live system.</p>
+          <div class="env-traits">
+            <div class="env-trait">A <strong>near-identical replica</strong> of the production environment to mimic real-world scenarios accurately</div>
+            <div class="env-trait"><strong>Rigorous testing</strong> of the new database schema, query performance, and data integrity is conducted</div>
+            <div class="env-trait"><strong>Identification and resolution of issues</strong> that might not be apparent in the development environment</div>
+          </div>
+          <div class="env-example">
+            <strong>ShopEase QA Example:</strong> With the new schema from DEV, it's moved to the test environment for comprehensive testing. Testers verify the data integrity of the tables, ensuring relationships and constraints are maintained. They generate extensive test scenarios, simulating high-traffic and complex queries to gauge performance. Developers monitor query execution plans, optimizing indexes and refining SQL queries for efficiency.
+          </div>
+        </div>
+
+        <!-- PRODUCTION -->
+        <div class="env-block prod" data-label="ENV 3 · PROD">
+          <div class="env-block-header">
+            <div class="env-icon" style="background:#0284c7;">🚀</div>
+            <div><div class="env-block-title">Production Environment</div><div class="env-block-alias">Also called: PROD — the live system</div></div>
+          </div>
+          <p>The SQL production environment is the <strong>live environment that serves users, applications, and critical business processes</strong>. This is where the real action happens — high availability, performance, and data integrity are paramount.</p>
+          <div class="env-traits">
+            <div class="env-trait">Can <strong>actively handle user interactions, transactions,</strong> and application requests in real time</div>
+            <div class="env-trait">Ensures <strong>accurate and reliable data storage, retrieval, and updates</strong></div>
+            <div class="env-trait">Optimized environment that delivers <strong>fast response times</strong> and <strong>minimal downtime</strong></div>
+            <div class="env-trait">Due to data integrity and maintainability rules, there are <strong>limitations on access</strong> — the types of queries that can be executed are restricted. The database must be end-user-ready at all times, requiring very <strong>limited tampering</strong></div>
+          </div>
+          <div class="env-example">
+            <strong>ShopEase PROD Example:</strong> Following thorough testing and validation, the optimized database schema is deployed to production. Developers closely monitor the database's performance, checking for anomalies or bottlenecks. They may further optimize based on real-world usage patterns, ensuring users continue to enjoy a seamless shopping experience.
+          </div>
+        </div>
+
+        <div class="topic-nav">
+          <button class="btn-nav prev" onclick="goTo(0)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Previous</button>
+          <button class="btn-nav next" onclick="goTo(2)">Next: Integration &amp; Best Practices<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ======== TOPIC 2: Integration & Best Practices ======== -->
+      <div class="topic" id="topic-2">
+        <div class="topic-badge">Module 1 · SQL in the Wild</div>
+        <h1 class="topic-title">Integrating SQL &amp; Production Best Practices</h1>
+        <p class="topic-intro">Once a database schema passes QA testing, it's deployed to production where SQL is embedded inside application code. Running a production database also demands strict adherence to four key best practices to ensure it stays secure, available, and recoverable.</p>
+
+        <h2 class="section-heading">How SQL Integrates with Application Code</h2>
+        <div class="callout teal">
+          <div class="callout-icon">🔗</div>
+          <div class="callout-body">
+            <div class="callout-title">The Integration Process</div>
+            <p>The SQL code is <strong>integrated within the application code</strong> in order to create and maintain a reliable data-driven system. The application connects to the SQL server, uses the app's preferred language to run logic, and embeds SQL queries to extract or update data.</p>
+          </div>
+        </div>
+
+        <div class="step-list">
+          <div class="step-item"><div class="step-dot">01</div><div class="step-body"><div class="step-title">Connect to the Production Database</div><div class="step-desc">The application code connects to the server responsible for hosting and managing the production database in SQL.</div></div></div>
+          <div class="step-item"><div class="step-dot">02</div><div class="step-body"><div class="step-title">Write Application Code</div><div class="step-desc">Code is written in the application's preferred language (such as Python, Java, or PHP) to run the application's business logic.</div></div></div>
+          <div class="step-item"><div class="step-dot">03</div><div class="step-body"><div class="step-title">Embed SQL Queries</div><div class="step-desc">SQL queries are included within the code to extract or manage data in the SQL database — reading product info, processing orders, updating stock, etc.</div></div></div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-tag">ShopEase Python + SQL Integration Example</div>
+          <pre><span class="comment"># 01. Establish a connection to the production database</span>
+conn = sqlite3.<span class="fn">connect</span>(<span class="str">"shopease.db"</span>)
+cursor = conn.<span class="fn">cursor</span>()
+
+<span class="comment"># 02. Application code written in Python to retrieve product info</span>
+<span class="kw">def</span> <span class="fn">get_product_info</span>(product_id):
+    query = <span class="str">f"SELECT name, price, stock FROM products WHERE id = {product_id}"</span>
+    cursor.<span class="fn">execute</span>(query)
+    product_data = cursor.<span class="fn">fetchone</span>()
+    <span class="kw">return</span> product_data
+
+<span class="comment"># 03. SQL query embedded inside Python code to process an order</span>
+<span class="kw">def</span> <span class="fn">process_order</span>(order_id, product_id, quantity):
+    <span class="comment"># Check product availability</span>
+    product_data = <span class="fn">get_product_info</span>(product_id)
+    <span class="kw">if</span> product_data <span class="kw">and</span> product_data[2] >= quantity:
+        <span class="comment"># Update stock using SQL UPDATE statement</span>
+        new_stock = product_data[2] - quantity
+        update_query = <span class="str">f"UPDATE products SET stock = {new_stock} WHERE id = {product_id}"</span>
+        cursor.<span class="fn">execute</span>(update_query)</pre>
+        </div>
+
+        <h2 class="section-heading">Four Best Practices for Production-Level Data Management</h2>
+        <p style="font-size:.87rem;color:var(--gray);line-height:1.7;margin-bottom:16px;">Deploying SQL databases in production environments requires careful planning and adherence to best practices to ensure performance, security, and maintainability.</p>
+        <div class="bp-grid">
+          <div class="bp-card">
+            <div class="bp-header"><div class="bp-num">01</div><div class="bp-name">Database Security</div></div>
+            <p>Use <strong>strong passwords</strong>, regularly update database management systems to address security vulnerabilities, use <strong>encryption</strong>, and implement <strong>role-based access controls</strong> so only authorized personnel can access sensitive data.</p>
+          </div>
+          <div class="bp-card">
+            <div class="bp-header"><div class="bp-num">02</div><div class="bp-name">High Availability &amp; Scalability</div></div>
+            <p>Implement <strong>redundancy and failover mechanisms</strong>, use <strong>load balancers</strong> to distribute database traffic, and scale the database horizontally by adding more servers when needed through constant performance monitoring.</p>
+          </div>
+          <div class="bp-card">
+            <div class="bp-header"><div class="bp-num">03</div><div class="bp-name">Performance Tuning</div></div>
+            <p>Optimize database performance by <strong>monitoring schema design</strong>, making queries and procedures run as fast as possible, and <strong>regularly analyzing and optimizing slow-running queries</strong>.</p>
+          </div>
+          <div class="bp-card">
+            <div class="bp-header"><div class="bp-num">04</div><div class="bp-name">Disaster Recovery</div></div>
+            <p>Maintain <strong>regular automatic backups</strong> of the database and test backup and restore procedures to ensure <strong>data recoverability</strong> in the event of a disaster or system failure.</p>
+          </div>
+        </div>
+
+        <div class="topic-nav">
+          <button class="btn-nav prev" onclick="goTo(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Previous</button>
+          <button class="btn-nav next" onclick="goTo(3)">Next: Real-World SQL Usage<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ======== TOPIC 3: Real-World SQL Usage ======== -->
+      <div class="topic" id="topic-3">
+        <div class="topic-badge">Module 1 · SQL in the Wild</div>
+        <h1 class="topic-title">End-User Access to Production-Level Data</h1>
+        <p class="topic-intro">SQL is a powerful tool used across a wide range of industries to manage and analyze data. In every case, end users interact with production-level SQL data — often without realizing it. Here are real-world examples of how SQL is applied across four major industries.</p>
+
+        <div class="industry-grid">
+          <div class="industry-card">
+            <div class="industry-label">🏦 Financial Institutions</div>
+            <p>Financial institutions utilize SQL to manage account data, transactions, and risk assessments — enabling decision-making on things like <strong>loan approvals, interest rates, and fraud detection</strong>.</p>
+          </div>
+          <div class="industry-card">
+            <div class="industry-label">🏥 Healthcare</div>
+            <p>For better decision-making in treatment plans, resource allocation, and research priorities, hospitals use SQL to store <strong>patient records, treatment histories, and medical imaging data</strong>.</p>
+          </div>
+          <div class="industry-card">
+            <div class="industry-label">🏭 Manufacturing</div>
+            <p>A manufacturing company uses SQL to handle <strong>supply chain data, track equipment maintenance, and monitor production lines</strong> — enabling well-informed decisions and optimization.</p>
+          </div>
+          <div class="industry-card">
+            <div class="industry-label">🛍️ Retail</div>
+            <p>Retail chains use SQL to handle <strong>store inventories, customer loyalty programs, and sales data</strong> — facilitating strategic decision-making and improving consumer experiences.</p>
+          </div>
+        </div>
+
+        <div class="callout navy">
+          <div class="callout-icon">💡</div>
+          <div class="callout-body">
+            <div class="callout-title">Key Takeaway</div>
+            <p>In every industry, the data that SQL manages goes through the same DEV → QA → PROD pipeline. The production database is what the end user ultimately interacts with — which is why the environments and best practices matter so much. A mistake in production affects real patients, real customers, and real financial transactions.</p>
+          </div>
+        </div>
+
+        <div class="topic-nav">
+          <button class="btn-nav prev" onclick="goTo(2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Previous</button>
+          <button class="btn-nav next" onclick="goTo(4)">Next: Why Programming?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ======== TOPIC 4: Why Programming ======== -->
+      <div class="topic" id="topic-4">
+        <div class="topic-badge">Module 2 · Programming for Data</div>
+        <h1 class="topic-title">Why We Need Programming</h1>
+        <p class="topic-intro">Until this point, SQL has been used to reach into databases and extract specific answers. But modern data work demands more. Programming languages act as the <strong>bridge between raw data and actionable insights</strong> — enabling professionals to handle massive datasets, build models, develop data pipelines, and deploy solutions into the real world.</p>
+
+        <h2 class="section-heading">The Data-Driven World — Three Driving Forces</h2>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-num">V1</div>
+            <div class="card-title">Volume</div>
+            <div class="card-desc">In today's data-driven world, organizations and industries rely heavily on data to make informed decisions. Data is generated at unprecedented scale — billions of records daily.</div>
+          </div>
+          <div class="card">
+            <div class="card-num">V2</div>
+            <div class="card-title">Variety</div>
+            <div class="card-desc">Data arrives in diverse formats — structured tables, unstructured text, images, sensor streams, logs. This variety is one of the core challenges of modern data work.</div>
+          </div>
+          <div class="card">
+            <div class="card-num">V3</div>
+            <div class="card-title">Velocity</div>
+            <div class="card-desc">Data arrives at lightning speed, often in real time. The ultimate goal is to uncover <strong>valuable insights</strong> that drive strategic decisions, enhance customer experiences, and enable innovation.</div>
+          </div>
+        </div>
+
+        <h2 class="section-heading">Applications of Programming in Data</h2>
+        <p style="font-size:.87rem;color:var(--gray);line-height:1.7;margin-bottom:16px;">Programming extends far beyond data extraction. Here are the main application areas where programming is essential for data professionals:</p>
+
+        <div class="app-grid">
+          <div class="app-card">
+            <div class="app-card-header">
+              <div class="app-icon" style="background:#e0f7f5;">📊</div>
+              <div class="app-title">Analysis &amp; Visualization</div>
+            </div>
+            <ul>
+              <li><strong>Exploratory Data Analysis (EDA):</strong> Languages like Python and R empower data scientists to explore data, identify patterns, and gain initial insights.</li>
+              <li><strong>Visualization:</strong> Through programming, professionals create informative data visualizations that facilitate better understanding and communication of insights.</li>
+            </ul>
+          </div>
+          <div class="app-card">
+            <div class="app-card-header">
+              <div class="app-icon" style="background:#fef9c3;">⚙️</div>
+              <div class="app-title">Data Pipelines &amp; Automation</div>
+            </div>
+            <ul>
+              <li><strong>Data Pipelines:</strong> Data engineers design and implement pipelines that automate the movement, transformation, and storage of data. Programming is vital for orchestrating these pipelines.</li>
+              <li><strong>Automation:</strong> Programming enables the automation of repetitive tasks, ensuring efficiency and consistency in data workflows.</li>
+            </ul>
+          </div>
+          <div class="app-card">
+            <div class="app-card-header">
+              <div class="app-icon" style="background:#fae8ff;">🤖</div>
+              <div class="app-title">Modelling &amp; Machine Learning</div>
+            </div>
+            <ul>
+              <li><strong>Machine Learning:</strong> Programming is the backbone of ML — allowing the development and training of predictive models.</li>
+              <li><strong>Algorithm Implementation:</strong> Data engineers and scientists use programming to implement algorithms, fine-tune models, and optimize performance.</li>
+            </ul>
+          </div>
+          <div class="app-card">
+            <div class="app-card-header">
+              <div class="app-icon" style="background:#fff7ed;">🌐</div>
+              <div class="app-title">And Many Others…</div>
+            </div>
+            <ul>
+              <li><strong>Real-time data processing</strong> for streaming data</li>
+              <li><strong>Customizing solutions</strong> for specific business needs</li>
+              <li><strong>Scalability and performance</strong> for growing data demands</li>
+              <li><strong>Collaboration and reproducibility</strong> across teams</li>
+              <li>Beyond data — programming fosters <strong>problem-solving skills</strong> critical for complex, real-world challenges</li>
+            </ul>
+          </div>
+        </div>
+
+        <h2 class="section-heading">Case Study: UN SDG 2 — Zero Hunger</h2>
+        <div class="callout green">
+          <div class="callout-icon">🌍</div>
+          <div class="callout-body">
+            <div class="callout-title">Problem Statement</div>
+            <p><strong>Efficiently distribute surplus food to organizations serving vulnerable populations while minimizing food waste.</strong> This is a real-world challenge addressed using Python and data science techniques.</p>
+          </div>
+        </div>
+        <div class="sdg-steps">
+          <div class="sdg-step"><div class="sdg-num">1</div><div class="sdg-body"><div class="sdg-title">Food Inventory Management &amp; Data Collection</div><div class="sdg-desc">Using Python, develop a comprehensive food inventory management system that collects data on surplus food items from various sources, including restaurants, supermarkets, and farms.</div></div></div>
+          <div class="sdg-step"><div class="sdg-num">2</div><div class="sdg-body"><div class="sdg-title">Data Validation &amp; Cleaning</div><div class="sdg-desc">Use the Python <strong>Pandas</strong> library for data validation, cleaning, and normalization — ensuring the accuracy and consistency of food inventory data.</div></div></div>
+          <div class="sdg-step"><div class="sdg-num">3</div><div class="sdg-body"><div class="sdg-title">Data Integration</div><div class="sdg-desc">Integrate data from different sources into a unified database using Python — including food expiration dates, storage conditions, donation histories, and geographic information.</div></div></div>
+          <div class="sdg-step"><div class="sdg-num">4</div><div class="sdg-body"><div class="sdg-title">Geospatial Analysis</div><div class="sdg-desc">Implement geospatial analysis using Python libraries like <strong>GeoPandas</strong> to optimize food distribution routes based on proximity of food sources to distribution centers and beneficiaries.</div></div></div>
+          <div class="sdg-step"><div class="sdg-num">5</div><div class="sdg-body"><div class="sdg-title">Time Series Analysis</div><div class="sdg-desc">Apply time series analysis techniques in Python to predict food availability patterns, taking into account seasonal variations and historical data — aiding efficient inventory management.</div></div></div>
+          <div class="sdg-step"><div class="sdg-num">6</div><div class="sdg-body"><div class="sdg-title">Machine Learning for Demand Forecasting</div><div class="sdg-desc">Enhance demand forecasting with advanced ML models in Python that consider demographic data, socioeconomic indicators, and historical consumption patterns.</div></div></div>
+          <div class="sdg-step"><div class="sdg-num">7</div><div class="sdg-body"><div class="sdg-title">Big Data Analytics &amp; Real-Time Updates</div><div class="sdg-desc">Use <strong>Apache Spark</strong> with Python to analyze large datasets on food donations and distribution trends. Create mechanisms for real-time data updates allowing dynamic adjustments in food distribution plans as new information becomes available.</div></div></div>
+        </div>
+
+        <div class="topic-nav">
+          <button class="btn-nav prev" onclick="goTo(3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Previous</button>
+          <button class="btn-nav next" onclick="goTo(5)">Next: Python, Libraries &amp; Languages<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ======== TOPIC 5: Python, Libraries & Languages ======== -->
+      <div class="topic" id="topic-5">
+        <div class="topic-badge">Module 2 · Programming for Data</div>
+        <h1 class="topic-title">Python, Libraries &amp; Other Languages</h1>
+        <p class="topic-intro">While several languages can be used for data work, Python dominates the field due to its simplicity, versatility, and rich ecosystem. Understanding Python's capabilities and the alternatives that exist is essential knowledge for any data professional.</p>
+
+        <h2 class="section-heading">Python for Data Professionals</h2>
+        <div class="callout teal">
+          <div class="callout-icon">🐍</div>
+          <div class="callout-body">
+            <div class="callout-title">What is Python?</div>
+            <p>A <strong>dynamic, open-source, high-level programming language</strong> renowned for its simplicity, readability, and versatility. It often serves as the go-to language for data professionals due to its vast ecosystem of libraries and easy integration with data tools.</p>
+          </div>
+        </div>
+
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-num">📝</div>
+            <div class="card-title">Python Traits</div>
+            <div class="card-desc">Dynamic, open-source, high-level. Renowned for simplicity and readability — code is easy to write and understand, even for those new to programming.</div>
+          </div>
+          <div class="card">
+            <div class="card-num">⚡</div>
+            <div class="card-title">Ease of Use</div>
+            <div class="card-desc">It often serves as the go-to language for data professionals due to its vast ecosystem of libraries and easy integration with data tools.</div>
+          </div>
+          <div class="card">
+            <div class="card-num">🔬</div>
+            <div class="card-title">Data Science</div>
+            <div class="card-desc">Preferred choice for data science tasks: data cleaning, analysis, and machine learning model development. Its libraries and tools make complex tasks manageable.</div>
+          </div>
+          <div class="card">
+            <div class="card-num">🏗️</div>
+            <div class="card-title">Data Engineering</div>
+            <div class="card-desc">Widely adopted for building <strong>data pipelines</strong>, <strong>ETL (Extract, Transform, Load)</strong> processes, and big data workflows.</div>
+          </div>
+        </div>
+
+        <h2 class="section-heading">Key Python Libraries</h2>
+        <p style="font-size:.87rem;color:var(--gray);line-height:1.7;margin-bottom:14px;">Python libraries provide <strong>pre-built tools and functions</strong> that simplify complex programming tasks such as numerical operations, visualizing data, and creating data models.</p>
+        <div class="lib-grid">
+          <div class="lib-card">
+            <div class="lib-tag">Numerical</div>
+            <div class="lib-name">NumPy</div>
+            <div class="lib-desc">A library for <strong>numerical and scientific computing</strong> that forms the foundation for many other data-related libraries.</div>
+          </div>
+          <div class="lib-card">
+            <div class="lib-tag">Data Manipulation</div>
+            <div class="lib-name">Pandas</div>
+            <div class="lib-desc">A <strong>data manipulation and analysis</strong> library introducing powerful data structures that enable working with structured data more efficiently.</div>
+          </div>
+          <div class="lib-card">
+            <div class="lib-tag">Visualization</div>
+            <div class="lib-name">Matplotlib</div>
+            <div class="lib-desc">A fundamental <strong>visualization library</strong> providing a flexible and customizable plotting framework for charts, graphs, and plots.</div>
+          </div>
+          <div class="lib-card">
+            <div class="lib-tag">Machine Learning</div>
+            <div class="lib-name">Scikit-Learn</div>
+            <div class="lib-desc">A library offering a wide range of <strong>machine learning algorithms and tools</strong> for model selection, evaluation, and deployment.</div>
+          </div>
+          <div class="lib-card">
+            <div class="lib-tag">Deep Learning</div>
+            <div class="lib-name">TensorFlow</div>
+            <div class="lib-desc">A <strong>deep learning framework library</strong> for building and training complex deep learning models.</div>
+          </div>
+          <div class="lib-card">
+            <div class="lib-tag">And More…</div>
+            <div class="lib-name">Others</div>
+            <div class="lib-desc"><strong>pymysql</strong> (MySQL client), <strong>OpenCV</strong> (computer vision), <strong>pytest</strong> (unit tests), <strong>GeoPandas</strong> (geospatial), <strong>PySpark</strong> (big data).</div>
+          </div>
+        </div>
+
+        <h2 class="section-heading">Other Programming Languages for Data</h2>
+        <p style="font-size:.87rem;color:var(--gray);line-height:1.7;margin-bottom:14px;">While Python is often preferred by data professionals, other programming languages like R, Julia, and Scala can also be used for most data-related tasks. Selecting the appropriate language <strong>depends on the specific requirements of a data project</strong> — alternative languages shine in their respective domains.</p>
+        <div class="lang-grid">
+          <div class="lang-card python">
+            <div class="lang-badge">Most Popular</div>
+            <div class="lang-name">🐍 Python</div>
+            <div class="lang-desc">Versatile, with a comprehensive set of libraries. The go-to for data science, engineering, ML, and automation.</div>
+            <div class="lang-use">Best for: General data work, ML, pipelines</div>
+          </div>
+          <div class="lang-card r">
+            <div class="lang-badge">Statistics</div>
+            <div class="lang-name">📊 R</div>
+            <div class="lang-desc">A favored language for <strong>statistical analysis</strong>, specifically for tasks such as hypothesis testing, linear and nonlinear modeling, and visualization.</div>
+            <div class="lang-use">Best for: Statistics, academic research</div>
+          </div>
+          <div class="lang-card julia">
+            <div class="lang-badge">Performance</div>
+            <div class="lang-name">⚡ Julia</div>
+            <div class="lang-desc">A high-level, <strong>high-performance programming language</strong> designed for computationally intensive tasks such as complex numerical and scientific computing.</div>
+            <div class="lang-use">Best for: Scientific computing, simulations</div>
+          </div>
+          <div class="lang-card scala">
+            <div class="lang-badge">Big Data</div>
+            <div class="lang-name">🔶 Scala</div>
+            <div class="lang-desc">A favored programming language for <strong>distributed data processing</strong> and big data analytics that offers the scalability needed for big data workloads.</div>
+            <div class="lang-use">Best for: Big data, Apache Spark</div>
+          </div>
+        </div>
+
+        <div class="topic-nav">
+          <button class="btn-nav prev" onclick="goTo(4)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Previous</button>
+          <button class="btn-nav next" onclick="goTo(6)">Next: Virtual Environments<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ======== TOPIC 6: Virtual Environments ======== -->
+      <div class="topic" id="topic-6">
+        <div class="topic-badge">Module 2 · Programming for Data</div>
+        <h1 class="topic-title">Virtual Environments</h1>
+        <p class="topic-intro">In order to leverage the full potential of a programming language such as Python, you will most likely need to install many libraries and packages. However, this often introduces <strong>dependencies and configuration issues</strong>. Virtual environments are the solution.</p>
+
+        <h2 class="section-heading">The Problem: Conflicting Dependencies</h2>
+        <p style="font-size:.87rem;color:var(--gray);line-height:1.7;margin-bottom:14px;">Let's look at how dependency conflicts occur when working on multiple projects simultaneously:</p>
+
+        <div class="conflict-diagram">
+          <div class="conflict-row">
+            <div class="conflict-box">
+              <div class="conflict-box-title">Project A</div>
+              <div class="conflict-box-lib">Requires Library X v1.0</div>
+            </div>
+            <div class="conflict-box">
+              <div class="conflict-box-title">Project B</div>
+              <div class="conflict-box-lib">Requires Library X v2.0</div>
+            </div>
+          </div>
+          <div class="conflict-arrow">⬇ Install v2.0 for Project B → v1.0 gets overwritten</div>
+          <div class="conflict-result">❌ Project A's code will most likely <strong>no longer work as expected</strong>. It becomes challenging to switch between projects without uninstalling and reinstalling libraries — a process that is error-prone and time-consuming.</div>
+        </div>
+
+        <h2 class="section-heading">The Solution: Virtual Environments</h2>
+        <div class="callout teal">
+          <div class="callout-icon">📦</div>
+          <div class="callout-body">
+            <div class="callout-title">Definition</div>
+            <p><strong>Virtual environments</strong> are isolated, self-contained workspaces within a computer's operating system where we can create, manage, and run projects with their own sets of <strong>dependencies and configurations</strong>. Each virtual environment acts as a separate operating system in the sense that each has distinct installations and configurations — without requiring additional hardware.</p>
+          </div>
+        </div>
+
+        <div class="callout green">
+          <div class="callout-icon">✅</div>
+          <div class="callout-body">
+            <div class="callout-title">With Virtual Environments</div>
+            <p>We create a virtual environment <strong>for each project</strong>. This means we can install version 2.0 of Library X for Project B in a second virtual environment <strong>without overwriting</strong> the version 1.0 installation we need for Project A. Both projects work perfectly, side-by-side on the same computer.</p>
+          </div>
+        </div>
+
+        <div class="callout red">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-body">
+            <div class="callout-title">Important Clarification</div>
+            <p>A virtual environment is <strong>NOT</strong> an operating system. It is an isolated workspace that lives <em>within</em> your existing operating system. You do not need multiple physical computers or computing partitions to use multiple virtual environments — they all coexist on one machine.</p>
+          </div>
+        </div>
+
+        <h2 class="section-heading">Python Virtual Environments — A Practical Example</h2>
+        <p style="font-size:.87rem;color:var(--gray);line-height:1.7;margin-bottom:14px;">As good practice, we should <strong>always aim to use virtual environments</strong> when programming in Python. Here is an example of three separate virtual environments on a single operating system:</p>
+
+        <div class="venv-diagram">
+          <div class="venv-os-label">🖥️ Operating System (One Physical Machine)</div>
+          <div class="venv-row">
+            <div class="venv-box">
+              <div class="venv-box-title">Virtual Environment 1</div>
+              <div class="venv-box-sub">Python 3.8 · Data Analysis</div>
+              <div class="venv-libs">
+                <div class="venv-lib">Pandas 1.2.3</div>
+                <div class="venv-lib">Matplotlib 3.4.1</div>
+                <div class="venv-lib">Scikit-Learn 0.24.1</div>
+              </div>
+            </div>
+            <div class="venv-box">
+              <div class="venv-box-title">Virtual Environment 2</div>
+              <div class="venv-box-sub">Python 3.7 · NLP Project</div>
+              <div class="venv-libs">
+                <div class="venv-lib">NLTK 3.6.2</div>
+                <div class="venv-lib">Gensim 4.1.0</div>
+                <div class="venv-lib">Scikit-Learn 0.24.1</div>
+              </div>
+            </div>
+            <div class="venv-box">
+              <div class="venv-box-title">Virtual Environment 3</div>
+              <div class="venv-box-sub">Python 3.9 · Big Data</div>
+              <div class="venv-libs">
+                <div class="venv-lib">PySpark 3.2.0</div>
+                <div class="venv-lib">Pandas 1.3.3</div>
+                <div class="venv-lib">TensorFlow 2.6.0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p style="font-size:.82rem;color:var(--gray);margin-top:10px;line-height:1.65;">Notice that each environment can have a <strong>different Python version</strong> and <strong>different library versions</strong> — even the same library (e.g., Scikit-Learn 0.24.1 appears in both Env 1 and Env 2) can be installed independently in each, with no conflict.</p>
+
+        <h2 class="section-heading">Best Practice Summary</h2>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-num">✔</div>
+            <div class="card-title">One environment per project</div>
+            <div class="card-desc">Create a separate virtual environment for each data project. This keeps dependencies isolated and prevents conflicts between projects.</div>
+          </div>
+          <div class="card">
+            <div class="card-num">✔</div>
+            <div class="card-title">Activate before working</div>
+            <div class="card-desc">Always activate the correct virtual environment before installing packages or running code to ensure you're working in the right context.</div>
+          </div>
+          <div class="card">
+            <div class="card-num">✔</div>
+            <div class="card-title">Document your dependencies</div>
+            <div class="card-desc">Use a requirements.txt file to record all libraries and versions in each environment — making your project reproducible for teammates.</div>
+          </div>
+        </div>
+
+        <div class="topic-nav">
+          <button class="btn-nav prev" onclick="goTo(5)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Previous</button>
+          <button class="btn-nav next" onclick="goTo(7)">Next: Quizzes<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+
+      <!-- ======== TOPIC 7: QUIZZES ======== -->
+      <div class="topic" id="topic-7">
+        <div class="topic-badge">Knowledge Check</div>
+        <h1 class="topic-title">Quiz Time</h1>
+        <p class="topic-intro">Test your understanding of both modules. Select an answer — the correct one turns <span style="color:var(--correct);font-weight:700;">green ✅</span> and incorrect ones turn <span style="color:var(--wrong);font-weight:700;">red ❌</span>. An explanation appears after each selection explaining exactly why each answer is right or wrong.</p>
+
+        <!-- MODULE 1 QUIZ -->
+        <div class="quiz-section">
+          <div class="quiz-header">
+            <div class="quiz-header-icon">🗄️</div>
+            <div><div class="quiz-header-title">Module 1 Quiz · SQL in the Wild</div><div class="quiz-header-sub">SQL Environments &amp; Best Practices — 4 Questions</div></div>
+          </div>
+          <div class="quiz-body">
+
+            <div class="quiz-q" id="q0">
+              <div class="q-label">Question 1 of 4</div>
+              <div class="q-text">Which statements best describe why we need to use the different SQL environments?
+                <div class="q-subtext">1. Changes can be thoroughly tested before reaching the production environment, reducing the likelihood of critical issues.<br>2. To ensure database security, we use different SQL environments to be able to set strong passwords, use encryption, and implement role-based access controls for each environment.<br>3. Different environments prevent interference between the development, testing, and production stages of database creation.<br>4. Environments provide controlled channels for introducing new features or modifications, ensuring they are well thought out.</div>
+              </div>
+              <div class="q-options">
+                <div class="q-opt" onclick="answer(this,'q0','wrong')"><span class="opt-letter">A</span> a and b</div>
+                <div class="q-opt" onclick="answer(this,'q0','wrong')"><span class="opt-letter">B</span> Only c</div>
+                <div class="q-opt" onclick="answer(this,'q0','wrong')"><span class="opt-letter">C</span> c and d</div>
+                <div class="q-opt" onclick="answer(this,'q0','correct')"><span class="opt-letter">D</span> a, c, and d</div>
+              </div>
+              <div class="q-feedback" id="q0-fb"></div>
+            </div>
+
+            <div class="quiz-q" id="q1">
+              <div class="q-label">Question 2 of 4</div>
+              <div class="q-text">Which of the following is NOT a SQL environment?</div>
+              <div class="q-options">
+                <div class="q-opt" onclick="answer(this,'q1','wrong')"><span class="opt-letter">A</span> Development environment</div>
+                <div class="q-opt" onclick="answer(this,'q1','wrong')"><span class="opt-letter">B</span> QA environment</div>
+                <div class="q-opt" onclick="answer(this,'q1','wrong')"><span class="opt-letter">C</span> Production environment</div>
+                <div class="q-opt" onclick="answer(this,'q1','correct')"><span class="opt-letter">D</span> Launch environment</div>
+              </div>
+              <div class="q-feedback" id="q1-fb"></div>
+            </div>
+
+            <div class="quiz-q" id="q2">
+              <div class="q-label">Question 3 of 4</div>
+              <div class="q-text">When deploying SQL databases in production environments, which of the following best practices must be followed?
+                <div class="q-subtext">1. Database security &nbsp;&nbsp; 2. High availability and scalability &nbsp;&nbsp; 3. Performance tuning &nbsp;&nbsp; 4. Disaster recovery</div>
+              </div>
+              <div class="q-options">
+                <div class="q-opt" onclick="answer(this,'q2','wrong')"><span class="opt-letter">A</span> Only a</div>
+                <div class="q-opt" onclick="answer(this,'q2','wrong')"><span class="opt-letter">B</span> a and c</div>
+                <div class="q-opt" onclick="answer(this,'q2','wrong')"><span class="opt-letter">C</span> a, c, and d</div>
+                <div class="q-opt" onclick="answer(this,'q2','correct')"><span class="opt-letter">D</span> All of the above</div>
+              </div>
+              <div class="q-feedback" id="q2-fb"></div>
+            </div>
+
+            <div class="quiz-q" id="q3">
+              <div class="q-label">Question 4 of 4</div>
+              <div class="q-text">True or false? The SQL DEV environment is an exact or representative copy of the production environment, set up specifically for rigorous testing and validation of database changes. This environment is also referred to as the QA environment.</div>
+              <div class="q-options">
+                <div class="q-opt" onclick="answer(this,'q3','correct')"><span class="opt-letter">A</span> False</div>
+                <div class="q-opt" onclick="answer(this,'q3','wrong')"><span class="opt-letter">B</span> True</div>
+              </div>
+              <div class="q-feedback" id="q3-fb"></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- MODULE 2 QUIZ -->
+        <div class="quiz-section" style="margin-top:28px;">
+          <div class="quiz-header">
+            <div class="quiz-header-icon">🐍</div>
+            <div><div class="quiz-header-title">Module 2 Quiz · Programming for Data</div><div class="quiz-header-sub">Python, Virtual Environments &amp; Languages — 3 Questions</div></div>
+          </div>
+          <div class="quiz-body">
+
+            <div class="quiz-q" id="q4">
+              <div class="q-label">Question 1 of 3</div>
+              <div class="q-text">Which of the following programming languages are often used by data professionals for data cleaning, numerical computing, statistical analysis, visualizations, and modeling?
+                <div class="q-subtext">a. R &nbsp;&nbsp; b. Julia &nbsp;&nbsp; c. Java &nbsp;&nbsp; d. Scala</div>
+              </div>
+              <div class="q-options">
+                <div class="q-opt" onclick="answer(this,'q4','wrong')"><span class="opt-letter">A</span> None of the above</div>
+                <div class="q-opt" onclick="answer(this,'q4','wrong')"><span class="opt-letter">B</span> All of the above</div>
+                <div class="q-opt" onclick="answer(this,'q4','wrong')"><span class="opt-letter">C</span> Only a</div>
+                <div class="q-opt" onclick="answer(this,'q4','correct')"><span class="opt-letter">D</span> Only a, b, and d</div>
+              </div>
+              <div class="q-feedback" id="q4-fb"></div>
+            </div>
+
+            <div class="quiz-q" id="q5">
+              <div class="q-label">Question 2 of 3</div>
+              <div class="q-text">True or false? A virtual environment is an operating system, which means if we require more than one virtual environment, we need to have more than one physical computer or create computing partitions to host these environments.</div>
+              <div class="q-options">
+                <div class="q-opt" onclick="answer(this,'q5','correct')"><span class="opt-letter">A</span> False</div>
+                <div class="q-opt" onclick="answer(this,'q5','wrong')"><span class="opt-letter">B</span> True</div>
+              </div>
+              <div class="q-feedback" id="q5-fb"></div>
+            </div>
+
+            <div class="quiz-q" id="q6">
+              <div class="q-label">Question 3 of 3</div>
+              <div class="q-text">Considering a scenario where you are working on three separate data projects in Python, which of the following is the best practice?</div>
+              <div class="q-options">
+                <div class="q-opt" onclick="answer(this,'q6','wrong')"><span class="opt-letter">A</span> Create and use a single virtual environment for all projects to ensure old Python libraries are overwritten by the newest versions.</div>
+                <div class="q-opt" onclick="answer(this,'q6','wrong')"><span class="opt-letter">B</span> We don't need virtual environments because all our data projects will be built with Python.</div>
+                <div class="q-opt" onclick="answer(this,'q6','wrong')"><span class="opt-letter">C</span> We only need a single virtual environment to keep our operating system safe from the dependencies and configurations needed for our projects.</div>
+                <div class="q-opt" onclick="answer(this,'q6','correct')"><span class="opt-letter">D</span> Create and use separate virtual environments for each project to ensure dependencies and configurations are isolated for each project.</div>
+              </div>
+              <div class="q-feedback" id="q6-fb"></div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="topic-nav">
+          <button class="btn-nav prev" onclick="goTo(6)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Previous</button>
+          <button class="btn-nav next" onclick="backToLanding()" style="background:var(--green);color:var(--navy);">🎉 Finish &amp; Return Home</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+const feedbacks = {
+  q0:{
+    correct:"<strong>✅ Correct! The answer is a, c, and d.</strong> These three directly describe why we use separate SQL environments: risk mitigation (a), isolation (c), and controlled changes (d). Option b (security measures like encryption and role-based access controls) is a general database security practice applied within environments — it is not itself a reason for having separate environments.",
+    wrong:{
+      A:"<strong>❌ Incorrect.</strong> Option b is not a reason for using separate environments. While security is important, using encryption and role-based access controls is something done within each environment, not a reason to have separate ones. The correct answer is <strong>a, c, and d</strong>.",
+      B:"<strong>❌ Incorrect.</strong> 'Only c' misses two equally important reasons — risk mitigation (a) and controlled changes (d). All three of a, c, and d describe core reasons for using separate SQL environments. The correct answer is <strong>a, c, and d</strong>.",
+      C:"<strong>❌ Incorrect.</strong> While c and d are both correct, option a — thorough testing before production to reduce critical issues — is equally important and is also a correct reason. The correct answer is <strong>a, c, and d</strong>."
+    }
+  },
+  q1:{
+    correct:"<strong>✅ Correct!</strong> 'Launch environment' does not exist as a SQL environment. The three recognized SQL environments are: <strong>Development (DEV)</strong>, <strong>Testing/QA</strong>, and <strong>Production (PROD)</strong>.",
+    wrong:{
+      A:"<strong>❌ Incorrect.</strong> The <strong>Development environment</strong> (DEV) is real — it's where developers design, create, and modify the database schema and SQL queries freely. The non-existent one is 'Launch environment.'",
+      B:"<strong>❌ Incorrect.</strong> The <strong>QA (Quality Assurance) environment</strong> is real — it's an exact or representative copy of production used for rigorous testing and validation. The non-existent one is 'Launch environment.'",
+      C:"<strong>❌ Incorrect.</strong> The <strong>Production environment</strong> is real — it's the live system serving actual users and critical business processes. The non-existent one is 'Launch environment.'"
+    }
+  },
+  q2:{
+    correct:"<strong>✅ Correct! All four are required.</strong> Database Security, High Availability &amp; Scalability, Performance Tuning, and Disaster Recovery are all essential best practices for production SQL deployment. Skipping any one creates serious risks to the system's security, uptime, speed, or recoverability.",
+    wrong:{
+      A:"<strong>❌ Incorrect.</strong> Security alone is not sufficient. Production databases also need high availability to handle traffic, performance tuning for speed, and disaster recovery for data protection. <strong>All four</strong> best practices are necessary.",
+      B:"<strong>❌ Incorrect.</strong> Security and performance tuning are important, but leaving out high availability and disaster recovery means the database could go down under load or lose data permanently in a failure. <strong>All four</strong> best practices are required.",
+      C:"<strong>❌ Incorrect.</strong> Security, performance tuning, and disaster recovery are covered, but high availability and scalability are equally critical — especially for systems serving millions of users. <strong>All four</strong> best practices must be followed."
+    }
+  },
+  q3:{
+    correct:"<strong>✅ Correct — it's False!</strong> The description given (exact copy of production, rigorous testing and validation, also called QA) actually describes the <strong>Testing/QA environment</strong>, not the DEV environment. The <strong>Development (DEV) environment</strong> is where developers build, experiment, and iterate freely — it is not a copy of production.",
+    wrong:{
+      B:"<strong>❌ Incorrect — the answer is False.</strong> The statement describes the <strong>Testing/QA environment</strong>, not DEV. The QA environment is the near-identical replica of production used for validation. The DEV environment is a free sandbox for building and experimenting — it is not set up as a copy of production."
+    }
+  },
+  q4:{
+    correct:"<strong>✅ Correct! The answer is a, b, and d — R, Julia, and Scala.</strong> These are all used by data professionals: R for statistical analysis, Julia for high-performance scientific computing, and Scala for big data and distributed processing. <strong>Java (option c)</strong> is a general-purpose programming language not commonly used for data cleaning, statistical analysis, or data visualization by data professionals.",
+    wrong:{
+      A:"<strong>❌ Incorrect.</strong> R, Julia, and Scala are all widely used in data work. 'None of the above' is wrong. The correct answer is <strong>a, b, and d</strong>.",
+      B:"<strong>❌ Incorrect.</strong> Java (option c) is not typically used for data cleaning, statistical analysis, or visualization. It's a general-purpose language. The correct answer is <strong>a, b, and d</strong> (R, Julia, Scala).",
+      C:"<strong>❌ Incorrect.</strong> While R (option a) is certainly used for data work, Julia and Scala are also important data languages. 'Only a' is too narrow. The correct answer is <strong>a, b, and d</strong>."
+    }
+  },
+  q5:{
+    correct:"<strong>✅ Correct — it's False!</strong> A virtual environment is <strong>NOT</strong> an operating system. It is an isolated, self-contained workspace that lives <em>within</em> your existing operating system. You can create many virtual environments on a single computer — one per project — without needing additional hardware or computing partitions.",
+    wrong:{
+      B:"<strong>❌ Incorrect — the answer is False.</strong> Virtual environments do not require separate physical computers or partitions. They are lightweight, isolated workspaces that all exist <em>inside</em> the same operating system. One computer can host dozens of virtual environments simultaneously, each with its own Python version and libraries."
+    }
+  },
+  q6:{
+    correct:"<strong>✅ Correct!</strong> The best practice is to create a <strong>separate virtual environment for each project</strong>. This ensures each project's dependencies and library versions are fully isolated — if one project needs a different version of a library, it won't break the others.",
+    wrong:{
+      A:"<strong>❌ Incorrect.</strong> Using a single virtual environment for all three projects causes the conflict described in the lesson: if Project A needs library X v1.0 and Project B needs v2.0, installing one overwrites the other and breaks the first project. <strong>Separate environments for each project</strong> is the best practice.",
+      B:"<strong>❌ Incorrect.</strong> The programming language (Python) is not the issue — version conflicts happen within Python's library ecosystem. Different Python projects often require different versions of the same libraries, making virtual environments essential regardless of language. <strong>Separate environments for each project</strong> is the best practice.",
+      C:"<strong>❌ Incorrect.</strong> One virtual environment shared across multiple projects still leads to dependency conflicts. If two projects need different versions of the same library, conflicts will occur. One environment cannot safely serve multiple projects with different requirements. <strong>Separate environments for each project</strong> is the best practice."
+    }
+  }
+};
+
+function answer(el, qid, result) {
+  const q = document.getElementById(qid);
+  if (q.classList.contains('locked')) return;
+  q.classList.add('locked');
+  q.querySelectorAll('.q-opt').forEach(o => { o.style.pointerEvents = 'none'; });
+  const fb = document.getElementById(qid + '-fb');
+  fb.classList.add('show');
+  if (result === 'correct') {
+    el.classList.add('correct');
+    fb.classList.add('correct');
+    fb.innerHTML = feedbacks[qid].correct;
+  } else {
+    el.classList.add('wrong');
+    fb.classList.add('wrong');
+    const letter = el.querySelector('.opt-letter').textContent.trim();
+    const wrong = feedbacks[qid].wrong;
+    fb.innerHTML = (typeof wrong === 'string') ? wrong : (wrong[letter] || wrong[Object.keys(wrong)[0]]);
+  }
+}
+
+const moduleLabels = ['SQL in the Wild','SQL in the Wild','SQL in the Wild','SQL in the Wild','Programming for Data','Programming for Data','Programming for Data','Knowledge Check'];
+let current = 0;
+const total = 8;
+
+function goTo(idx) {
+  document.getElementById('topic-' + current).classList.remove('active');
+  document.getElementById('nav-' + current).classList.remove('active');
+  current = idx;
+  document.getElementById('topic-' + current).classList.add('active');
+  document.getElementById('nav-' + current).classList.add('active');
+  document.getElementById('top-module').textContent = moduleLabels[idx];
+  document.getElementById('progress-label').textContent = (idx + 1) + ' / ' + total;
+  document.getElementById('progress-fill').style.width = (((idx + 1) / total) * 100) + '%';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebar-overlay').classList.remove('show');
+  }
+}
+
+function startApp() {
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+}
+
+function backToLanding() {
+  document.getElementById('landing').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('show');
+}
+</script>
+</body>
+</html>

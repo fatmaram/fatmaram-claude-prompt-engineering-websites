@@ -1,0 +1,2730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transport in Plants and Animals | Biology Form 2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --green-deep: #1a3a2a;
+    --green-mid: #2d6a4f;
+    --green-light: #52b788;
+    --green-pale: #b7e4c7;
+    --teal: #1b7a8c;
+    --teal-light: #4cc9d8;
+    --earth: #8b5e3c;
+    --earth-light: #d4a574;
+    --red: #c0392b;
+    --blue-dark: #1a2a4a;
+    --blue-mid: #2563a8;
+    --blue-light: #60a5fa;
+    --cream: #faf6f0;
+    --white: #ffffff;
+    --gray: #64748b;
+    --gray-light: #f1f5f9;
+    --gold: #f59e0b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--green-deep);
+    color: #fff;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ===== PROGRESS BAR ===== */
+  #progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--green-light), var(--teal-light));
+    transition: width 0.4s ease;
+    z-index: 1000;
+  }
+
+  /* ===== NAV ===== */
+  #nav {
+    position: fixed;
+    top: 4px; left: 0; right: 0;
+    height: 52px;
+    background: rgba(26,58,42,0.95);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 999;
+    border-bottom: 1px solid rgba(82,183,136,0.2);
+  }
+
+  #nav-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--green-light);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  #nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-btn {
+    background: rgba(82,183,136,0.15);
+    border: 1px solid rgba(82,183,136,0.3);
+    color: var(--green-light);
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    transition: all 0.2s;
+  }
+
+  .nav-btn:hover { background: rgba(82,183,136,0.3); }
+
+  #slide-counter {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    min-width: 60px;
+    text-align: center;
+  }
+
+  #menu-btn {
+    background: none;
+    border: 1px solid rgba(82,183,136,0.3);
+    color: var(--green-light);
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  /* ===== TOC PANEL ===== */
+  #toc-panel {
+    position: fixed;
+    top: 56px; left: -280px;
+    width: 280px;
+    height: calc(100vh - 56px);
+    background: rgba(10,25,18,0.97);
+    border-right: 1px solid rgba(82,183,136,0.2);
+    z-index: 998;
+    overflow-y: auto;
+    transition: left 0.3s ease;
+    padding: 16px 0;
+  }
+
+  #toc-panel.open { left: 0; }
+
+  .toc-section {
+    padding: 6px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--green-light);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 10px;
+  }
+
+  .toc-item {
+    padding: 8px 20px;
+    cursor: pointer;
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    transition: all 0.2s;
+    border-left: 2px solid transparent;
+  }
+
+  .toc-item:hover, .toc-item.active {
+    color: #fff;
+    background: rgba(82,183,136,0.1);
+    border-left-color: var(--green-light);
+  }
+
+  /* ===== SLIDES ===== */
+  #slides-container {
+    position: fixed;
+    top: 56px; left: 0; right: 0; bottom: 0;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: none;
+    overflow-y: auto;
+    padding: 30px 40px 80px;
+    animation: slideIn 0.4s ease;
+  }
+
+  .slide.active { display: block; }
+
+  .slide-title.active,
+  .slide-section-header.active { display: flex !important; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== SLIDE TYPES ===== */
+
+  /* Title slide */
+  .slide-title {
+    background: radial-gradient(ellipse at 30% 50%, rgba(45,106,79,0.6) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 20%, rgba(27,122,140,0.4) 0%, transparent 50%),
+                linear-gradient(135deg, #0d2318 0%, #1a3a2a 50%, #0a1a14 100%);
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 80px;
+    overflow: hidden;
+  }
+
+  .slide-title::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(82,183,136,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .title-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--green-light);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    border: 1px solid rgba(82,183,136,0.4);
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: inline-block;
+  }
+
+  .title-main {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 900;
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 24px;
+    max-width: 700px;
+  }
+
+  .title-main span { color: var(--green-light); }
+
+  .title-sub {
+    font-size: 18px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 40px;
+    max-width: 500px;
+    line-height: 1.6;
+  }
+
+  .title-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .pill {
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .pill-green { background: rgba(82,183,136,0.2); color: var(--green-light); border: 1px solid rgba(82,183,136,0.4); }
+  .pill-teal { background: rgba(76,201,216,0.15); color: var(--teal-light); border: 1px solid rgba(76,201,216,0.3); }
+  .pill-gold { background: rgba(245,158,11,0.15); color: var(--gold); border: 1px solid rgba(245,158,11,0.3); }
+
+  /* Section headers */
+  .slide-section {
+    background: linear-gradient(135deg, #0d2318 0%, #1a3a2a 100%);
+  }
+
+  /* Content slides */
+  .slide-content {
+    background: linear-gradient(160deg, #0f2219 0%, #162d22 60%, #0d1f18 100%);
+  }
+
+  /* ===== CONTENT ELEMENTS ===== */
+  .slide-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 3vw, 36px);
+    color: #fff;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .slide-heading span { color: var(--green-light); }
+
+  .slide-subheading {
+    font-size: 13px;
+    color: var(--green-light);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(82,183,136,0.2);
+  }
+
+  .learning-obj {
+    background: rgba(82,183,136,0.08);
+    border: 1px solid rgba(82,183,136,0.2);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .learning-obj-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+
+  .learning-obj-text { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.6; }
+
+  /* Cards */
+  .card-grid {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .card-grid-2 { grid-template-columns: 1fr 1fr; }
+  .card-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .card-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+  .card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 18px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .card:hover {
+    border-color: rgba(82,183,136,0.4);
+    transform: translateY(-2px);
+  }
+
+  .card-icon { font-size: 28px; margin-bottom: 10px; }
+  .card-title { font-weight: 600; color: #fff; margin-bottom: 8px; font-size: 15px; }
+  .card-body { font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.6; }
+
+  .card.accent-green { border-left: 3px solid var(--green-light); }
+  .card.accent-teal { border-left: 3px solid var(--teal-light); }
+  .card.accent-gold { border-left: 3px solid var(--gold); }
+  .card.accent-red { border-left: 3px solid #ef4444; }
+
+  /* Key term highlight */
+  .key-term {
+    color: var(--green-light);
+    font-weight: 600;
+  }
+
+  /* Definition box */
+  .definition-box {
+    background: rgba(45,106,79,0.2);
+    border: 1px solid rgba(82,183,136,0.4);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 16px;
+  }
+
+  .definition-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--green-light);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .definition-text {
+    font-size: 16px;
+    color: #fff;
+    line-height: 1.6;
+  }
+
+  /* Bullet list */
+  .bullet-list {
+    list-style: none;
+    margin-bottom: 16px;
+  }
+
+  .bullet-list li {
+    padding: 6px 0 6px 24px;
+    position: relative;
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.5;
+  }
+
+  .bullet-list li::before {
+    content: '▶';
+    position: absolute;
+    left: 0;
+    color: var(--green-light);
+    font-size: 8px;
+    top: 10px;
+  }
+
+  /* Comparison table */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 13px;
+  }
+
+  .compare-table th {
+    background: rgba(82,183,136,0.2);
+    color: var(--green-light);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(82,183,136,0.4);
+  }
+
+  .compare-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.8);
+    vertical-align: top;
+  }
+
+  .compare-table tr:hover td { background: rgba(255,255,255,0.03); }
+
+  .compare-table .col-a { color: var(--green-light); }
+  .compare-table .col-b { color: var(--teal-light); }
+
+  /* Flow diagram */
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+    padding: 16px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+  }
+
+  .flow-box {
+    background: rgba(45,106,79,0.3);
+    border: 1px solid rgba(82,183,136,0.5);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    min-width: 80px;
+  }
+
+  .flow-arrow {
+    color: var(--green-light);
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  /* SVG Diagrams */
+  .diagram-container {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Animated water flow */
+  .water-flow-container {
+    background: rgba(0,20,40,0.5);
+    border: 1px solid rgba(76,201,216,0.3);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 16px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  @keyframes flowDown { 0% { cy: 10; opacity: 0; } 100% { cy: 290; opacity: 1; } }
+  @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+  @keyframes heartbeat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.05); } 30% { transform: scale(1); } 45% { transform: scale(1.03); } }
+
+  .heart-svg { animation: heartbeat 1.5s ease-in-out infinite; }
+
+  /* KCSE Badge */
+  .kcse-badge {
+    background: linear-gradient(135deg, #b45309, #f59e0b);
+    color: #fff;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+
+  .exam-tip {
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+  }
+
+  .exam-tip::before {
+    content: '⭐ EXAM TIP: ';
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* Two-column layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 16px;
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  /* ===== QUIZ STYLES ===== */
+  #quiz-slide {
+    background: linear-gradient(160deg, #0a1828 0%, #0d2035 100%);
+  }
+
+  .quiz-container { max-width: 800px; margin: 0 auto; }
+
+  .quiz-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .quiz-progress-bar {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    height: 6px;
+    margin: 16px 0;
+    overflow: hidden;
+  }
+
+  .quiz-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green-light), var(--teal-light));
+    transition: width 0.4s ease;
+  }
+
+  .quiz-question-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+
+  .quiz-q-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--green-light);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  .quiz-q-text {
+    font-size: 17px;
+    font-weight: 500;
+    color: #fff;
+    line-height: 1.5;
+    margin-bottom: 22px;
+  }
+
+  .quiz-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: all 0.2s;
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .quiz-option:hover { border-color: rgba(82,183,136,0.5); background: rgba(82,183,136,0.08); }
+  .quiz-option.selected { border-color: var(--green-light); background: rgba(82,183,136,0.15); color: #fff; }
+  .quiz-option.correct { border-color: #22c55e; background: rgba(34,197,94,0.15); color: #fff; }
+  .quiz-option.wrong { border-color: #ef4444; background: rgba(239,68,68,0.15); color: #fff; }
+
+  .quiz-option-letter {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .quiz-feedback {
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 1.6;
+    display: none;
+  }
+
+  .quiz-feedback.correct-fb {
+    background: rgba(34,197,94,0.15);
+    border: 1px solid rgba(34,197,94,0.4);
+    color: #86efac;
+    display: block;
+  }
+
+  .quiz-feedback.wrong-fb {
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.3);
+    color: #fca5a5;
+    display: block;
+  }
+
+  .quiz-btn {
+    padding: 12px 28px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .quiz-btn-primary {
+    background: linear-gradient(135deg, var(--green-mid), var(--teal));
+    color: #fff;
+  }
+
+  .quiz-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(45,106,79,0.5); }
+  .quiz-btn-secondary { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+
+  .quiz-actions { display: flex; gap: 12px; margin-top: 20px; justify-content: flex-end; }
+
+  .score-display {
+    text-align: center;
+    padding: 40px;
+  }
+
+  .score-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--green-light), var(--teal-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* KCSE Questions */
+  .kcse-question {
+    background: rgba(245,158,11,0.05);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+  }
+
+  .kcse-q-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .kcse-q-text { font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.6; }
+
+  /* Scroll indicator */
+  .scroll-hint {
+    position: fixed;
+    bottom: 16px;
+    right: 50%;
+    transform: translateX(50%);
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    animation: pulse 2s infinite;
+    pointer-events: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .slide { padding: 20px 20px 80px; }
+    .card-grid-2, .card-grid-3, .card-grid-4 { grid-template-columns: 1fr; }
+    .two-col, .three-col { grid-template-columns: 1fr; }
+    .slide-title { padding: 40px 30px; }
+    .title-main { font-size: 32px; }
+  }
+
+  /* Section divider slide */
+  .slide-section-header {
+    background: radial-gradient(ellipse at center, rgba(45,106,79,0.4) 0%, transparent 70%),
+                linear-gradient(135deg, #0d2318 0%, #1a3a2a 100%);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .section-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 60px;
+    font-weight: 500;
+    color: rgba(82,183,136,0.15);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+
+  .section-title span { color: var(--green-light); }
+
+  .section-desc {
+    font-size: 16px;
+    color: rgba(255,255,255,0.5);
+    max-width: 500px;
+  }
+
+  /* Expandable sections */
+  .expandable {
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .expandable-header {
+    padding: 14px 18px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+    font-size: 14px;
+    background: rgba(255,255,255,0.03);
+    transition: background 0.2s;
+    user-select: none;
+  }
+
+  .expandable-header:hover { background: rgba(255,255,255,0.06); }
+
+  .expandable-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding: 0 18px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.7;
+  }
+
+  .expandable.open .expandable-content { max-height: 500px; padding: 14px 18px; }
+
+  .expand-icon { transition: transform 0.3s; }
+  .expandable.open .expand-icon { transform: rotate(180deg); }
+
+  /* Blood clotting cascade */
+  .cascade {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin: 16px 0;
+  }
+
+  .cascade-box {
+    background: rgba(192,57,43,0.2);
+    border: 1px solid rgba(192,57,43,0.5);
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    min-width: 200px;
+  }
+
+  .cascade-plus {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    align-self: center;
+  }
+
+  .cascade-arrow { font-size: 20px; color: #ef4444; }
+
+  /* Blood groups grid */
+  .blood-group-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .blood-group-card {
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+    border: 2px solid;
+  }
+
+  .blood-group-card .bg-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 900;
+  }
+
+  .blood-group-card .bg-detail { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 4px; line-height: 1.4; }
+
+  /* Infographic icons */
+  .infographic-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+  }
+
+  .info-item {
+    flex: 1;
+    min-width: 120px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .info-item .info-icon { font-size: 30px; margin-bottom: 8px; }
+  .info-item .info-label { font-size: 12px; color: rgba(255,255,255,0.6); }
+  .info-item .info-value { font-size: 15px; font-weight: 600; color: #fff; margin: 4px 0; }
+
+  /* Stomata animation */
+  @keyframes stomataOpen {
+    0%, 100% { d: path("M 50 30 Q 50 50 50 70"); }
+    50% { d: path("M 40 30 Q 50 50 60 70"); }
+  }
+
+  /* Water animation */
+  @keyframes dropFall {
+    0% { transform: translateY(-20px); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(60px); opacity: 0; }
+  }
+
+  .water-drop {
+    animation: dropFall 2s ease-in infinite;
+    display: inline-block;
+  }
+
+  .water-drop:nth-child(2) { animation-delay: 0.4s; }
+  .water-drop:nth-child(3) { animation-delay: 0.8s; }
+
+  /* Force tags */
+  .force-tag {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 4px;
+  }
+
+  /* Color tags */
+  .tag-green { background: rgba(82,183,136,0.2); color: var(--green-light); border: 1px solid rgba(82,183,136,0.4); }
+  .tag-teal { background: rgba(76,201,216,0.15); color: var(--teal-light); border: 1px solid rgba(76,201,216,0.3); }
+  .tag-blue { background: rgba(96,165,250,0.15); color: var(--blue-light); border: 1px solid rgba(96,165,250,0.3); }
+  .tag-gold { background: rgba(245,158,11,0.15); color: var(--gold); border: 1px solid rgba(245,158,11,0.3); }
+  .tag-red { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+  .tag-purple { background: rgba(167,139,250,0.15); color: #c4b5fd; border: 1px solid rgba(167,139,250,0.3); }
+
+  /* Heart diagram SVG labels */
+  text.label { font-size: 9px; fill: rgba(255,255,255,0.8); font-family: 'DM Sans', sans-serif; }
+
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div id="progress-bar"></div>
+
+<!-- Navigation -->
+<nav id="nav">
+  <button id="menu-btn" onclick="toggleMenu()">☰</button>
+  <div id="nav-title">Biology Form 2 · Transport</div>
+  <div id="nav-controls">
+    <button class="nav-btn" onclick="prevSlide()">← Prev</button>
+    <span id="slide-counter">1 / 40</span>
+    <button class="nav-btn" onclick="nextSlide()">Next →</button>
+  </div>
+</nav>
+
+<!-- TOC Panel -->
+<div id="toc-panel">
+  <div class="toc-section">Introduction</div>
+  <div class="toc-item" onclick="goTo(0)">🏠 Title Slide</div>
+  <div class="toc-item" onclick="goTo(1)">📖 What is Transport?</div>
+  <div class="toc-section">Plants</div>
+  <div class="toc-item" onclick="goTo(2)">🌿 Transport in Plants</div>
+  <div class="toc-item" onclick="goTo(3)">🔬 Root Hair Structure</div>
+  <div class="toc-item" onclick="goTo(4)">⚖️ Dicot vs Monocot Root</div>
+  <div class="toc-item" onclick="goTo(5)">🪵 Root vs Stem Differences</div>
+  <div class="toc-item" onclick="goTo(6)">🚿 Xylem & Phloem</div>
+  <div class="toc-item" onclick="goTo(7)">💧 Water Movement Pathway</div>
+  <div class="toc-item" onclick="goTo(8)">⚡ Forces of Water Movement</div>
+  <div class="toc-item" onclick="goTo(9)">🌡️ Transpiration</div>
+  <div class="toc-item" onclick="goTo(10)">📊 Factors Affecting Transpiration</div>
+  <div class="toc-item" onclick="goTo(11)">🌵 Plant Adaptations</div>
+  <div class="toc-item" onclick="goTo(12)">🍃 Translocation in Phloem</div>
+  <div class="toc-item" onclick="goTo(13)">🔬 Translocation Experiments</div>
+  <div class="toc-item" onclick="goTo(14)">🧂 Mineral Salts Uptake</div>
+  <div class="toc-item" onclick="goTo(15)">🌸 Stomata Mechanism</div>
+  <div class="toc-section">Animals</div>
+  <div class="toc-item" onclick="goTo(16)">🐾 Transport in Animals</div>
+  <div class="toc-item" onclick="goTo(17)">🔄 Circulatory Systems</div>
+  <div class="toc-item" onclick="goTo(18)">❤️ The Mammalian Heart</div>
+  <div class="toc-item" onclick="goTo(19)">🫀 Heart Adaptations</div>
+  <div class="toc-item" onclick="goTo(20)">🩸 Blood Vessels</div>
+  <div class="toc-item" onclick="goTo(21)">🔬 Blood Vessel Comparison</div>
+  <div class="toc-item" onclick="goTo(22)">🩸 Blood Composition</div>
+  <div class="toc-item" onclick="goTo(23)">🔴 Red Blood Cells</div>
+  <div class="toc-item" onclick="goTo(24)">🌬️ Gas Transport in Blood</div>
+  <div class="toc-item" onclick="goTo(25)">🩹 Blood Clotting</div>
+  <div class="toc-item" onclick="goTo(26)">🅰️ Blood Groups</div>
+  <div class="toc-item" onclick="goTo(27)">🛡️ Immunity</div>
+  <div class="toc-section">Review</div>
+  <div class="toc-item" onclick="goTo(28)">🩸 Blood Transfusion</div>
+  <div class="toc-item" onclick="goTo(29)">📋 Summary Tables</div>
+  <div class="toc-item" onclick="goTo(30)">📝 KCSE Questions</div>
+  <div class="toc-item" onclick="goTo(31)">🎯 Interactive Quiz</div>
+</div>
+
+<!-- Slides Container -->
+<div id="slides-container">
+
+<!-- ===== SLIDE 0: TITLE ===== -->
+<div class="slide slide-title active" id="slide-0">
+  <div class="title-tag">KCSE Biology · Form 2 · Unit 1</div>
+  <h1 class="title-main">Transport in <span>Plants</span> & Animals</h1>
+  <p class="title-sub">A complete interactive study guide for Form 2 students — covering plant water movement, transpiration, translocation, the mammalian heart, blood, and immunity.</p>
+  <div class="title-pills">
+    <span class="pill pill-green">🌿 Plant Transport</span>
+    <span class="pill pill-teal">❤️ Animal Transport</span>
+    <span class="pill pill-gold">🎯 KCSE Focused</span>
+  </div>
+  <div style="margin-top:40px; display:flex; gap:30px; flex-wrap:wrap;">
+    <div style="text-align:center;">
+      <div style="font-family:'Playfair Display',serif; font-size:36px; color:var(--green-light);">29</div>
+      <div style="font-size:12px; color:rgba(255,255,255,0.5);">Slides</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:'Playfair Display',serif; font-size:36px; color:var(--teal-light);">15</div>
+      <div style="font-size:12px; color:rgba(255,255,255,0.5);">Quiz Questions</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:'Playfair Display',serif; font-size:36px; color:var(--gold);">10</div>
+      <div style="font-size:12px; color:rgba(255,255,255,0.5);">KCSE Questions</div>
+    </div>
+  </div>
+  <div style="margin-top:30px;">
+    <button class="quiz-btn quiz-btn-primary" onclick="nextSlide()">Begin →</button>
+  </div>
+</div>
+
+<!-- ===== SLIDE 1: INTRODUCTION ===== -->
+<div class="slide slide-content" id="slide-1">
+  <div class="slide-subheading">Introduction</div>
+  <h2 class="slide-heading">What is <span>Transport</span>?</h2>
+
+  <div class="definition-box">
+    <div class="definition-label">Definition</div>
+    <div class="definition-text"><span class="key-term">Transport</span> is the movement of substances from one part of the body to another.</div>
+  </div>
+
+  <div class="learning-obj">
+    <div class="learning-obj-icon">🎯</div>
+    <div class="learning-obj-text">By the end of this section, you should be able to: define transport, explain why it is necessary, and distinguish transport in plants vs animals.</div>
+  </div>
+
+  <h3 style="color:var(--green-light); margin-bottom:12px; font-size:16px;">Why is Transport Necessary?</h3>
+  <div class="card-grid card-grid-4">
+    <div class="card accent-green">
+      <div class="card-icon">🍎</div>
+      <div class="card-title">Nutrients</div>
+      <div class="card-body">Move nutrients from one point to another in the body</div>
+    </div>
+    <div class="card accent-teal">
+      <div class="card-icon">💨</div>
+      <div class="card-title">Respiratory Gases</div>
+      <div class="card-body">Movement of O₂ and CO₂ for respiration</div>
+    </div>
+    <div class="card accent-gold">
+      <div class="card-icon">🧪</div>
+      <div class="card-title">Waste Removal</div>
+      <div class="card-body">Elimination of metabolic waste products</div>
+    </div>
+    <div class="card" style="border-left:3px solid #c4b5fd;">
+      <div class="card-icon">⚗️</div>
+      <div class="card-title">Hormones & Enzymes</div>
+      <div class="card-body">Movement of hormones, enzymes, water, and salts</div>
+    </div>
+  </div>
+
+  <div class="exam-tip">Transport ensures all cells receive what they need and have waste products removed, enabling life functions.</div>
+</div>
+
+<!-- ===== SLIDE 2: TRANSPORT IN PLANTS (SECTION) ===== -->
+<div class="slide slide-section-header" id="slide-2">
+  <div class="section-number">01</div>
+  <div class="section-title">Transport in <span>Plants</span></div>
+  <div class="section-desc">Root hairs, xylem, phloem, water movement, transpiration, and translocation</div>
+  <div style="margin-top:30px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+    <span class="pill pill-green">🌱 Root Hairs</span>
+    <span class="pill pill-teal">🚿 Xylem & Phloem</span>
+    <span class="pill pill-gold">💧 Water Forces</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 3: ROOT HAIR ===== -->
+<div class="slide slide-content" id="slide-3">
+  <div class="slide-subheading">Transport in Plants</div>
+  <h2 class="slide-heading">Root Hair: <span>Structure & Function</span></h2>
+
+  <div class="two-col">
+    <div>
+      <div class="definition-box">
+        <div class="definition-label">Root Hair Structure</div>
+        <div class="definition-text" style="font-size:14px;">Root hairs are cells near the root tip with <strong>elongated finger-like projections</strong> in contact with soil particles. They are permeable to water and mineral salts.</div>
+      </div>
+
+      <h3 style="color:var(--green-light); font-size:15px; margin-bottom:10px;">Adaptations of Root Hairs</h3>
+      <ul class="bullet-list">
+        <li><span class="key-term">Long, narrow & numerous</span> — increases surface area for absorption</li>
+        <li><span class="key-term">Many mitochondria</span> — supply energy for active transport of mineral salts</li>
+        <li><span class="key-term">Thin-walled</span> — speeds up rate of absorption of water and mineral salts</li>
+      </ul>
+
+      <div class="exam-tip">Always state WHY the adaptation helps — e.g. "long to increase surface area for absorption."</div>
+    </div>
+
+    <div class="diagram-container" style="flex-direction:column;">
+      <svg width="240" height="220" viewBox="0 0 240 220">
+        <!-- Root cross section simplified -->
+        <circle cx="120" cy="110" r="90" fill="rgba(45,106,79,0.1)" stroke="rgba(82,183,136,0.3)" stroke-width="1"/>
+        <!-- Epidermis -->
+        <circle cx="120" cy="110" r="85" fill="none" stroke="rgba(82,183,136,0.6)" stroke-width="2" stroke-dasharray="4,2"/>
+        <!-- Cortex -->
+        <circle cx="120" cy="110" r="60" fill="rgba(82,183,136,0.08)" stroke="rgba(82,183,136,0.3)" stroke-width="1"/>
+        <!-- Endodermis -->
+        <circle cx="120" cy="110" r="40" fill="rgba(27,122,140,0.1)" stroke="rgba(76,201,216,0.5)" stroke-width="1.5"/>
+        <!-- Pericycle -->
+        <circle cx="120" cy="110" r="32" fill="rgba(27,122,140,0.15)" stroke="rgba(76,201,216,0.3)" stroke-width="1"/>
+        <!-- Xylem (star shaped) -->
+        <polygon points="120,82 128,105 115,95 125,95 112,105" fill="rgba(245,158,11,0.5)" stroke="rgba(245,158,11,0.8)" stroke-width="1"/>
+        <!-- Phloem -->
+        <circle cx="110" cy="115" r="6" fill="rgba(82,183,136,0.6)"/>
+        <circle cx="130" cy="115" r="6" fill="rgba(82,183,136,0.6)"/>
+        <circle cx="120" cy="130" r="6" fill="rgba(82,183,136,0.6)"/>
+        <!-- Root hairs -->
+        <line x1="38" y1="90" x2="15" y2="75" stroke="rgba(82,183,136,0.8)" stroke-width="2"/>
+        <line x1="36" y1="110" x2="10" y2="105" stroke="rgba(82,183,136,0.8)" stroke-width="2"/>
+        <line x1="40" y1="130" x2="18" y2="145" stroke="rgba(82,183,136,0.8)" stroke-width="2"/>
+        <line x1="200" y1="85" x2="222" y2="70" stroke="rgba(82,183,136,0.8)" stroke-width="2"/>
+        <line x1="202" y1="110" x2="228" y2="108" stroke="rgba(82,183,136,0.8)" stroke-width="2"/>
+        <!-- Labels -->
+        <text x="120" y="10" text-anchor="middle" class="label" fill="rgba(255,255,255,0.8)" font-size="10">Root Cross-Section</text>
+        <text x="5" y="68" class="label" font-size="8" fill="rgba(82,183,136,1)">Root</text>
+        <text x="5" y="76" class="label" font-size="8" fill="rgba(82,183,136,1)">hairs</text>
+        <text x="55" y="55" class="label" font-size="8" fill="rgba(255,255,255,0.6)">Epidermis</text>
+        <text x="75" y="75" class="label" font-size="8" fill="rgba(255,255,255,0.5)">Cortex</text>
+        <text x="80" y="100" class="label" font-size="8" fill="rgba(76,201,216,0.9)">Endodermis</text>
+        <text x="95" y="118" class="label" font-size="8" fill="rgba(245,158,11,0.9)">Xylem</text>
+        <text x="108" y="134" class="label" font-size="8" fill="rgba(82,183,136,0.9)">Phloem</text>
+      </svg>
+      <div style="font-size:11px; color:rgba(255,255,255,0.4); text-align:center; margin-top:8px;">Transverse section of dicot root</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 4: DICOT VS MONOCOT ROOT ===== -->
+<div class="slide slide-content" id="slide-4">
+  <div class="slide-subheading">Transport in Plants</div>
+  <h2 class="slide-heading">Dicot vs Monocot <span>Root & Stem</span></h2>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th class="col-a">Monocot Root</th>
+        <th class="col-b">Dicot Root</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Xylem & Phloem</td>
+        <td>Arranged in ring form alternately; pith present</td>
+        <td>Phloem lies between radial rays of central xylem (star-shaped); pith absent</td>
+      </tr>
+      <tr>
+        <td>Xylem shape</td>
+        <td>Ring arrangement</td>
+        <td>Star-shaped (radial)</td>
+      </tr>
+      <tr>
+        <td>Similarities</td>
+        <td colspan="2">Both used for anchorage & absorption; both have root hairs, epidermis, pericycle, cortex, endodermis and vascular bundles (xylem and phloem); may store food</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="color:var(--green-light); font-size:15px; margin:16px 0 10px;">Stem Comparison</h3>
+  <table class="compare-table">
+    <thead>
+      <tr><th>Feature</th><th class="col-a">Monocot Stem</th><th class="col-b">Dicot Stem</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Vascular bundles</td><td>Many and scattered</td><td>Few, in concentric ring near epidermis</td></tr>
+      <tr><td>Pith</td><td>Hollow or absent</td><td>Large and well-developed</td></tr>
+      <tr><td>Cambium</td><td>Absent — no secondary growth</td><td>Present — secondary growth occurs</td></tr>
+      <tr><td>Cortex</td><td>Very little</td><td>Several layers of cells</td></tr>
+    </tbody>
+  </table>
+
+  <div class="exam-tip">KCSE often asks you to "state differences between" — use a table for maximum marks! One point = one mark.</div>
+</div>
+
+<!-- ===== SLIDE 5: ROOT VS STEM ===== -->
+<div class="slide slide-content" id="slide-5">
+  <div class="slide-subheading">Transport in Plants</div>
+  <h2 class="slide-heading">Root vs Stem <span>Internal Structure</span></h2>
+
+  <table class="compare-table">
+    <thead>
+      <tr><th>Feature</th><th class="col-a">Root</th><th class="col-b">Stem</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Root hairs</td><td>Present</td><td>Absent</td></tr>
+      <tr><td>Cuticle</td><td>Absent</td><td>Present</td></tr>
+      <tr><td>Xylem & Phloem arrangement</td><td>Arranged alternately (radially)</td><td>Arranged on same radii</td></tr>
+      <tr><td>Xylem vessel size</td><td>Small vessels towards outside</td><td>Smallest vessels towards inside</td></tr>
+      <tr><td>Widest tissue</td><td>Cortex is widest</td><td>Pith is widest</td></tr>
+    </tbody>
+  </table>
+
+  <div class="exam-tip">When asked to compare root and stem, note that FIVE clear differences are commonly tested in KCSE structured questions.</div>
+
+  <div class="card-grid card-grid-2" style="margin-top:16px;">
+    <div class="card accent-green">
+      <div class="card-title">🌱 Root Function</div>
+      <div class="card-body">Anchorage in soil, absorption of water and mineral salts from soil, may store food (e.g. carrot)</div>
+    </div>
+    <div class="card accent-teal">
+      <div class="card-title">🌿 Stem Function</div>
+      <div class="card-body">Support (holds leaves/flowers), conduction of water/salts/food, may store food, photosynthesis in young stems</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 6: XYLEM & PHLOEM ===== -->
+<div class="slide slide-content" id="slide-6">
+  <div class="slide-subheading">Transport Structures</div>
+  <h2 class="slide-heading">Xylem & <span>Phloem</span></h2>
+
+  <div class="card-grid card-grid-2">
+    <div style="background:rgba(245,158,11,0.07); border:1px solid rgba(245,158,11,0.3); border-radius:12px; padding:18px;">
+      <div style="color:var(--gold); font-weight:700; font-size:16px; margin-bottom:12px;">🟡 XYLEM</div>
+      <div class="definition-label">Function</div>
+      <p style="font-size:13px; color:rgba(255,255,255,0.8); margin-bottom:12px;">Transports <strong>water and mineral salts</strong> from soil to leaves (upward flow)</p>
+      <div class="definition-label">Adaptations</div>
+      <ul class="bullet-list">
+        <li><span class="key-term">Lignified/thickened</span> — prevents collapsing</li>
+        <li><span class="key-term">Narrow</span> — facilitates capillarity</li>
+        <li><span class="key-term">No cross walls</span> — continuous flow of water column</li>
+        <li><span class="key-term">Bordered pits</span> — lateral movement of water</li>
+        <li><span class="key-term">Dead cells</span> — hollow tubes, no resistance</li>
+      </ul>
+    </div>
+    <div style="background:rgba(82,183,136,0.07); border:1px solid rgba(82,183,136,0.3); border-radius:12px; padding:18px;">
+      <div style="color:var(--green-light); font-weight:700; font-size:16px; margin-bottom:12px;">🟢 PHLOEM</div>
+      <div class="definition-label">Function</div>
+      <p style="font-size:13px; color:rgba(255,255,255,0.8); margin-bottom:12px;">Translocates <strong>manufactured food</strong> from leaves to other parts (bidirectional)</p>
+      <div class="definition-label">Components</div>
+      <ul class="bullet-list">
+        <li><span class="key-term">Sieve tubes</span> — conduct food; have cross walls (sieve plates)</li>
+        <li><span class="key-term">Companion cells</span> — supply nutrients & energy for translocation; regulate tube cells</li>
+        <li><span class="key-term">Cytoplasm</span> — present (unlike xylem)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="color:var(--green-light); font-size:14px; margin:16px 0 10px;">Xylem vs Sieve Tube Differences</h3>
+  <table class="compare-table">
+    <thead><tr><th>Feature</th><th class="col-a">Xylem</th><th class="col-b">Sieve Tubes (Phloem)</th></tr></thead>
+    <tbody>
+      <tr><td>Cross walls</td><td>None</td><td>Present (sieve plates)</td></tr>
+      <tr><td>Lignification</td><td>Lignified</td><td>Not lignified</td></tr>
+      <tr><td>Cytoplasm</td><td>Absent (dead cells)</td><td>Present</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== SLIDE 7: WATER NEEDS ===== -->
+<div class="slide slide-content" id="slide-7">
+  <div class="slide-subheading">Water Movement</div>
+  <h2 class="slide-heading">Why Plants Need <span>Water</span> & Its Pathway</h2>
+
+  <div class="card-grid card-grid-4" style="margin-bottom:20px;">
+    <div class="card accent-green"><div class="card-icon">☀️</div><div class="card-title">Photosynthesis</div><div class="card-body">Raw material in light-dependent reactions</div></div>
+    <div class="card accent-teal"><div class="card-icon">💪</div><div class="card-title">Turgidity</div><div class="card-body">Maintains cell turgor for plant support</div></div>
+    <div class="card accent-gold"><div class="card-icon">🧪</div><div class="card-title">Solvent</div><div class="card-body">Medium for chemical reactions in cells</div></div>
+    <div class="card" style="border-left:3px solid #c4b5fd;"><div class="card-icon">❄️</div><div class="card-title">Cooling</div><div class="card-body">Cooling effect during transpiration</div></div>
+  </div>
+
+  <h3 style="color:var(--green-light); font-size:15px; margin-bottom:12px;">Water Pathway: Soil → Root → Stem → Leaf</h3>
+  <div class="flow-diagram">
+    <div class="flow-box" style="background:rgba(139,94,60,0.3); border-color:rgba(212,165,116,0.5);">🪨 Soil Water</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Root Hair<br><small style="font-size:10px;">(osmosis)</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Cortex Cells<br><small style="font-size:10px;">(osmosis)</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Endodermis<br><small style="font-size:10px;">(active transport)</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Root Xylem</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Stem Xylem<br><small style="font-size:10px;">(capillarity, cohesion)</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Leaf Mesophyll<br><small style="font-size:10px;">(osmosis)</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box" style="background:rgba(76,201,216,0.2); border-color:rgba(76,201,216,0.5);">💨 Atmosphere<br><small style="font-size:10px;">(transpiration)</small></div>
+  </div>
+
+  <div class="exam-tip">In root → cortex movement: water moves by <strong>osmosis</strong> from cell to cell (higher concentration to lower). At endodermis: <strong>active transport</strong>. In stem xylem: capillarity, cohesion, adhesion, and transpiration pull.</div>
+</div>
+
+<!-- ===== SLIDE 8: FORCES OF WATER MOVEMENT ===== -->
+<div class="slide slide-content" id="slide-8">
+  <div class="slide-subheading">Water Movement</div>
+  <h2 class="slide-heading">Forces Moving <span>Water Through Plants</span></h2>
+
+  <div class="card-grid card-grid-3">
+    <div class="card accent-teal">
+      <div class="card-icon">🌊</div>
+      <div class="card-title">Osmosis</div>
+      <div class="card-body">Water moves through semi-permeable membranes of root hairs and between cells from regions of high water potential to low</div>
+    </div>
+    <div class="card accent-green">
+      <div class="card-icon">⬆️</div>
+      <div class="card-title">Root Pressure</div>
+      <div class="card-body">A force that pushes water up the stem from roots. Causes <span class="key-term">guttation</span> — exudation of water from leaf tips</div>
+    </div>
+    <div class="card accent-gold">
+      <div class="card-icon">🔬</div>
+      <div class="card-title">Capillarity</div>
+      <div class="card-body">Due to <strong>narrowness</strong> of xylem vessels — water rises up narrow tubes against gravity</div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--blue-light);">
+      <div class="card-icon">🔗</div>
+      <div class="card-title">Cohesion</div>
+      <div class="card-body">Attraction of water molecules to <strong>each other</strong> — keeps the water column unbroken</div>
+    </div>
+    <div class="card" style="border-left:3px solid #c4b5fd;">
+      <div class="card-icon">🧲</div>
+      <div class="card-title">Adhesion</div>
+      <div class="card-body">Attraction of water molecules to <strong>xylem walls</strong> — helps pull water upward</div>
+    </div>
+    <div class="card" style="border-left:3px solid #f87171;">
+      <div class="card-icon">💨</div>
+      <div class="card-title">Transpiration Pull</div>
+      <div class="card-body">Main force! Water vapour evaporates from spongy mesophyll creating suction that pulls water from roots up to leaves</div>
+    </div>
+  </div>
+
+  <div class="exam-tip">Transpiration pull is the most important force moving water in tall plants. "CATCH" = Cohesion, Adhesion, Transpiration pull, Capillarity, root pressure, Osmosis.</div>
+</div>
+
+<!-- ===== SLIDE 9: TRANSPIRATION ===== -->
+<div class="slide slide-content" id="slide-9">
+  <div class="slide-subheading">Transpiration</div>
+  <h2 class="slide-heading">Transpiration: <span>Definition & Importance</span></h2>
+
+  <div class="definition-box">
+    <div class="definition-label">Definition</div>
+    <div class="definition-text"><span class="key-term">Transpiration</span> is the loss of water from a plant to the atmosphere.</div>
+  </div>
+
+  <div class="card-grid card-grid-3" style="margin-bottom:16px;">
+    <div class="card accent-green">
+      <div class="card-icon">🌡️</div>
+      <div class="card-title">Sites of Transpiration</div>
+      <ul class="bullet-list" style="margin-top:8px;">
+        <li><span class="key-term">Stomata</span> — stomatal transpiration (main)</li>
+        <li><span class="key-term">Lenticels</span> — lenticular transpiration</li>
+        <li><span class="key-term">Cuticle</span> — cuticular transpiration</li>
+      </ul>
+    </div>
+    <div class="card accent-teal">
+      <div class="card-icon">✅</div>
+      <div class="card-title">Importance</div>
+      <ul class="bullet-list" style="margin-top:8px;">
+        <li>Cooling the plant</li>
+        <li>Transport of water upward</li>
+        <li>Transport of mineral salts</li>
+        <li>Excretion of excess water</li>
+      </ul>
+    </div>
+    <div class="card accent-gold">
+      <div class="card-icon">⚠️</div>
+      <div class="card-title">Excess Transpiration</div>
+      <div class="card-body" style="margin-top:8px;">Excess transpiration causes <span class="key-term">wilting</span> — plants lose turgidity and droop. Drooping reduces surface area exposed to sun, reducing cuticular transpiration.</div>
+    </div>
+  </div>
+
+  <div class="exam-tip">When asked to "state the importance of transpiration," always include: cooling, water transport, mineral salt transport, and excretion of excess water.</div>
+</div>
+
+<!-- ===== SLIDE 10: FACTORS AFFECTING TRANSPIRATION ===== -->
+<div class="slide slide-content" id="slide-10">
+  <div class="slide-subheading">Transpiration</div>
+  <h2 class="slide-heading">Factors Affecting <span>Rate of Transpiration</span></h2>
+
+  <div class="card-grid card-grid-2">
+    <div>
+      <h3 style="color:var(--green-light); font-size:14px; margin-bottom:12px;">🏗️ Structural Factors</h3>
+      <ul class="bullet-list">
+        <li><span class="key-term">Number of stomata</span> — more stomata = higher rate</li>
+        <li><span class="key-term">Guard cell turgidity</span> — open stomata = high rate; closed = low rate</li>
+        <li><span class="key-term">Leaf size</span> — larger surface area = higher rate</li>
+        <li><span class="key-term">Leaf fall</span> — reduces rate</li>
+        <li><span class="key-term">Cuticle thickness</span> — thin/absent cuticle = higher rate</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="color:var(--teal-light); font-size:14px; margin-bottom:12px;">🌍 Environmental Factors</h3>
+      <ul class="bullet-list">
+        <li><span class="key-term">Temperature</span> — high temp = high rate (more evaporation)</li>
+        <li><span class="key-term">Humidity</span> — high humidity = low rate; low humidity = high rate</li>
+        <li><span class="key-term">Wind</span> — moving air = higher rate than still air</li>
+        <li><span class="key-term">Light intensity</span> — high light = more evaporation = higher rate</li>
+        <li><span class="key-term">Soil water</span> — more available = more absorbed = more lost</li>
+        <li><span class="key-term">Atmospheric pressure</span> — high pressure = more evaporation</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;">
+    <span class="force-tag tag-red">↑ Light → ↑ Rate</span>
+    <span class="force-tag tag-teal">↑ Humidity → ↓ Rate</span>
+    <span class="force-tag tag-gold">↑ Temperature → ↑ Rate</span>
+    <span class="force-tag tag-green">Wind → ↑ Rate</span>
+    <span class="force-tag tag-blue">↑ Stomata → ↑ Rate</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 11: PLANT ADAPTATIONS ===== -->
+<div class="slide slide-content" id="slide-11">
+  <div class="slide-subheading">Adaptations</div>
+  <h2 class="slide-heading">Plant Adaptations to <span>Water Loss</span></h2>
+
+  <div class="card-grid card-grid-3">
+    <div style="background:rgba(45,106,79,0.15); border:1px solid rgba(82,183,136,0.3); border-radius:12px; padding:18px;">
+      <div style="font-size:24px; margin-bottom:8px;">🌿</div>
+      <div style="color:var(--green-light); font-weight:700; margin-bottom:10px;">Mesophytes</div>
+      <div style="font-size:12px; color:rgba(255,255,255,0.6); margin-bottom:10px;">Grow in soils with adequate water</div>
+      <ul class="bullet-list">
+        <li>Water loss balanced by absorption</li>
+        <li>No special adaptations needed</li>
+      </ul>
+    </div>
+    <div style="background:rgba(139,94,60,0.15); border:1px solid rgba(212,165,116,0.3); border-radius:12px; padding:18px;">
+      <div style="font-size:24px; margin-bottom:8px;">🌵</div>
+      <div style="color:var(--earth-light); font-weight:700; margin-bottom:10px;">Xerophytes</div>
+      <div style="font-size:12px; color:rgba(255,255,255,0.6); margin-bottom:10px;">Grow in dry conditions</div>
+      <ul class="bullet-list">
+        <li>Deep roots to absorb water</li>
+        <li>Succulent/fleshy leaves to store water</li>
+        <li>Few, <span class="key-term">sunken stomata</span></li>
+        <li>Thick waxy cuticle</li>
+        <li>Hairy, folding leaves</li>
+        <li>Needle-like leaves/spines</li>
+        <li>Small, reduced leaf surface</li>
+      </ul>
+    </div>
+    <div style="background:rgba(27,122,140,0.15); border:1px solid rgba(76,201,216,0.3); border-radius:12px; padding:18px;">
+      <div style="font-size:24px; margin-bottom:8px;">🌊</div>
+      <div style="color:var(--teal-light); font-weight:700; margin-bottom:10px;">Hydrophytes</div>
+      <div style="font-size:12px; color:rgba(255,255,255,0.6); margin-bottom:10px;">Grow in water</div>
+      <ul class="bullet-list">
+        <li>Broad leaves</li>
+        <li>Stomata on <span class="key-term">upper surface only</span></li>
+        <li>Absence or reduced cuticle</li>
+        <li>Large air spaces (<span class="key-term">aerenchyma</span>)</li>
+        <li>Reduced vascular bundles</li>
+        <li>Sclereids for support</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="color:var(--green-light); font-size:14px; margin:16px 0 10px;">General Adaptations to Reduce Water Loss</h3>
+  <div style="display:flex; gap:8px; flex-wrap:wrap;">
+    <span class="force-tag tag-green">Thick waxy cuticle</span>
+    <span class="force-tag tag-gold">Reduced leaf size</span>
+    <span class="force-tag tag-teal">Sunken stomata</span>
+    <span class="force-tag tag-blue">Shedding of leaves</span>
+    <span class="force-tag tag-purple">Rolling of leaves</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 12: TRANSLOCATION ===== -->
+<div class="slide slide-content" id="slide-12">
+  <div class="slide-subheading">Translocation</div>
+  <h2 class="slide-heading">Translocation in <span>Phloem</span></h2>
+
+  <div class="definition-box">
+    <div class="definition-label">Definition</div>
+    <div class="definition-text"><span class="key-term">Translocation</span> is the transfer of manufactured food substances to the parts where they are required.</div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <h3 style="color:var(--green-light); font-size:14px; margin-bottom:10px;">Tissue Responsible</h3>
+      <p style="font-size:14px; color:rgba(255,255,255,0.8); margin-bottom:16px;"><span class="key-term">Phloem tissue</span> is responsible for translocation in flowering plants.</p>
+
+      <h3 style="color:var(--green-light); font-size:14px; margin-bottom:10px;">Processes Involved</h3>
+      <ul class="bullet-list">
+        <li>Active transport</li>
+        <li>Diffusion</li>
+        <li>Mass flow</li>
+        <li>Cytoplasmic streaming</li>
+      </ul>
+
+      <h3 style="color:var(--green-light); font-size:14px; margin:16px 0 10px;">Substances Translocated</h3>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+        <span class="force-tag tag-green">Sugars</span>
+        <span class="force-tag tag-teal">Amino acids</span>
+        <span class="force-tag tag-blue">Hormones (auxins)</span>
+        <span class="force-tag tag-gold">Oils/lipids</span>
+        <span class="force-tag tag-purple">Resins</span>
+        <span class="force-tag tag-red">Vitamins</span>
+      </div>
+    </div>
+    <div>
+      <h3 style="color:var(--green-light); font-size:14px; margin-bottom:10px;">Phloem Tissue Structure</h3>
+      <div class="diagram-container" style="padding:10px;">
+        <svg width="200" height="180" viewBox="0 0 200 180">
+          <!-- Sieve tube -->
+          <rect x="70" y="10" width="50" height="160" fill="rgba(82,183,136,0.1)" stroke="rgba(82,183,136,0.5)" stroke-width="1.5" rx="4"/>
+          <!-- Sieve plates -->
+          <line x1="70" y1="55" x2="120" y2="55" stroke="rgba(82,183,136,0.8)" stroke-width="2" stroke-dasharray="3,2"/>
+          <line x1="70" y1="100" x2="120" y2="100" stroke="rgba(82,183,136,0.8)" stroke-width="2" stroke-dasharray="3,2"/>
+          <line x1="70" y1="145" x2="120" y2="145" stroke="rgba(82,183,136,0.8)" stroke-width="2" stroke-dasharray="3,2"/>
+          <!-- Companion cells -->
+          <rect x="125" y="15" width="35" height="40" fill="rgba(76,201,216,0.2)" stroke="rgba(76,201,216,0.5)" stroke-width="1.5" rx="3"/>
+          <circle cx="142" cy="35" r="6" fill="rgba(76,201,216,0.4)"/>
+          <rect x="125" y="60" width="35" height="40" fill="rgba(76,201,216,0.2)" stroke="rgba(76,201,216,0.5)" stroke-width="1.5" rx="3"/>
+          <circle cx="142" cy="80" r="6" fill="rgba(76,201,216,0.4)"/>
+          <!-- Plasmodesmata -->
+          <line x1="120" y1="35" x2="125" y2="35" stroke="rgba(245,158,11,0.8)" stroke-width="1.5"/>
+          <line x1="120" y1="80" x2="125" y2="80" stroke="rgba(245,158,11,0.8)" stroke-width="1.5"/>
+          <!-- Labels -->
+          <text x="90" y="6" text-anchor="middle" font-size="7" fill="rgba(82,183,136,0.9)">Sieve tube</text>
+          <text x="142" y="8" text-anchor="middle" font-size="7" fill="rgba(76,201,216,0.9)">Companion</text>
+          <text x="142" y="15" text-anchor="middle" font-size="7" fill="rgba(76,201,216,0.9)">cell</text>
+          <text x="45" y="58" text-anchor="end" font-size="7" fill="rgba(82,183,136,0.7)">Sieve plate</text>
+          <line x1="46" y1="56" x2="70" y2="55" stroke="rgba(82,183,136,0.4)" stroke-width="0.8"/>
+          <text x="163" y="75" font-size="7" fill="rgba(245,158,11,0.8)">Plasmo-</text>
+          <text x="163" y="82" font-size="7" fill="rgba(245,158,11,0.8)">desmata</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 13: TRANSLOCATION EXPERIMENTS ===== -->
+<div class="slide slide-content" id="slide-13">
+  <div class="slide-subheading">Translocation Experiments</div>
+  <h2 class="slide-heading">Proving Phloem <span>Translocates Food</span></h2>
+
+  <div class="card-grid card-grid-3">
+    <div class="card accent-green">
+      <div class="card-icon">💍</div>
+      <div class="card-title">1. Ringing Experiment</div>
+      <div class="card-body">
+        <ul class="bullet-list" style="margin:0;">
+          <li>Cut a ring in the bark (including phloem) of a woody plant</li>
+          <li>Observe for 3+ weeks</li>
+          <li><span class="key-term">Swelling appears above ring</span> — food accumulates from leaves above</li>
+          <li>Control: phloem intact → no swelling</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent-teal">
+      <div class="card-icon">☢️</div>
+      <div class="card-title">2. Radioactive Tracers</div>
+      <div class="card-body">
+        <ul class="bullet-list" style="margin:0;">
+          <li>Plant exposed to radioactive carbon <span class="key-term">C-14</span></li>
+          <li>C-14 found in end products of photosynthesis</li>
+          <li>Finally detected in <span class="key-term">phloem</span></li>
+          <li>C-14 moves in <span class="key-term">both directions</span> in phloem</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent-gold">
+      <div class="card-icon">🦟</div>
+      <div class="card-title">3. Aphid Stylets</div>
+      <div class="card-body">
+        <ul class="bullet-list" style="margin:0;">
+          <li>Aphids feed on plant phloem using stylets (mouthparts)</li>
+          <li>Stylets dissected, exudate collected</li>
+          <li><span class="key-term">Sucrose found</span> as major component</li>
+          <li>Proves phloem translocates manufactured food</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-tip">When asked to describe the ringing experiment, include: what you do (cut ring), what you observe (swelling above ring), and what it proves (phloem carries food downward).</div>
+
+  <h3 style="color:var(--green-light); font-size:14px; margin:16px 0 10px;">Xylem Transport Experiment (Dye Test)</h3>
+  <div class="definition-box" style="padding:14px;">
+    <div class="definition-text" style="font-size:13px;">Cut a stem under water → place in eosin/red ink dye → leave 20–60 min → cut thin section → mount on slide → examine under microscope. <span class="key-term">Dye appears only in xylem vessels</span> — proving xylem transports water.</div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 13B: MINERAL SALTS UPTAKE ===== -->
+<div class="slide slide-content" id="slide-13b" style="display:none;">
+  <div class="slide-subheading">Mineral Salts</div>
+  <h2 class="slide-heading">Uptake of <span>Mineral Salts</span> by Plants</h2>
+
+  <div class="definition-box">
+    <div class="definition-label">Why Plants Need Mineral Salts</div>
+    <div class="definition-text" style="font-size:14px;">Plants require mineral salts for <span class="key-term">metabolism</span> and proper functioning of their bodies. Mineral salts are taken from the soil into root hairs in the form of solution.</div>
+  </div>
+
+  <div class="card-grid card-grid-2" style="margin-bottom:16px;">
+    <div class="card accent-green">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">Active Transport (Main Process)</div>
+      <div class="card-body">
+        Mineral salts are absorbed by <span class="key-term">active transport</span> — requiring energy (ATP) from respiration.<br><br>
+        Involves carrier molecules that pick up mineral ions and transport them <strong>against the concentration gradient</strong> (from low to high concentration).<br><br>
+        Minerals then carried with water to stems and leaves.
+      </div>
+    </div>
+    <div class="card accent-teal">
+      <div class="card-icon">↔️</div>
+      <div class="card-title">Diffusion (Secondary Process)</div>
+      <div class="card-body">
+        Mineral salts also enter by <span class="key-term">diffusion</span> due to the concentration gradient between mineral ions in the soil solution and those in the root hair cell sap.<br><br>
+        Works when mineral concentration in soil is higher than in root hair cell — passive, no energy needed.
+      </div>
+    </div>
+  </div>
+
+  <h3 style="color:var(--green-light); font-size:14px; margin-bottom:10px;">Forces Moving Minerals Through the Plant</h3>
+  <table class="compare-table" style="font-size:13px;">
+    <thead><tr><th>Force</th><th>How It Works</th><th>Energy Needed?</th></tr></thead>
+    <tbody>
+      <tr><td><span class="key-term">Active Transport</span></td><td>Carrier proteins move ions against concentration gradient; uses ATP</td><td>Yes (from respiration)</td></tr>
+      <tr><td><span class="key-term">Diffusion</span></td><td>Ions move from high concentration in soil to low concentration in root</td><td>No (passive)</td></tr>
+      <tr><td><span class="key-term">Mass flow</span></td><td>Minerals dissolved in water and carried along with water movement in xylem</td><td>No (passive)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="exam-tip">Key point: The MAIN process for mineral salt absorption is active transport. Diffusion is secondary. Active transport requires ATP — hence root hairs have many mitochondria.</div>
+
+  <div class="card" style="margin-top:12px; border-left:3px solid var(--gold);">
+    <div class="card-title">🔬 How to Demonstrate Xylem Transports Minerals</div>
+    <div class="card-body">Place a plant in a solution containing <span class="key-term">radioactive phosphorus</span>. The radioactive phosphorus is later detected in the leaves, proving xylem transported it from roots to leaves.</div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 13C: STOMATA MECHANISM ===== -->
+<div class="slide slide-content" id="slide-13c" style="display:none;">
+  <div class="slide-subheading">Stomata</div>
+  <h2 class="slide-heading">Opening & Closing of <span>Stomata</span></h2>
+
+  <div class="two-col">
+    <div>
+      <div class="definition-box" style="margin-bottom:12px;">
+        <div class="definition-label">Structure of Stomata</div>
+        <div class="definition-text" style="font-size:13px;">Minute pores found in leaf epidermis. Each consists of a slit-like opening bordered by two large, <span class="key-term">bean-shaped guard cells</span>. Guard cells contain chloroplasts (unlike other epidermal cells). Inner walls of guard cells are <strong>thicker</strong> than outer walls.</div>
+      </div>
+
+      <h3 style="color:var(--green-light); font-size:14px; margin-bottom:10px;">Factors Affecting Stomatal Opening</h3>
+      <ul class="bullet-list">
+        <li><span class="key-term">Water</span> — low water: stomata close; high water: stomata open</li>
+        <li><span class="key-term">Light</span> — stomata open in bright light; close in darkness</li>
+        <li><span class="key-term">Temperature</span> — affects metabolic rate of guard cells</li>
+        <li><span class="key-term">CO₂ concentration</span> — high CO₂ → stomata close</li>
+      </ul>
+
+      <h3 style="color:var(--gold); font-size:14px; margin:12px 0 8px;">Theories of Stomatal Movement</h3>
+      <ul class="bullet-list">
+        <li>Interconversion of starch and sugar</li>
+        <li>pH theory</li>
+        <li>Mineral ion (potassium ion) concentration theory</li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 style="color:var(--green-light); font-size:14px; margin-bottom:10px;">Mechanism — Day vs Night</h3>
+      <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.3); border-radius:10px; padding:14px; margin-bottom:12px;">
+        <div style="color:var(--gold); font-weight:600; margin-bottom:8px;">☀️ During DAY — Stomata OPEN</div>
+        <ol style="padding-left:18px; font-size:13px; color:rgba(255,255,255,0.8); line-height:1.8;">
+          <li>Photosynthesis uses CO₂ → CO₂ concentration falls</li>
+          <li>pH rises in guard cells</li>
+          <li>Starch converted to sugar → osmotic pressure rises</li>
+          <li>Water enters guard cells by osmosis → cells become <span class="key-term">turgid</span></li>
+          <li>Thick inner walls bow → stomata <strong>open</strong></li>
+          <li>Potassium ions accumulate → raise osmotic pressure → stomata open</li>
+        </ol>
+      </div>
+      <div style="background:rgba(27,122,140,0.1); border:1px solid rgba(76,201,216,0.3); border-radius:10px; padding:14px;">
+        <div style="color:var(--teal-light); font-weight:600; margin-bottom:8px;">🌙 During NIGHT — Stomata CLOSE</div>
+        <ol style="padding-left:18px; font-size:13px; color:rgba(255,255,255,0.8); line-height:1.8;">
+          <li>No photosynthesis → CO₂ accumulates</li>
+          <li>CO₂ + H₂O → carbonic acid → pH drops</li>
+          <li>Sugar converted to starch → osmotic pressure falls</li>
+          <li>Water leaves guard cells by osmosis → cells become <span class="key-term">flaccid</span></li>
+          <li>Stomata <strong>close</strong> (conserves water)</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-tip">Advantage of day opening / night closing: Day — allows CO₂ in for photosynthesis, O₂ out, transpiration for water transport. Night — conserves water when photosynthesis is not occurring.</div>
+</div>
+
+<!-- ===== SLIDE 14: ANIMAL TRANSPORT (SECTION) ===== -->
+<div class="slide slide-section-header" id="slide-14">
+  <div class="section-number">02</div>
+  <div class="section-title">Transport in <span>Animals</span></div>
+  <div class="section-desc">Circulatory systems, the mammalian heart, blood vessels, blood composition, and immunity</div>
+  <div style="margin-top:30px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+    <span class="pill pill-green">❤️ Heart</span>
+    <span class="pill pill-teal">🩸 Blood</span>
+    <span class="pill pill-gold">🛡️ Immunity</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 15: COMPONENTS & CIRCULATION ===== -->
+<div class="slide slide-content" id="slide-15">
+  <div class="slide-subheading">Animal Transport</div>
+  <h2 class="slide-heading">Transport System <span>Components</span></h2>
+
+  <div class="card-grid card-grid-3" style="margin-bottom:20px;">
+    <div class="card accent-red">
+      <div class="card-icon">🩸</div>
+      <div class="card-title">Blood</div>
+      <div class="card-body">A fluid tissue carrying food substances, oxygen, CO₂, and metabolic wastes</div>
+    </div>
+    <div class="card accent-green">
+      <div class="card-icon">🫀</div>
+      <div class="card-title">Heart</div>
+      <div class="card-body">A pumping mechanism that keeps blood in continuous circulation throughout the body</div>
+    </div>
+    <div class="card accent-teal">
+      <div class="card-icon">🔀</div>
+      <div class="card-title">Blood Vessels</div>
+      <div class="card-body">System of arteries, veins, and capillaries through which blood circulates</div>
+    </div>
+  </div>
+
+  <table class="compare-table">
+    <thead>
+      <tr><th>Feature</th><th class="col-a">Closed Circulatory System</th><th class="col-b">Open Circulatory System</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Blood vessels</td><td>Present — blood moves in vessels</td><td>Absent — blood in direct contact with tissues</td></tr>
+      <tr><td>Examples</td><td>Vertebrates (mammals, fish)</td><td>Arthropoda (insects, crabs)</td></tr>
+      <tr><td>Advantages (closed)</td><td colspan="2">High pressure possible; circulates over longer distances; faster circulation; efficient transport of nutrients and wastes; animals more active</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="color:var(--green-light); font-size:14px; margin:16px 0 10px;">Single vs Double Circulation</h3>
+  <div class="card-grid card-grid-2">
+    <div class="card accent-teal">
+      <div class="card-title">🔂 Single Circulation</div>
+      <div class="card-body">Blood passes through the heart <strong>once</strong> in a complete circuit. Example: Fish</div>
+    </div>
+    <div class="card accent-green">
+      <div class="card-title">🔁 Double Circulation</div>
+      <div class="card-body">Blood enters the heart <strong>twice</strong> in a complete circuit.<br>
+      • <span class="key-term">Pulmonary</span>: heart → lungs → heart<br>
+      • <span class="key-term">Systemic</span>: heart → body → heart<br>
+      Example: Mammals</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 16: THE HEART ===== -->
+<div class="slide slide-content" id="slide-16">
+  <div class="slide-subheading">The Mammalian Heart</div>
+  <h2 class="slide-heading">Heart: <span>Structure & Blood Flow</span></h2>
+
+  <div class="two-col">
+    <div>
+      <div class="definition-box" style="margin-bottom:12px;">
+        <div class="definition-label">Structure</div>
+        <div class="definition-text" style="font-size:13px;">A <span class="key-term">four-chambered hollow muscle</span> located in the thoracic cavity. Two small receiving chambers (<span class="key-term">atria/auricles</span>) and two large pumping chambers (<span class="key-term">ventricles</span>).</div>
+      </div>
+
+      <h3 style="color:var(--green-light); font-size:14px; margin-bottom:10px;">Blood Flow Through Heart</h3>
+      <div class="cascade">
+        <div class="cascade-box" style="background:rgba(27,122,140,0.3); border-color:rgba(76,201,216,0.5);">Body → Vena Cava</div>
+        <div class="cascade-arrow">↓</div>
+        <div class="cascade-box">Right Auricle (receives)</div>
+        <div class="cascade-arrow">↓ tricuspid valve</div>
+        <div class="cascade-box">Right Ventricle</div>
+        <div class="cascade-arrow">↓ pulmonary artery</div>
+        <div class="cascade-box" style="background:rgba(82,183,136,0.2); border-color:rgba(82,183,136,0.5);">Lungs (O₂ in, CO₂ out)</div>
+        <div class="cascade-arrow">↓ pulmonary vein</div>
+        <div class="cascade-box">Left Auricle</div>
+        <div class="cascade-arrow">↓ bicuspid valve</div>
+        <div class="cascade-box" style="background:rgba(192,57,43,0.3); border-color:rgba(192,57,43,0.5);">Left Ventricle (thickest)</div>
+        <div class="cascade-arrow">↓ Aorta</div>
+        <div class="cascade-box" style="background:rgba(245,158,11,0.2); border-color:rgba(245,158,11,0.5);">Body Tissues</div>
+      </div>
+    </div>
+
+    <div class="diagram-container" style="padding:10px;">
+      <!-- Heart SVG Diagram -->
+      <svg width="280" height="300" viewBox="0 0 280 300" class="heart-svg">
+        <!-- Heart outline -->
+        <path d="M 50 80 Q 30 40 80 30 Q 130 10 140 70 Q 150 10 200 30 Q 250 40 230 80 L 140 270 Z" fill="rgba(192,57,43,0.2)" stroke="rgba(192,57,43,0.6)" stroke-width="2"/>
+        <!-- Septum -->
+        <line x1="140" y1="70" x2="140" y2="250" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <!-- Right atrium -->
+        <ellipse cx="100" cy="90" rx="35" ry="28" fill="rgba(27,122,140,0.3)" stroke="rgba(76,201,216,0.7)" stroke-width="1.5"/>
+        <text x="100" y="87" text-anchor="middle" font-size="8" fill="rgba(76,201,216,1)">Right</text>
+        <text x="100" y="97" text-anchor="middle" font-size="8" fill="rgba(76,201,216,1)">Atrium</text>
+        <!-- Left atrium -->
+        <ellipse cx="180" cy="90" rx="35" ry="28" fill="rgba(192,57,43,0.3)" stroke="rgba(255,100,80,0.7)" stroke-width="1.5"/>
+        <text x="180" y="87" text-anchor="middle" font-size="8" fill="rgba(255,150,130,1)">Left</text>
+        <text x="180" y="97" text-anchor="middle" font-size="8" fill="rgba(255,150,130,1)">Atrium</text>
+        <!-- Right ventricle -->
+        <path d="M 65 115 Q 60 200 140 240 L 140 115 Z" fill="rgba(27,122,140,0.2)" stroke="rgba(76,201,216,0.5)" stroke-width="1.5"/>
+        <text x="95" y="175" text-anchor="middle" font-size="7" fill="rgba(76,201,216,0.8)">Right</text>
+        <text x="95" y="185" text-anchor="middle" font-size="7" fill="rgba(76,201,216,0.8)">Ventricle</text>
+        <!-- Left ventricle -->
+        <path d="M 215 115 Q 220 200 140 240 L 140 115 Z" fill="rgba(192,57,43,0.25)" stroke="rgba(192,57,43,0.6)" stroke-width="2"/>
+        <text x="182" y="175" text-anchor="middle" font-size="7" fill="rgba(255,150,130,0.8)">Left</text>
+        <text x="182" y="185" text-anchor="middle" font-size="7" fill="rgba(255,150,130,0.8)">Ventricle</text>
+        <text x="182" y="195" text-anchor="middle" font-size="6" fill="rgba(255,200,180,0.7)">(thickest)</text>
+        <!-- Valves -->
+        <text x="125" y="120" text-anchor="middle" font-size="7" fill="rgba(245,158,11,0.9)">Tricuspid</text>
+        <text x="155" y="120" text-anchor="middle" font-size="7" fill="rgba(245,158,11,0.9)">Bicuspid</text>
+        <!-- Blood vessels -->
+        <!-- SVC -->
+        <rect x="80" y="5" width="16" height="25" fill="rgba(27,122,140,0.5)" stroke="rgba(76,201,216,0.7)" stroke-width="1"/>
+        <text x="72" y="4" font-size="6" fill="rgba(76,201,216,0.8)">SVC</text>
+        <!-- Pulmonary artery -->
+        <path d="M 100 65 Q 100 30 120 20" fill="none" stroke="rgba(27,122,140,0.7)" stroke-width="5"/>
+        <text x="60" y="35" font-size="6" fill="rgba(76,201,216,0.8)">Pulmonary</text>
+        <text x="60" y="43" font-size="6" fill="rgba(76,201,216,0.8)">Artery</text>
+        <!-- Aorta -->
+        <path d="M 180 65 Q 180 30 160 20" fill="none" stroke="rgba(192,57,43,0.7)" stroke-width="5"/>
+        <text x="185" y="35" font-size="6" fill="rgba(255,150,130,0.8)">Aorta</text>
+        <!-- Pulmonary vein -->
+        <rect x="184" y="5" width="16" height="25" fill="rgba(192,57,43,0.4)" stroke="rgba(255,100,80,0.7)" stroke-width="1"/>
+        <text x="183" y="4" font-size="6" fill="rgba(255,150,130,0.8)">PV</text>
+        <!-- Deoxygenated = blue, Oxygenated = red -->
+        <text x="5" y="295" font-size="7" fill="rgba(76,201,216,0.8)">🔵 Deoxygenated</text>
+        <text x="150" y="295" font-size="7" fill="rgba(255,120,100,0.8)">🔴 Oxygenated</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 17: HEART ADAPTATIONS ===== -->
+<div class="slide slide-content" id="slide-17">
+  <div class="slide-subheading">The Mammalian Heart</div>
+  <h2 class="slide-heading">Heart <span>Adaptations</span></h2>
+
+  <div class="card-grid card-grid-2">
+    <div class="card accent-red">
+      <div class="card-title">💪 Cardiac Muscle</div>
+      <div class="card-body">Made of muscles that contract and relax <span class="key-term">synchronously</span> without requiring nervous stimulation (myogenic). Nerve supply controls strength and frequency only.</div>
+    </div>
+    <div class="card accent-green">
+      <div class="card-title">🔀 Four Chambers</div>
+      <div class="card-body">Right and left sides completely separated. Prevents mixing of oxygenated and deoxygenated blood. Allows efficient double circulation.</div>
+    </div>
+    <div class="card accent-gold">
+      <div class="card-title">🚪 Valves</div>
+      <div class="card-body">
+        <span class="key-term">Tricuspid valve</span>: between right atrium and right ventricle<br>
+        <span class="key-term">Bicuspid (mitral)</span>: between left atrium and left ventricle<br>
+        Prevent backflow of blood
+      </div>
+    </div>
+    <div class="card accent-teal">
+      <div class="card-title">🏋️ Thick Left Ventricle</div>
+      <div class="card-body">Left ventricle has <span class="key-term">thickest walls</span> — pumps blood throughout the whole body (systemic circulation) against high resistance. Right ventricle only pumps to lungs (shorter distance).</div>
+    </div>
+    <div class="card" style="border-left:3px solid #c4b5fd;">
+      <div class="card-title">⚡ Pacemaker (SA Node)</div>
+      <div class="card-body">A <span class="key-term">pacemaker</span> in the heart muscle initiates and synchronises contractions automatically, maintaining a regular heartbeat.</div>
+    </div>
+    <div class="card" style="border-left:3px solid #f87171;">
+      <div class="card-title">🩸 Coronary Vessels</div>
+      <div class="card-body">Heart muscle is supplied by <span class="key-term">coronary arteries</span> and drained by coronary veins — ensures the heart itself receives oxygen and nutrients.</div>
+    </div>
+  </div>
+
+  <div class="exam-tip">Why is blood leaving lungs sometimes not fully oxygenated? Poor ventilation of lungs, blockage of alveoli, or high cardiac frequency (blood moves too fast).</div>
+</div>
+
+<!-- ===== SLIDE 18: BLOOD VESSELS ===== -->
+<div class="slide slide-content" id="slide-18">
+  <div class="slide-subheading">Blood Vessels</div>
+  <h2 class="slide-heading">Arteries, Veins & <span>Capillaries</span></h2>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th class="col-a">Arteries</th>
+        <th>Capillaries</th>
+        <th class="col-b">Veins</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Direction</td>
+        <td>Away from heart</td>
+        <td>Links arterioles to venules</td>
+        <td>Towards the heart</td>
+      </tr>
+      <tr>
+        <td>Blood type</td>
+        <td>Oxygenated (except pulmonary artery)</td>
+        <td>Mixed</td>
+        <td>Deoxygenated (except pulmonary vein)</td>
+      </tr>
+      <tr>
+        <td>Wall thickness</td>
+        <td>Thick, muscular, elastic</td>
+        <td>One cell thick</td>
+        <td>Thinner than arteries</td>
+      </tr>
+      <tr>
+        <td>Lumen size</td>
+        <td>Narrow</td>
+        <td>Microscopic</td>
+        <td>Wide</td>
+      </tr>
+      <tr>
+        <td>Valves</td>
+        <td>No (semilunar valves at aorta)</td>
+        <td>No</td>
+        <td>Yes — prevent backflow</td>
+      </tr>
+      <tr>
+        <td>Blood pressure</td>
+        <td>High</td>
+        <td>Low</td>
+        <td>Very low</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="card-grid card-grid-3" style="margin-top:12px;">
+    <div class="card accent-red">
+      <div class="card-title">Artery Adaptations</div>
+      <div class="card-body">Thick muscular walls + elastic — withstand high pressure from heartbeat. Narrow lumen maintains high pressure.</div>
+    </div>
+    <div class="card accent-green">
+      <div class="card-title">Capillary Adaptations</div>
+      <div class="card-body">One cell thick — allows diffusion of substances (O₂, glucose) to tissues. Intercellular spaces allow leucocytes to pass.</div>
+    </div>
+    <div class="card accent-teal">
+      <div class="card-title">Vein Adaptations</div>
+      <div class="card-body">Valves prevent backflow. Wide lumen — low resistance. Thin walls — blood at low pressure.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 19: BLOOD VESSEL COMPARISON ===== -->
+<div class="slide slide-content" id="slide-19">
+  <div class="slide-subheading">Blood Vessels</div>
+  <h2 class="slide-heading">Pulmonary vs Systemic <span>Blood Composition</span></h2>
+
+  <table class="compare-table">
+    <thead>
+      <tr><th>Feature</th><th class="col-a">Pulmonary Arterioles</th><th class="col-b">Pulmonary Venules</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Oxygen</td><td>Low oxygen</td><td>High oxygen</td></tr>
+      <tr><td>Carbon dioxide</td><td>High CO₂</td><td>Low CO₂</td></tr>
+      <tr><td>Oxygenation</td><td>Deoxygenated</td><td>Oxygenated</td></tr>
+      <tr><td>Nutrients</td><td>More nutrients</td><td>Less nutrients</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="color:var(--green-light); font-size:15px; margin:16px 0 10px;">Why is Blood Pressure Greater in Arterioles than Veins?</h3>
+  <ul class="bullet-list">
+    <li>Blood is pumped to arteries by the heart at <span class="key-term">high pressure</span></li>
+    <li>Blood pressure in veins is reduced by <span class="key-term">capillary resistance</span></li>
+    <li>Arteries have <span class="key-term">narrow lumen</span> which maintains high pressure; veins have wide lumen which reduces pressure</li>
+    <li>Arteries have <span class="key-term">thicker muscular walls</span> which generate pressure; veins have thinner walls</li>
+  </ul>
+
+  <h3 style="color:var(--green-light); font-size:14px; margin:16px 0 10px;">Common Heart Diseases</h3>
+  <div style="display:flex; gap:8px; flex-wrap:wrap;">
+    <span class="force-tag tag-red">Thrombosis</span>
+    <span class="force-tag tag-red">Atheroma (plaque build-up)</span>
+    <span class="force-tag tag-red">Arteriosclerosis</span>
+    <span class="force-tag tag-red">Varicose veins</span>
+    <span class="force-tag tag-red">Cerebral vascular thrombosis</span>
+  </div>
+
+  <div class="exam-tip">Arterioles vs veins pressure: arteries = high (near heart, narrow, muscular); veins = low (far, wide, thin walls).</div>
+</div>
+
+<!-- ===== SLIDE 20: BLOOD COMPOSITION ===== -->
+<div class="slide slide-content" id="slide-20">
+  <div class="slide-subheading">Blood</div>
+  <h2 class="slide-heading">Blood <span>Composition & Functions</span></h2>
+
+  <div class="card-grid card-grid-2">
+    <div style="background:rgba(245,158,11,0.07); border:1px solid rgba(245,158,11,0.3); border-radius:12px; padding:16px;">
+      <div style="color:var(--gold); font-weight:700; font-size:15px; margin-bottom:10px;">🟡 Plasma (~55%)</div>
+      <ul class="bullet-list">
+        <li>Transport of glucose, amino acids, fatty acids, glycerol from small intestine to liver and tissues</li>
+        <li>Transport of hormones and enzymes from glands to target tissues</li>
+        <li>Transport of CO₂ to lungs; urea to kidneys</li>
+        <li>Distribution of heat</li>
+        <li>Bathes tissues — exchange of materials</li>
+        <li>Contains <span class="key-term">fibrinogen</span> and <span class="key-term">prothrombin</span> for blood clotting</li>
+      </ul>
+    </div>
+    <div>
+      <div style="background:rgba(192,57,43,0.15); border:1px solid rgba(192,57,43,0.4); border-radius:10px; padding:14px; margin-bottom:12px;">
+        <div style="color:#f87171; font-weight:700; margin-bottom:8px;">🔴 Red Blood Cells (Erythrocytes)</div>
+        <ul class="bullet-list">
+          <li>Transport O₂ (as <span class="key-term">oxyhaemoglobin</span>)</li>
+          <li>Transport CO₂ as bicarbonates</li>
+        </ul>
+      </div>
+      <div style="background:rgba(82,183,136,0.1); border:1px solid rgba(82,183,136,0.3); border-radius:10px; padding:14px; margin-bottom:12px;">
+        <div style="color:var(--green-light); font-weight:700; margin-bottom:8px;">⚪ White Blood Cells (Leucocytes)</div>
+        <ul class="bullet-list">
+          <li>Engulf foreign bodies (phagocytosis)</li>
+          <li>Produce antibodies</li>
+          <li>Produce antitoxins — neutralize bacterial toxins</li>
+        </ul>
+      </div>
+      <div style="background:rgba(76,201,216,0.1); border:1px solid rgba(76,201,216,0.3); border-radius:10px; padding:14px;">
+        <div style="color:var(--teal-light); font-weight:700; margin-bottom:8px;">🟣 Blood Platelets (Thrombocytes)</div>
+        <ul class="bullet-list">
+          <li>Produce <span class="key-term">thrombokinase/thromboplastin</span> for clotting</li>
+          <li>Prevent loss of blood, water, and mineral salts</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 21: RED BLOOD CELLS ===== -->
+<div class="slide slide-content" id="slide-21">
+  <div class="slide-subheading">Blood Cells</div>
+  <h2 class="slide-heading">Red Blood Cells: <span>Adaptations</span></h2>
+
+  <div class="two-col">
+    <div>
+      <h3 style="color:var(--green-light); font-size:14px; margin-bottom:10px;">Adaptations of RBCs</h3>
+      <ul class="bullet-list">
+        <li><span class="key-term">Many per unit volume</span> — carry more O₂ and CO₂</li>
+        <li><span class="key-term">Biconcave shape</span> — large surface area for O₂ and CO₂ absorption</li>
+        <li><span class="key-term">No nucleus</span> — more space for haemoglobin</li>
+        <li><span class="key-term">Flexible/alter shape</span> — squeeze through narrow capillaries</li>
+        <li><span class="key-term">Haemoglobin with high affinity</span> for O₂ and CO₂</li>
+      </ul>
+
+      <h3 style="color:var(--green-light); font-size:14px; margin:16px 0 10px;">RBC vs WBC Comparison</h3>
+      <table class="compare-table" style="font-size:12px;">
+        <thead><tr><th>Feature</th><th class="col-a">Red Blood Cell</th><th class="col-b">White Blood Cell</th></tr></thead>
+        <tbody>
+          <tr><td>Pigment</td><td>Has haemoglobin</td><td>Not pigmented</td></tr>
+          <tr><td>Size</td><td>Smaller</td><td>Larger</td></tr>
+          <tr><td>Nucleus</td><td>Absent</td><td>Present (nucleated)</td></tr>
+          <tr><td>Function</td><td>Transport O₂ and CO₂</td><td>Defense against pathogens</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="diagram-container" style="flex-direction:column; gap:12px;">
+      <!-- RBC diagram -->
+      <svg width="200" height="100" viewBox="0 0 200 100">
+        <!-- RBC side view -->
+        <ellipse cx="60" cy="50" rx="50" ry="25" fill="rgba(192,57,43,0.3)" stroke="rgba(192,57,43,0.7)" stroke-width="2"/>
+        <ellipse cx="60" cy="50" rx="30" ry="10" fill="rgba(192,57,43,0.15)" stroke="none"/>
+        <text x="60" y="85" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.6)">Side view</text>
+        <!-- RBC top view -->
+        <ellipse cx="150" cy="50" rx="30" ry="30" fill="rgba(192,57,43,0.3)" stroke="rgba(192,57,43,0.7)" stroke-width="2"/>
+        <ellipse cx="150" cy="50" rx="15" ry="15" fill="rgba(192,57,43,0.05)" stroke="rgba(192,57,43,0.3)" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="150" y="90" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.6)">Top view (biconcave)</text>
+        <text x="100" y="10" text-anchor="middle" font-size="9" fill="rgba(255,150,130,0.9)">Red Blood Cell</text>
+      </svg>
+      <div style="font-size:12px; color:rgba(255,255,255,0.6); text-align:center; line-height:1.6;">
+        Biconcave disc shape<br>7-8 μm diameter<br>No nucleus → more Hb<br>~5 million per mm³ blood
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-tip">Remember: RBC adaptations — biconcave (surface area), no nucleus (more Hb), flexible (fits capillaries), many per unit volume (more transport).</div>
+</div>
+
+<!-- ===== SLIDE 22: GAS TRANSPORT ===== -->
+<div class="slide slide-content" id="slide-22">
+  <div class="slide-subheading">Blood Functions</div>
+  <h2 class="slide-heading">Transport of <span>Oxygen & CO₂</span></h2>
+
+  <div class="card-grid card-grid-2">
+    <div style="background:rgba(245,158,11,0.07); border:1px solid rgba(245,158,11,0.3); border-radius:12px; padding:18px;">
+      <div style="color:var(--gold); font-weight:700; font-size:16px; margin-bottom:12px;">🌬️ OXYGEN Transport</div>
+      <ul class="bullet-list">
+        <li>O₂ concentration higher in alveoli than blood</li>
+        <li>O₂ dissolves in moisture of alveoli → diffuses through thin epithelial and capillary walls into plasma and RBCs</li>
+        <li>O₂ + haemoglobin → <span class="key-term">oxyhaemoglobin</span></li>
+        <li>Blood becomes oxygenated</li>
+        <li>Oxyhaemoglobin breaks down at tissues → releases O₂ for respiration</li>
+        <li>Haemoglobin returns to lungs for more O₂</li>
+      </ul>
+    </div>
+    <div style="background:rgba(82,183,136,0.07); border:1px solid rgba(82,183,136,0.3); border-radius:12px; padding:18px;">
+      <div style="color:var(--green-light); font-weight:700; font-size:16px; margin-bottom:12px;">💨 CO₂ Transport</div>
+      <ul class="bullet-list">
+        <li>CO₂ diffuses from cells into blood plasma and RBCs</li>
+        <li>CO₂ + H₂O → carbonic acid → <span class="key-term">hydrogen carbonate</span> (main method, in RBCs)</li>
+        <li>Enzyme <span class="key-term">carbonic anhydrase</span> in RBCs speeds up this reaction</li>
+        <li>Hydrogen carbonate carried in blood to lungs</li>
+        <li>In lungs: hydrogen carbonate → CO₂ → diffuses into alveolar cavity</li>
+        <li>CO₂ expelled during expiration</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="definition-box" style="margin-top:12px;">
+    <div class="definition-label">Advantage of CO₂ transport in RBCs (not plasma)</div>
+    <div class="definition-text" style="font-size:13px;">• pH of blood not altered → homeostasis maintained<br>• Carbonic anhydrase in RBCs enables fast loading and offloading of CO₂</div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 23: BLOOD CLOTTING ===== -->
+<div class="slide slide-content" id="slide-23">
+  <div class="slide-subheading">Blood Clotting</div>
+  <h2 class="slide-heading">Blood Clotting <span>Process</span></h2>
+
+  <div class="two-col">
+    <div>
+      <div class="definition-box" style="margin-bottom:12px;">
+        <div class="definition-label">Definition</div>
+        <div class="definition-text" style="font-size:13px;"><span class="key-term">Blood clotting</span> is the process in which blood components clump together to prevent loss of blood from an injured/cut vessel.</div>
+      </div>
+
+      <h3 style="color:var(--green-light); font-size:14px; margin-bottom:10px;">Substances Involved</h3>
+      <ul class="bullet-list">
+        <li><span class="key-term">Protein</span>: fibrinogen / prothrombin</li>
+        <li><span class="key-term">Vitamin</span>: K</li>
+        <li><span class="key-term">Enzyme</span>: thrombokinase / thromboplastin</li>
+        <li><span class="key-term">Mineral</span>: calcium ions (Ca²⁺)</li>
+      </ul>
+
+      <h3 style="color:var(--green-light); font-size:14px; margin:16px 0 8px;">Roles of Clotting</h3>
+      <ul class="bullet-list">
+        <li>Prevents loss of blood and body fluids</li>
+        <li>Conserves water and salts</li>
+        <li>Prevents entry of microorganisms</li>
+        <li>Regulates body temperature</li>
+        <li>Enables wound to heal faster</li>
+      </ul>
+
+      <p style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:8px;">Why doesn't blood in vessels clot? → Presence of anticoagulant (e.g. heparin) in blood</p>
+    </div>
+    <div>
+      <h3 style="color:var(--green-light); font-size:14px; margin-bottom:12px;">Clotting Cascade</h3>
+      <div class="cascade">
+        <div class="cascade-box">Damaged tissue/platelets exposed</div>
+        <div class="cascade-arrow">↓</div>
+        <div class="cascade-box">Release <span style="color:var(--teal-light);">Thromboplastin</span></div>
+        <div class="cascade-plus">+ Calcium ions (Ca²⁺)</div>
+        <div class="cascade-arrow">↓</div>
+        <div class="cascade-box"><span style="color:var(--gold);">Prothrombin</span> → <span style="color:var(--gold);">Thrombin</span></div>
+        <div class="cascade-plus">+ Vitamin K</div>
+        <div class="cascade-arrow">↓</div>
+        <div class="cascade-box"><span style="color:var(--green-light);">Fibrinogen</span> → <span style="color:var(--green-light);">Fibrin</span></div>
+        <div class="cascade-arrow">↓</div>
+        <div class="cascade-box" style="background:rgba(82,183,136,0.2);">Fibrin mesh → <span style="color:#fff;">CLOT formed</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 24: BLOOD GROUPS ===== -->
+<div class="slide slide-content" id="slide-24">
+  <div class="slide-subheading">Blood Groups</div>
+  <h2 class="slide-heading">ABO Blood Groups & <span>Transfusion</span></h2>
+
+  <div class="blood-group-grid">
+    <div class="blood-group-card" style="border-color:rgba(239,68,68,0.5); background:rgba(239,68,68,0.1);">
+      <div class="bg-letter" style="color:#f87171;">A</div>
+      <div class="bg-detail">Type A antigen</div>
+    </div>
+    <div class="blood-group-card" style="border-color:rgba(96,165,250,0.5); background:rgba(96,165,250,0.1);">
+      <div class="bg-letter" style="color:var(--blue-light);">B</div>
+      <div class="bg-detail">Type B antigen</div>
+    </div>
+    <div class="blood-group-card" style="border-color:rgba(167,139,250,0.5); background:rgba(167,139,250,0.1);">
+      <div class="bg-letter" style="color:#c4b5fd;">AB</div>
+      <div class="bg-detail">Both A & B antigens<br><span style="color:var(--gold);">Universal Recipient</span></div>
+    </div>
+    <div class="blood-group-card" style="border-color:rgba(82,183,136,0.5); background:rgba(82,183,136,0.1);">
+      <div class="bg-letter" style="color:var(--green-light);">O</div>
+      <div class="bg-detail">Neither A nor B<br><span style="color:var(--gold);">Universal Donor</span></div>
+    </div>
+  </div>
+
+  <div class="card-grid card-grid-2">
+    <div class="card accent-gold">
+      <div class="card-title">🌍 Universal Donor — Group O</div>
+      <div class="card-body">Can donate to any blood group without agglutination/clumping. However, can only receive blood from Group O.</div>
+    </div>
+    <div class="card accent-teal">
+      <div class="card-title">🤝 Universal Recipient — Group AB</div>
+      <div class="card-body">Can receive blood from all groups without agglutination. However, can only donate blood to Group AB.</div>
+    </div>
+  </div>
+
+  <h3 style="color:var(--green-light); font-size:14px; margin:16px 0 10px;">Rhesus Factor</h3>
+  <div class="card-grid card-grid-2">
+    <div class="card accent-green">
+      <div class="card-title">Rh⁺ (Rhesus Positive)</div>
+      <div class="card-body">Blood has the Rhesus (Rh) antigen on red blood cells</div>
+    </div>
+    <div class="card accent-red">
+      <div class="card-title">Rh⁻ (Rhesus Negative)</div>
+      <div class="card-body">Blood lacks the Rhesus antigen. Must not receive Rh⁺ blood (agglutination)</div>
+    </div>
+  </div>
+
+  <div class="exam-tip">Precautions before transfusion: blood must be disease-free, sterilized equipment, compatible ABO and Rhesus factor, fresh blood used.</div>
+</div>
+
+<!-- ===== SLIDE 25: IMMUNITY ===== -->
+<div class="slide slide-content" id="slide-25">
+  <div class="slide-subheading">Defence</div>
+  <h2 class="slide-heading">Immunity & <span>Allergic Reactions</span></h2>
+
+  <div class="definition-box">
+    <div class="definition-label">Definition</div>
+    <div class="definition-text"><span class="key-term">Immunity</span> is the resistance to disease by organisms.</div>
+  </div>
+
+  <div class="card-grid card-grid-2" style="margin-bottom:16px;">
+    <div class="card accent-green">
+      <div class="card-icon">🧬</div>
+      <div class="card-title">Natural (Innate) Immunity</div>
+      <div class="card-body">Inherited/transmitted from parent to offspring. Inborn/innate immunity present from birth without prior exposure to disease.</div>
+    </div>
+    <div class="card accent-teal">
+      <div class="card-icon">💉</div>
+      <div class="card-title">Acquired Immunity</div>
+      <div class="card-body">Developed after suffering from a disease or through vaccination. Body produces antibodies in response to antigens.</div>
+    </div>
+  </div>
+
+  <h3 style="color:var(--green-light); font-size:14px; margin-bottom:10px;">Vaccination</h3>
+  <ul class="bullet-list">
+    <li>Protects body against infectious diseases</li>
+    <li>Prevents spread/transmission of certain diseases</li>
+    <li>Diseases vaccinated against: tuberculosis, poliomyelitis, measles, whooping cough, diphtheria</li>
+  </ul>
+
+  <h3 style="color:var(--gold); font-size:14px; margin:16px 0 10px;">Allergic Reactions</h3>
+  <div class="definition-box">
+    <div class="definition-label">What is an Allergy?</div>
+    <div class="definition-text" style="font-size:13px;">Excessive sensitivity and reaction of an individual to certain environmental substances (e.g. dust, pollen, perfumes, smoke).<br><br>
+    How it occurs: Substances act as antigens → antigen-antibody reaction on cell surfaces → cells release <span class="key-term">histamine</span> → causes irritation, itching, nasal discharge.</div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 26: BLOOD TRANSFUSION ===== -->
+<div class="slide slide-content" id="slide-26">
+  <div class="slide-subheading">Blood Transfusion</div>
+  <h2 class="slide-heading">Blood Transfusion & <span>Related Issues</span></h2>
+
+  <div class="definition-box">
+    <div class="definition-label">Definition</div>
+    <div class="definition-text"><span class="key-term">Blood transfusion</span> is the introduction of blood from one person to another.</div>
+  </div>
+
+  <div class="card-grid card-grid-3">
+    <div class="card accent-teal">
+      <div class="card-title">When Needed</div>
+      <ul class="bullet-list" style="margin-top:8px;">
+        <li>During accidents</li>
+        <li>During surgery</li>
+        <li>Bleeding mothers giving birth</li>
+      </ul>
+    </div>
+    <div class="card accent-gold">
+      <div class="card-title">Restoring Blood Volume</div>
+      <ul class="bullet-list" style="margin-top:8px;">
+        <li>Blood transfusion</li>
+        <li>Taking fluids orally</li>
+        <li>Eating iron-rich food</li>
+        <li>Taking iron tablets</li>
+      </ul>
+    </div>
+    <div class="card accent-red">
+      <div class="card-title">Excessive Bleeding → Death</div>
+      <ul class="bullet-list" style="margin-top:8px;">
+        <li>Anaemia / low blood volume</li>
+        <li>Loss of iron</li>
+        <li>Low RBC count / low Hb</li>
+        <li>Low O₂ → cell death</li>
+        <li>Loss of nutrients, dehydration</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="color:var(--green-light); font-size:14px; margin:16px 0 10px;">Precautions Before Transfusion</h3>
+  <ul class="bullet-list">
+    <li>Blood must be <span class="key-term">disease-free</span></li>
+    <li>Sterilized equipment must be used</li>
+    <li>Blood of recipient and donor must be <span class="key-term">compatible</span> — both ABO and Rhesus factor</li>
+    <li>Fresh blood must be used</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 27: SUMMARY TABLES ===== -->
+<div class="slide slide-content" id="slide-27">
+  <div class="slide-subheading">Review</div>
+  <h2 class="slide-heading"><span>Key Summary</span> Comparisons</h2>
+
+  <h3 style="color:var(--green-light); font-size:14px; margin-bottom:8px;">Xylem vs Phloem</h3>
+  <table class="compare-table" style="font-size:12px; margin-bottom:12px;">
+    <thead><tr><th>Feature</th><th class="col-a">Xylem</th><th class="col-b">Phloem</th></tr></thead>
+    <tbody>
+      <tr><td>Substance transported</td><td>Water & mineral salts</td><td>Manufactured food (sugars, amino acids)</td></tr>
+      <tr><td>Direction</td><td>Upward only</td><td>Bidirectional</td></tr>
+      <tr><td>Living/Dead</td><td>Dead cells</td><td>Living cells</td></tr>
+      <tr><td>Cross walls</td><td>Absent</td><td>Present (sieve plates)</td></tr>
+      <tr><td>Lignification</td><td>Lignified</td><td>Not lignified</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="color:var(--green-light); font-size:14px; margin-bottom:8px;">Arteries vs Veins</h3>
+  <table class="compare-table" style="font-size:12px; margin-bottom:12px;">
+    <thead><tr><th>Feature</th><th class="col-a">Arteries</th><th class="col-b">Veins</th></tr></thead>
+    <tbody>
+      <tr><td>Direction</td><td>Away from heart</td><td>Towards heart</td></tr>
+      <tr><td>Blood type</td><td>Oxygenated (mostly)</td><td>Deoxygenated (mostly)</td></tr>
+      <tr><td>Wall</td><td>Thick, muscular, elastic</td><td>Thin, less muscle</td></tr>
+      <tr><td>Lumen</td><td>Narrow</td><td>Wide</td></tr>
+      <tr><td>Valves</td><td>No</td><td>Yes</td></tr>
+      <tr><td>Pressure</td><td>High</td><td>Low</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="color:var(--green-light); font-size:14px; margin-bottom:8px;">Open vs Closed Circulation</h3>
+  <table class="compare-table" style="font-size:12px;">
+    <thead><tr><th>Feature</th><th class="col-a">Open</th><th class="col-b">Closed</th></tr></thead>
+    <tbody>
+      <tr><td>Blood vessels</td><td>Absent</td><td>Present</td></tr>
+      <tr><td>Blood contact</td><td>Direct with tissues</td><td>Enclosed in vessels</td></tr>
+      <tr><td>Pressure</td><td>Low</td><td>High</td></tr>
+      <tr><td>Examples</td><td>Insects, crabs</td><td>Mammals, fish</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== SLIDE 28: KCSE QUESTIONS ===== -->
+<div class="slide slide-content" id="slide-28">
+  <div class="slide-subheading">Exam Preparation</div>
+  <h2 class="slide-heading">KCSE Past Paper <span>Questions</span></h2>
+
+  <div class="expandable" onclick="toggleExpandable(this)">
+    <div class="expandable-header">
+      <span><span class="kcse-badge">KCSE</span> Q1 — Define transpiration. State three sites through which it occurs. (4 marks)</span>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="expandable-content">
+      Transpiration is the loss of water from a plant to the atmosphere. (1 mk)<br>
+      Sites: (i) Stomata — stomatal transpiration (ii) Lenticels — lenticular transpiration (iii) Cuticle — cuticular transpiration (1 mk each = 3 mks)
+    </div>
+  </div>
+
+  <div class="expandable" onclick="toggleExpandable(this)">
+    <div class="expandable-header">
+      <span><span class="kcse-badge">KCSE</span> Q2 — State five ways root hairs are adapted to their functions. (5 marks)</span>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="expandable-content">
+      1. Long/narrow/numerous — increase surface area for absorption<br>
+      2. Many mitochondria — provide energy for active transport of mineral salts<br>
+      3. Thin-walled — speeds up rate of absorption<br>
+      4. Permeable to water and mineral salts — facilitates absorption<br>
+      5. Single cell layer — reduces distance of diffusion
+    </div>
+  </div>
+
+  <div class="expandable" onclick="toggleExpandable(this)">
+    <div class="expandable-header">
+      <span><span class="kcse-badge">KCSE</span> Q3 — Describe how blood clotting occurs. (5 marks)</span>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="expandable-content">
+      Damaged tissue/platelets release enzyme thromboplastin/thrombokinase. Thromboplastin converts prothrombin (plasma protein) to thrombin in presence of calcium ions. Thrombin converts fibrinogen (another plasma protein) to fibrin in presence of Vitamin K. Fibrin is insoluble and forms fibres that create a meshwork/clot over the wound.
+    </div>
+  </div>
+
+  <div class="expandable" onclick="toggleExpandable(this)">
+    <div class="expandable-header">
+      <span><span class="kcse-badge">KCSE</span> Q4 — State four differences between xylem vessels and sieve tubes. (4 marks)</span>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="expandable-content">
+      1. Sieve tubes have cross walls; xylem vessels do not.<br>
+      2. Xylem vessels are lignified; sieve tubes are not.<br>
+      3. Sieve tubes have cytoplasm; xylem vessels do not (dead cells).<br>
+      4. Xylem transports water/mineral salts; phloem translocates manufactured food.
+    </div>
+  </div>
+
+  <div class="expandable" onclick="toggleExpandable(this)">
+    <div class="expandable-header">
+      <span><span class="kcse-badge">KCSE</span> Q5 — Explain how the mammalian heart is adapted to its functions. (6 marks)</span>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="expandable-content">
+      1. Made of cardiac muscle — contracts/relaxes synchronously without nervous stimulation (myogenic).<br>
+      2. Four chambers — prevents mixing of oxygenated and deoxygenated blood.<br>
+      3. Valves (tricuspid, bicuspid) — prevent backflow of blood.<br>
+      4. Left ventricle has thickest walls — generates enough pressure to pump blood to the whole body.<br>
+      5. Pacemaker (SA node) — initiates and synchronizes contractions.<br>
+      6. Coronary arteries supply heart muscle with oxygen and nutrients.
+    </div>
+  </div>
+
+  <div class="expandable" onclick="toggleExpandable(this)">
+    <div class="expandable-header">
+      <span><span class="kcse-badge">KCSE</span> Q6 — Describe an experiment to show phloem translocates food. (6 marks)</span>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="expandable-content">
+      Ringing experiment: Cut a ring in the bark (including phloem) of a woody plant. Observe daily for more than 3 weeks. A swelling appears above the ring due to accumulation of food from leaves (food cannot move past the ring). A second plant with phloem left intact shows no swelling. This proves phloem transports manufactured food downward.
+    </div>
+  </div>
+
+  <div class="expandable" onclick="toggleExpandable(this)">
+    <div class="expandable-header">
+      <span><span class="kcse-badge">KCSE</span> Q7 — Explain why blood pressure is greater in arteries than veins. (4 marks)</span>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="expandable-content">
+      1. Blood is pumped from the heart to arteries at high pressure.<br>
+      2. Arteries have narrow lumen which maintains high pressure; veins have wide lumen which reduces pressure.<br>
+      3. Blood pressure in veins reduced by capillary resistance.<br>
+      4. Arteries have thick muscular walls that generate pressure; veins have thin walls.
+    </div>
+  </div>
+
+  <div class="expandable" onclick="toggleExpandable(this)">
+    <div class="expandable-header">
+      <span><span class="kcse-badge">KCSE</span> Q8 — State ways red blood cells are adapted to their functions. (5 marks)</span>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="expandable-content">
+      1. Many per unit volume — carry more O₂ and CO₂.<br>
+      2. Biconcave shape — large surface area for absorption of O₂ and CO₂.<br>
+      3. No nucleus — more space for haemoglobin.<br>
+      4. Can alter shape — pass through narrow capillary lumen.<br>
+      5. Haemoglobin has high affinity for O₂ — efficient uptake and release.
+    </div>
+  </div>
+
+  <div class="expandable" onclick="toggleExpandable(this)">
+    <div class="expandable-header">
+      <span><span class="kcse-badge">KCSE</span> Q9 — Distinguish between natural and acquired immunity. (2 marks)</span>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="expandable-content">
+      Natural immunity: Inherited/transmitted from parent to offspring; inborn/innate; present from birth.<br>
+      Acquired immunity: Developed after suffering from a disease or through vaccination; produced as a response to antigens.
+    </div>
+  </div>
+
+  <div class="expandable" onclick="toggleExpandable(this)">
+    <div class="expandable-header">
+      <span><span class="kcse-badge">KCSE</span> Q10 — Explain the forces involved in movement of water from soil to leaves. (8 marks)</span>
+      <span class="expand-icon">▼</span>
+    </div>
+    <div class="expandable-content">
+      1. Osmosis — water moves from soil through root hair cell membrane due to higher concentration of cell sap.<br>
+      2. Root pressure — force pushes water from root cells into xylem and up the stem.<br>
+      3. Capillarity — narrowness of xylem vessels causes water to rise.<br>
+      4. Cohesion — water molecules attract each other maintaining continuous water column.<br>
+      5. Adhesion — water molecules adhere to xylem walls, pulling water upward.<br>
+      6. Transpiration pull — water evaporates from spongy mesophyll creating suction that pulls water from roots up.<br>
+      7. Active transport — minerals and some water transported across endodermis against concentration gradient.<br>
+      8. Diffusion — minerals taken up by diffusion along concentration gradient.
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 29: QUIZ ===== -->
+<div class="slide slide-content" id="slide-29" style="background:linear-gradient(160deg,#0a1828 0%,#0d2035 100%);">
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <div class="slide-subheading" style="text-align:center;">Interactive Assessment</div>
+      <h2 class="slide-heading" style="text-align:center;"><span>Quiz Time!</span></h2>
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" id="quiz-progress" style="width:0%"></div>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:12px; color:rgba(255,255,255,0.5);">
+        <span id="quiz-q-counter">Question 0 of 15</span>
+        <span id="quiz-score-live">Score: 0</span>
+      </div>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="quiz-start">
+      <div style="text-align:center; padding:40px 20px;">
+        <div style="font-size:60px; margin-bottom:16px;">🎯</div>
+        <h3 style="font-size:22px; margin-bottom:12px;">Ready for the Quiz?</h3>
+        <p style="color:rgba(255,255,255,0.6); margin-bottom:30px; font-size:14px;">15 questions covering all topics from Transport in Plants and Animals. Test your KCSE readiness!</p>
+        <button class="quiz-btn quiz-btn-primary" onclick="startQuiz()">Start Quiz →</button>
+      </div>
+    </div>
+
+    <!-- Question Area -->
+    <div id="quiz-area" style="display:none;">
+      <div class="quiz-question-card">
+        <div class="quiz-q-number" id="q-num">QUESTION 1</div>
+        <div class="quiz-q-text" id="q-text"></div>
+        <div id="q-options"></div>
+        <div id="q-feedback" class="quiz-feedback"></div>
+      </div>
+      <div class="quiz-actions">
+        <button class="quiz-btn quiz-btn-secondary" id="retry-btn" onclick="retryQuestion()" style="display:none;">Retry</button>
+        <button class="quiz-btn quiz-btn-primary" id="next-btn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+      </div>
+    </div>
+
+    <!-- Score Screen -->
+    <div id="quiz-score" style="display:none;">
+      <div class="score-display">
+        <div id="score-emoji" style="font-size:60px; margin-bottom:16px;"></div>
+        <div class="score-number" id="final-score">0/15</div>
+        <div style="font-size:20px; color:rgba(255,255,255,0.7); margin:12px 0;" id="score-percent"></div>
+        <div style="font-size:16px; color:rgba(255,255,255,0.5); margin-bottom:30px;" id="score-msg"></div>
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+          <button class="quiz-btn quiz-btn-primary" onclick="restartQuiz()">Retry Quiz</button>
+          <button class="quiz-btn quiz-btn-secondary" onclick="goTo(0)">← Back to Start</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end slides-container -->
+
+<div class="scroll-hint">↕ Scroll within slide for more content</div>
+
+<script>
+// ===== QUIZ DATA =====
+const quizData = [
+  {
+    q: "Transport is defined as the movement of substances from one part of the body to another. Which of the following is NOT a reason why transport is necessary?",
+    opts: ["Movement of respiratory gases", "Elimination of metabolic wastes", "Growth of new cells", "Movement of hormones"],
+    ans: 2,
+    exp: "Transport is necessary for movement of nutrients, respiratory gases (O₂, CO₂), elimination of metabolic wastes, movement of hormones, water, salts, and enzymes. Growth of new cells is a function of cell division, not transport."
+  },
+  {
+    q: "Root hair cells are adapted for absorption. Which adaptation provides energy for active transport of mineral salts?",
+    opts: ["Thin cell walls", "Many mitochondria in the cytoplasm", "Long, finger-like projections", "Large vacuole"],
+    ans: 1,
+    exp: "Many mitochondria in the cytoplasm supply energy (ATP) for active transport of mineral salts against the concentration gradient. Thin walls speed absorption, and the elongated shape increases surface area."
+  },
+  {
+    q: "In a dicotyledonous root, how is the xylem arranged?",
+    opts: ["In a ring alternating with phloem", "Star-shaped with phloem between radial rays", "Scattered throughout the cortex", "In a single central strand"],
+    ans: 1,
+    exp: "In a dicotyledonous root, the xylem is arranged in a star-shape (radial arrangement) with phloem lying between the radial rays of the central xylem. Pith is absent. In monocot roots, xylem and phloem alternate in a ring with pith present."
+  },
+  {
+    q: "Which force is primarily responsible for moving water up a tall tree from roots to leaves?",
+    opts: ["Root pressure", "Osmosis", "Transpiration pull", "Capillarity"],
+    ans: 2,
+    exp: "Transpiration pull (suction force) is the main force moving water in tall plants. As water evaporates from spongy mesophyll cells, it creates a tension/pull that draws water upward continuously from roots through the xylem."
+  },
+  {
+    q: "A student removed a ring of bark (including phloem) from a tree stem. What would they observe after 3 weeks?",
+    opts: ["Swelling below the ring", "Swelling above the ring", "No change to the stem", "The plant dies immediately"],
+    ans: 1,
+    exp: "A swelling appears ABOVE the ring because food manufactured in leaves accumulates there — it cannot move past the ring where phloem is removed. This demonstrates that phloem translocates manufactured food downward."
+  },
+  {
+    q: "Xylem vessels are adapted to transport water efficiently. Which adaptation allows lateral movement of water between vessels?",
+    opts: ["Absence of cross walls", "Lignified walls", "Narrow lumen", "Bordered pits"],
+    ans: 3,
+    exp: "Bordered pits in xylem vessel walls allow lateral movement of water sideways between adjacent xylem vessels. The absence of cross walls allows continuous longitudinal flow, and narrow lumen facilitates capillarity."
+  },
+  {
+    q: "Which of the following is NOT a site of transpiration in plants?",
+    opts: ["Stomata", "Lenticels", "Cuticle", "Root hairs"],
+    ans: 3,
+    exp: "The three sites of transpiration are stomata (stomatal transpiration — the main site), lenticels (lenticular transpiration), and the cuticle (cuticular transpiration). Root hairs absorb water from the soil; they are not sites of transpiration."
+  },
+  {
+    q: "What is the main difference between a closed and open circulatory system?",
+    opts: ["Closed has a heart, open does not", "Closed has blood vessels, open has blood in direct contact with tissues", "Closed is found in insects, open in mammals", "Closed uses lymph, open uses blood"],
+    ans: 1,
+    exp: "In a closed circulatory system (e.g. mammals), blood moves within enclosed vessels. In an open system (e.g. arthropods/insects), there are no blood vessels — blood is in direct contact with tissues (in haemocoel). Both systems have a heart."
+  },
+  {
+    q: "The left ventricle of the mammalian heart has the thickest walls. What is the reason for this?",
+    opts: ["It receives blood from the lungs", "It pumps blood only to the right atrium", "It pumps blood to the entire body against high resistance", "It contains oxygenated blood only"],
+    ans: 2,
+    exp: "The left ventricle pumps blood through the aorta to ALL body tissues (systemic circulation) — a much longer distance and against higher resistance than the right ventricle which only pumps to the nearby lungs. Hence it needs thicker, more powerful walls."
+  },
+  {
+    q: "Which blood vessel carries deoxygenated blood FROM the heart to the lungs?",
+    opts: ["Pulmonary vein", "Aorta", "Pulmonary artery", "Vena cava"],
+    ans: 2,
+    exp: "The pulmonary ARTERY carries deoxygenated blood from the RIGHT ventricle to the lungs for oxygenation. This is an exception — most arteries carry oxygenated blood. The pulmonary VEIN returns oxygenated blood from lungs to the left atrium."
+  },
+  {
+    q: "A person with blood group O is called a universal donor. Why can they only receive blood from group O?",
+    opts: ["Their blood lacks all antigens so any foreign antigens would cause agglutination", "Their blood has both A and B antigens", "Their blood has Rhesus factor only", "Their white blood cells would reject all other blood types"],
+    ans: 0,
+    exp: "Group O blood has NEITHER A nor B antigens, so it has both anti-A and anti-B antibodies. Any foreign blood with A or B antigens would react with these antibodies causing agglutination (clumping). Therefore, group O can only safely receive group O blood."
+  },
+  {
+    q: "In blood clotting, what is the role of Vitamin K?",
+    opts: ["Converts prothrombin to thrombin", "Required in converting fibrinogen to fibrin", "Acts as a calcium ion substitute", "Produces platelets"],
+    ans: 1,
+    exp: "Thrombin (produced from prothrombin in the presence of calcium ions) converts fibrinogen to fibrin IN THE PRESENCE OF VITAMIN K. Fibrin then forms the insoluble mesh that creates the clot. Without Vitamin K, fibrin cannot form."
+  },
+  {
+    q: "Red blood cells are biconcave in shape. What is the biological advantage of this shape?",
+    opts: ["Allows them to produce more haemoglobin", "Provides large surface area relative to volume for efficient gas exchange", "Enables them to pass through the heart valves", "Makes them stronger and more durable"],
+    ans: 1,
+    exp: "The biconcave disc shape gives a large surface area-to-volume ratio, maximizing the area over which O₂ and CO₂ can diffuse into and out of the cell. This makes gas exchange more efficient. The flexible membrane also allows them to squeeze through narrow capillaries."
+  },
+  {
+    q: "Which statement correctly describes the difference between natural and acquired immunity?",
+    opts: ["Natural immunity requires vaccination; acquired is inherited", "Natural immunity is inherited from parents; acquired develops after disease or vaccination", "Both types are equally effective against all diseases", "Acquired immunity is present from birth; natural immunity develops later"],
+    ans: 1,
+    exp: "Natural (innate) immunity is inherited/transmitted from parent to offspring — you are born with it. Acquired immunity develops AFTER exposure to a disease (active) or after vaccination (passive), as the immune system produces antibodies in response to antigens."
+  },
+  {
+    q: "During the ringing experiment to demonstrate phloem function, what serves as the control?",
+    opts: ["A plant kept in darkness", "A plant with the xylem removed", "A second similar plant with bark removed but phloem left intact", "A plant given extra water"],
+    ans: 2,
+    exp: "The control in the ringing experiment is a second similar plant where the bark is carefully removed but the phloem is left INTACT. No swelling appears in this control plant, proving that it is the removal of phloem (not just the bark) that causes food accumulation and swelling above the ring."
+  }
+];
+
+// ===== SLIDE NAVIGATION =====
+const slideIds = [
+  'slide-0','slide-1','slide-2','slide-3','slide-4','slide-5','slide-6',
+  'slide-7','slide-8','slide-9','slide-10','slide-11','slide-12','slide-13',
+  'slide-13b','slide-13c','slide-14','slide-15','slide-16','slide-17',
+  'slide-18','slide-19','slide-20','slide-21','slide-22','slide-23',
+  'slide-24','slide-25','slide-26','slide-27','slide-28','slide-29'
+];
+const totalSlides = slideIds.length;
+let currentSlide = 0;
+
+function goTo(n) {
+  const oldEl = document.getElementById(slideIds[currentSlide]);
+  if (oldEl) oldEl.classList.remove('active');
+  currentSlide = Math.max(0, Math.min(n, totalSlides - 1));
+  const el = document.getElementById(slideIds[currentSlide]);
+  if (el) { el.classList.add('active'); el.scrollTop = 0; }
+  updateNav();
+  toggleMenu(false);
+}
+
+function nextSlide() { goTo(currentSlide + 1); }
+function prevSlide() { goTo(currentSlide - 1); }
+
+function updateNav() {
+  document.getElementById('slide-counter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+  document.getElementById('progress-bar').style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+  // Update TOC active
+  document.querySelectorAll('.toc-item').forEach((el, i) => {
+    el.classList.toggle('active', i === currentSlide);
+  });
+}
+
+let menuOpen = false;
+function toggleMenu(force) {
+  menuOpen = force !== undefined ? force : !menuOpen;
+  document.getElementById('toc-panel').classList.toggle('open', menuOpen);
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextSlide();
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prevSlide();
+  if (e.key === 'Escape') toggleMenu(false);
+});
+
+// ===== EXPANDABLE ======
+function toggleExpandable(el) {
+  el.classList.toggle('open');
+}
+
+// ===== QUIZ LOGIC =====
+let qIndex = 0;
+let score = 0;
+let answered = false;
+
+function startQuiz() {
+  qIndex = 0; score = 0; answered = false;
+  document.getElementById('quiz-start').style.display = 'none';
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('quiz-score').style.display = 'none';
+  loadQuestion();
+}
+
+function loadQuestion() {
+  if (qIndex >= quizData.length) { showScore(); return; }
+  answered = false;
+  const q = quizData[qIndex];
+  document.getElementById('q-num').textContent = `QUESTION ${qIndex + 1} OF ${quizData.length}`;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('quiz-progress').style.width = `${(qIndex / quizData.length) * 100}%`;
+  document.getElementById('quiz-q-counter').textContent = `Question ${qIndex + 1} of ${quizData.length}`;
+  document.getElementById('quiz-score-live').textContent = `Score: ${score}`;
+
+  const optsDiv = document.getElementById('q-options');
+  optsDiv.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-option';
+    div.innerHTML = `<div class="quiz-option-letter">${['A','B','C','D'][i]}</div><span>${opt}</span>`;
+    div.onclick = () => selectAnswer(i, div);
+    optsDiv.appendChild(div);
+  });
+
+  document.getElementById('q-feedback').className = 'quiz-feedback';
+  document.getElementById('q-feedback').innerHTML = '';
+  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('retry-btn').style.display = 'none';
+}
+
+function selectAnswer(i, el) {
+  if (answered) return;
+  answered = true;
+  const q = quizData[qIndex];
+  const options = document.querySelectorAll('.quiz-option');
+  options.forEach(o => o.style.cursor = 'default');
+
+  const fb = document.getElementById('q-feedback');
+
+  if (i === q.ans) {
+    el.classList.add('correct');
+    score++;
+    fb.className = 'quiz-feedback correct-fb';
+    fb.innerHTML = `✅ <strong>Correct!</strong> ${q.exp}`;
+  } else {
+    el.classList.add('wrong');
+    options[q.ans].classList.add('correct');
+    fb.className = 'quiz-feedback wrong-fb';
+    fb.innerHTML = `❌ <strong>Wrong.</strong> The correct answer is <strong>${['A','B','C','D'][q.ans]}: ${q.opts[q.ans]}</strong><br><br>${q.exp}`;
+  }
+
+  document.getElementById('quiz-score-live').textContent = `Score: ${score}`;
+  document.getElementById('next-btn').style.display = 'block';
+}
+
+function nextQuestion() { qIndex++; loadQuestion(); }
+
+function retryQuestion() { loadQuestion(); }
+
+function showScore() {
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('quiz-score').style.display = 'block';
+  document.getElementById('quiz-progress').style.width = '100%';
+
+  const pct = Math.round((score / quizData.length) * 100);
+  document.getElementById('final-score').textContent = `${score}/${quizData.length}`;
+  document.getElementById('score-percent').textContent = `${pct}%`;
+
+  let emoji, msg;
+  if (pct >= 90) { emoji = '🏆'; msg = 'Excellent! You are fully prepared for KCSE. Outstanding performance!'; }
+  else if (pct >= 75) { emoji = '🌟'; msg = 'Great work! You have a solid understanding. Review any missed questions.'; }
+  else if (pct >= 60) { emoji = '📚'; msg = 'Good effort! Review the topics you missed and try again.'; }
+  else if (pct >= 40) { emoji = '💪'; msg = 'Keep studying! Go back through the slides and revise key concepts.'; }
+  else { emoji = '🔄'; msg = 'Don\'t give up! Review all sections carefully and retry the quiz.'; }
+
+  document.getElementById('score-emoji').textContent = emoji;
+  document.getElementById('score-msg').textContent = msg;
+}
+
+function restartQuiz() { startQuiz(); }
+
+// ===== INIT =====
+slideIds.forEach((id, i) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove('active');
+});
+const first = document.getElementById(slideIds[0]);
+if (first) first.classList.add('active');
+updateNav();
+</script>
+</body>
+</html>

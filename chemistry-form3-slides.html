@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KCSE Form 2 Chemistry – Atomic Structure & Periodic Table</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c14;
+  --surface: #0e1623;
+  --card: #141e2e;
+  --border: #1e2d45;
+  --border2: #253650;
+  --teal: #00e5c8;
+  --blue: #3b82f6;
+  --purple: #8b5cf6;
+  --amber: #f59e0b;
+  --red: #ef4444;
+  --green: #22c55e;
+  --pink: #ec4899;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --light: #94a3b8;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+/* ── TOP NAV ── */
+#topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(8,12,20,0.96);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 12px;
+  height: 52px; gap: 4px; overflow-x: auto;
+}
+#topnav::-webkit-scrollbar { height: 0; }
+.tnb {
+  flex-shrink: 0;
+  padding: 5px 12px; border-radius: 8px;
+  border: 1px solid var(--border2);
+  background: transparent; color: var(--muted);
+  font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.tnb:hover { border-color: var(--teal); color: var(--teal); }
+.tnb.on { background: var(--teal); color: #080c14; border-color: var(--teal); }
+
+/* ── SLIDES ── */
+.slides-wrap { margin-top: 52px; }
+.slide {
+  display: none; min-height: calc(100vh - 52px);
+  padding: 36px 20px 80px;
+  max-width: 1000px; margin: 0 auto;
+}
+.slide.on { display: block; animation: fadeUp .35s ease; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── TYPOGRAPHY ── */
+h1 { font-size: clamp(2rem,5vw,3.2rem); font-weight: 900; line-height: 1.05; }
+h2 { font-size: clamp(1.4rem,3vw,2rem); font-weight: 800; margin-bottom: 18px; }
+h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
+p  { line-height: 1.75; color: var(--light); font-size: .95rem; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ── PILL / BADGE ── */
+.pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 12px; border-radius: 99px;
+  font-size: 11px; font-weight: 700; letter-spacing: .04em;
+  margin-bottom: 12px;
+}
+.pill-teal  { background: rgba(0,229,200,.12); color: var(--teal); border: 1px solid rgba(0,229,200,.25); }
+.pill-blue  { background: rgba(59,130,246,.12); color: var(--blue); border: 1px solid rgba(59,130,246,.25); }
+.pill-purple{ background: rgba(139,92,246,.12); color: var(--purple); border: 1px solid rgba(139,92,246,.25); }
+.pill-amber { background: rgba(245,158,11,.12); color: var(--amber); border: 1px solid rgba(245,158,11,.25); }
+.pill-red   { background: rgba(239,68,68,.12); color: var(--red); border: 1px solid rgba(239,68,68,.25); }
+.pill-green { background: rgba(34,197,94,.12); color: var(--green); border: 1px solid rgba(34,197,94,.25); }
+.pill-pink  { background: rgba(236,72,153,.12); color: var(--pink); border: 1px solid rgba(236,72,153,.25); }
+
+/* ── CARDS ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px;
+  margin-bottom: 16px;
+}
+.card-teal   { border-color: rgba(0,229,200,.35); }
+.card-blue   { border-color: rgba(59,130,246,.35); }
+.card-purple { border-color: rgba(139,92,246,.35); }
+.card-amber  { border-color: rgba(245,158,11,.35); }
+.card-red    { border-color: rgba(239,68,68,.35); }
+.card-green  { border-color: rgba(34,197,94,.35); }
+.card-pink   { border-color: rgba(236,72,153,.35); }
+
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 14px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 12px; }
+
+/* ── DATA TABLE ── */
+.dt {
+  width: 100%; border-collapse: collapse;
+  font-size: .85rem; margin-top: 10px;
+}
+.dt th {
+  background: var(--surface); padding: 8px 12px;
+  border: 1px solid var(--border2); text-align: left;
+  font-size: .78rem; color: var(--teal); font-family: 'JetBrains Mono', monospace;
+  font-weight: 700; white-space: nowrap;
+}
+.dt td { padding: 8px 12px; border: 1px solid var(--border); color: var(--light); }
+.dt tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+.dt-wrap { overflow-x: auto; }
+
+/* ── FORMULA BOX ── */
+.fbox {
+  background: rgba(139,92,246,.1);
+  border: 1px solid rgba(139,92,246,.35);
+  border-radius: 12px; padding: 16px; text-align: center; margin: 14px 0;
+}
+.fbox-big { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; color: #c4b5fd; font-weight: 700; }
+.fbox-teal { background: rgba(0,229,200,.08); border-color: rgba(0,229,200,.3); }
+.fbox-teal .fbox-big { color: var(--teal); }
+.fbox-amber { background: rgba(245,158,11,.08); border-color: rgba(245,158,11,.3); }
+.fbox-amber .fbox-big { color: var(--amber); }
+
+/* ── EQUATION ── */
+.eq {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .83rem; color: #6ee7b7;
+  background: rgba(0,0,0,.35);
+  padding: 8px 14px; border-radius: 8px; margin: 6px 0;
+  word-break: break-all;
+}
+
+/* ── ATOM SVG WRAPPER ── */
+.atom-wrap { text-align: center; margin: 18px 0; }
+
+/* ── SUBPARTICLE CARDS ── */
+.spc { border-radius: 14px; padding: 20px; text-align: center; border: 2px solid; transition: transform .2s; cursor: default; }
+.spc:hover { transform: scale(1.03); }
+.spc-p { border-color: var(--red);    background: rgba(239,68,68,.07); }
+.spc-n { border-color: var(--light);  background: rgba(148,163,184,.07); }
+.spc-e { border-color: var(--teal);   background: rgba(0,229,200,.07); }
+.spc-icon { font-size: 2.8rem; margin-bottom: 6px; }
+.spc-name { font-weight: 800; font-size: 1rem; margin-bottom: 8px; }
+.spc-fact { font-size: .8rem; color: var(--muted); line-height: 1.7; text-align: left; }
+
+/* ── ELEMENT EXPLORER ── */
+.elem-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px,1fr)); gap: 6px; }
+.elem-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 6px; text-align: center;
+  cursor: pointer; transition: all .2s;
+}
+.elem-card:hover, .elem-card.sel {
+  border-color: var(--teal); background: rgba(0,229,200,.08);
+  transform: scale(1.05); z-index: 5; position: relative;
+}
+.elem-card .esym { font-size: 1.4rem; font-weight: 900; }
+.elem-card .ename { font-size: 8px; color: var(--muted); margin-top: 1px; }
+.elem-card .enum  { font-size: 9px; font-family: 'JetBrains Mono', monospace; color: var(--amber); }
+
+/* ── DETAIL PANEL ── */
+.dpanel {
+  display: none; background: var(--surface);
+  border: 1px solid var(--teal); border-radius: 14px;
+  padding: 20px; margin-top: 14px;
+  animation: fadeUp .25s ease;
+}
+.dpanel.show { display: block; }
+.shell-dot {
+  display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 2px solid; margin: 3px;
+  font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700;
+}
+.sh1 { border-color: var(--red);    color: var(--red);    background: rgba(239,68,68,.1); }
+.sh2 { border-color: var(--amber);  color: var(--amber);  background: rgba(245,158,11,.1); }
+.sh3 { border-color: var(--green);  color: var(--green);  background: rgba(34,197,94,.1); }
+.sh4 { border-color: var(--teal);   color: var(--teal);   background: rgba(0,229,200,.1); }
+
+/* ── NOTATION DISPLAY ── */
+.notation-big {
+  display: inline-block; position: relative;
+  font-family: 'JetBrains Mono', monospace; font-size: 3.5rem; font-weight: 900;
+  padding: 12px 24px 12px 32px; color: var(--text);
+}
+.notation-big .nA { position: absolute; top: 4px; left: 2px; font-size: 1.1rem; color: var(--amber); }
+.notation-big .nZ { position: absolute; bottom: 4px; left: 2px; font-size: 1.1rem; color: var(--green); }
+
+/* ── RAM CALC ── */
+.iso-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.iso-row label { font-size: .85rem; color: var(--muted); min-width: 120px; }
+.iso-input {
+  width: 84px; padding: 7px 10px;
+  border-radius: 8px; border: 1px solid var(--border2);
+  background: var(--surface); color: var(--text);
+  font-family: 'JetBrains Mono', monospace; font-size: .85rem;
+}
+.btn {
+  padding: 10px 22px; border-radius: 10px; border: none;
+  background: var(--teal); color: #080c14;
+  font-family: 'Outfit', sans-serif; font-weight: 800; font-size: .9rem;
+  cursor: pointer; transition: all .2s;
+}
+.btn:hover { opacity: .85; transform: translateY(-1px); }
+.btn-purple { background: var(--purple); color: #fff; }
+.btn-amber  { background: var(--amber);  color: #080c14; }
+.btn-muted  { background: var(--border2); color: var(--text); }
+
+.result-box {
+  display: none; margin-top: 14px;
+  background: rgba(0,229,200,.07); border: 1px solid var(--teal);
+  border-radius: 10px; padding: 14px;
+  font-family: 'JetBrains Mono', monospace; font-size: .88rem;
+}
+.result-box.show { display: block; animation: fadeUp .3s ease; }
+
+/* ── MINI PT ── */
+.mpt-cell {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 5px; padding: 5px 3px; text-align: center;
+  cursor: pointer; transition: all .15s; min-width: 32px;
+  font-size: 9px;
+}
+.mpt-cell:hover { border-color: var(--teal); transform: scale(1.12); z-index: 10; position: relative; }
+.mpt-cell .ms { font-weight: 800; font-size: 10px; }
+.mpt-cell .mn { color: var(--muted); font-size: 7px; }
+.g1c  { border-left: 2.5px solid var(--red); }
+.g2c  { border-left: 2.5px solid var(--amber); }
+.g7c  { border-left: 2.5px solid var(--teal); }
+.g8c  { border-left: 2.5px solid var(--purple); }
+.mpt-detail {
+  display: none; background: var(--surface);
+  border: 1px solid var(--teal); border-radius: 12px;
+  padding: 16px; margin-top: 12px; animation: fadeUp .2s ease;
+}
+.mpt-detail.show { display: block; }
+
+/* ── GROUPS TABS ── */
+.gtabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.gtab {
+  padding: 7px 16px; border-radius: 10px;
+  border: 1px solid var(--border2);
+  background: transparent; color: var(--muted);
+  font-family: 'Outfit', sans-serif; font-size: .85rem; font-weight: 700;
+  cursor: pointer; transition: all .2s;
+}
+.gtab:hover { border-color: var(--teal); color: var(--teal); }
+.gtab.on { color: #080c14; }
+.gtab-g1.on { background: var(--red);    border-color: var(--red); }
+.gtab-g2.on { background: var(--amber);  border-color: var(--amber); }
+.gtab-g7.on { background: var(--teal);   border-color: var(--teal); }
+.gtab-g8.on { background: var(--purple); border-color: var(--purple); color: #fff; }
+.gcontent { display: none; }
+.gcontent.on { display: block; animation: fadeUp .25s ease; }
+
+/* ── TREND ARROWS ── */
+.arr-up   { color: var(--green); font-size: 1.1rem; font-weight: 900; }
+.arr-down { color: var(--red);   font-size: 1.1rem; font-weight: 900; }
+
+/* ── QUIZ ── */
+.qbox { font-size: 1rem; font-weight: 700; margin-bottom: 14px; line-height: 1.5; }
+.qopt {
+  display: block; width: 100%; padding: 11px 16px; margin-bottom: 8px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; cursor: pointer; text-align: left;
+  color: var(--text); font-family: 'Outfit', sans-serif; font-size: .9rem; font-weight: 500;
+  transition: all .2s;
+}
+.qopt:hover { border-color: var(--teal); }
+.qopt.ok  { border-color: var(--green); background: rgba(34,197,94,.1); color: #86efac; }
+.qopt.bad { border-color: var(--red);   background: rgba(239,68,68,.1); color: #fca5a5; }
+.qfb { display: none; padding: 10px 14px; border-radius: 10px; margin-top: 8px; font-size: .88rem; }
+.qfb.show { display: block; animation: fadeUp .2s ease; }
+.qfb.ok  { background: rgba(34,197,94,.08); border: 1px solid var(--green); color: #86efac; }
+.qfb.bad { background: rgba(239,68,68,.08); border: 1px solid var(--red);   color: #fca5a5; }
+
+/* ── PROGRESS ── */
+.prog-wrap { background: var(--border); border-radius: 99px; height: 4px; margin-bottom: 24px; }
+.prog-bar  { height: 4px; border-radius: 99px; background: var(--teal); transition: width .4s; }
+
+/* ── NAV BUTTONS ── */
+.slide-nav { display: flex; gap: 10px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+
+/* ── RXNCARD ── */
+.rxncard {
+  background: var(--card); border-radius: 12px; padding: 15px;
+  border-left: 3px solid var(--green); margin-bottom: 12px;
+}
+.rxncard.amb { border-color: var(--amber); }
+.rxncard.teal { border-color: var(--teal); }
+.rxncard.red  { border-color: var(--red); }
+
+/* ── CONFIG SELECT ── */
+.cfg-sel {
+  padding: 9px 14px; border-radius: 10px;
+  border: 1px solid var(--border2); background: var(--surface);
+  color: var(--text); font-family: 'Outfit', sans-serif; font-size: .9rem;
+  width: 100%; max-width: 320px; margin-bottom: 16px; cursor: pointer;
+}
+
+/* ── WORKED EX STEPS ── */
+.step-row {
+  display: flex; gap: 12px; align-items: flex-start; margin-bottom: 8px;
+}
+.step-num {
+  min-width: 28px; height: 28px; border-radius: 50%;
+  background: var(--purple); display: flex; align-items: center;
+  justify-content: center; font-weight: 800; font-size: .82rem; flex-shrink: 0;
+}
+
+/* ── TABLE PRNT ROW ── */
+.prow { display: grid; grid-template-columns: repeat(4,1fr); gap: 4px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: .85rem; }
+.prow.hdr { font-weight: 700; color: var(--teal); font-family: 'JetBrains Mono', monospace; font-size: .78rem; }
+
+/* ── SCORE ── */
+#scoreCard { display: none; text-align: center; padding: 30px; }
+
+@media (max-width: 600px) {
+  .grid2 { grid-template-columns: 1fr; }
+  .grid3 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav id="topnav">
+  <button class="tnb on"  onclick="go(0)">🏠 Home</button>
+  <button class="tnb"     onclick="go(1)">⚛ Particles</button>
+  <button class="tnb"     onclick="go(2)">🔬 Explorer</button>
+  <button class="tnb"     onclick="go(3)">📐 Isotopes</button>
+  <button class="tnb"     onclick="go(4)">🧮 RAM Calc</button>
+  <button class="tnb"     onclick="go(5)">🌀 Electron Config</button>
+  <button class="tnb"     onclick="go(6)">📋 Periodic Table</button>
+  <button class="tnb"     onclick="go(7)">👨‍👩‍👧 Chemical Families</button>
+  <button class="tnb"     onclick="go(8)">🧪 Reactions</button>
+  <button class="tnb"     onclick="go(9)">🎯 Quiz</button>
+</nav>
+
+<div class="slides-wrap">
+
+<!-- ══════════ SLIDE 0 – HOME ══════════ -->
+<div class="slide on" id="s0">
+  <div style="text-align:center;padding:24px 0 16px;">
+    <div class="pill pill-teal" style="font-size:.85rem;padding:5px 20px;">KCSE FORM 2 CHEMISTRY</div>
+    <h1 style="margin:16px 0 12px;">
+      <span style="color:var(--teal);">Atomic Structure</span><br>
+      &amp; Periodic Table
+    </h1>
+    <p style="max-width:560px;margin:0 auto;font-size:1.05rem;">
+      Interactive notes covering both topics fully — subatomic particles, isotopes, RAM, electronic configurations, periodic table structure, and all four chemical families.
+    </p>
+  </div>
+
+  <div class="grid2" style="margin-top:28px;">
+    <div class="card card-teal" style="cursor:pointer;" onclick="go(1)">
+      <div class="pill pill-teal">Topic 1</div>
+      <h3>Structure of the Atom</h3>
+      <p>Protons · Electrons · Neutrons · Atomic &amp; Mass Numbers · Isotopes · RAM · Electronic Configuration · Ions</p>
+    </div>
+    <div class="card card-green" style="cursor:pointer;" onclick="go(6)">
+      <div class="pill pill-green">Topic 2</div>
+      <h3>Periodic Table &amp; Chemical Families</h3>
+      <p>Periods &amp; Groups · Alkali Metals · Alkaline Earth Metals · Halogens · Noble Gases · Trends</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px;">
+    <h3 style="margin-bottom:14px;">📖 Key Definitions — At a Glance</h3>
+    <div class="grid2">
+      <div>
+        <div class="pill pill-teal">ATOM</div>
+        <p>The <strong>smallest particle</strong> of an element that takes part in a chemical reaction. Made of protons, neutrons, and electrons.</p>
+      </div>
+      <div>
+        <div class="pill pill-purple">NUCLEUS</div>
+        <p>The <strong>central core</strong> of an atom, containing protons and neutrons. Very dense and positively charged.</p>
+      </div>
+      <div>
+        <div class="pill pill-amber">ISOTOPE</div>
+        <p>Atoms of the <strong>same element</strong> with the same atomic number but <strong>different mass numbers</strong> (different neutrons).</p>
+      </div>
+      <div>
+        <div class="pill pill-red">ION</div>
+        <p>Formed when an atom <strong>gains or loses electrons</strong> to become stable — either cation (+) or anion (−).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-nav">
+    <button class="btn" onclick="go(1)">Start Learning →</button>
+  </div>
+</div>
+
+<!-- ══════════ SLIDE 1 – SUBATOMIC PARTICLES ══════════ -->
+<div class="slide" id="s1">
+  <div class="pill pill-teal">TOPIC 1 · SECTION 1</div>
+  <h2>Subatomic Particles</h2>
+  <p style="margin-bottom:18px;">Every atom is built from three fundamental particles, each with a distinct role and location.</p>
+
+  <div class="grid3">
+    <div class="spc spc-p">
+      <div class="spc-icon">⊕</div>
+      <div class="spc-name" style="color:var(--red);">PROTON</div>
+      <div class="spc-fact">
+        <strong>Charge:</strong> Positive (+1)<br>
+        <strong>Location:</strong> Nucleus (centre)<br>
+        <strong>Relative mass:</strong> 1<br>
+        <strong>Key fact:</strong> Number of protons = <em>Atomic Number (Z)</em>
+      </div>
+    </div>
+    <div class="spc spc-n">
+      <div class="spc-icon">◎</div>
+      <div class="spc-name" style="color:var(--light);">NEUTRON</div>
+      <div class="spc-fact">
+        <strong>Charge:</strong> None (neutral)<br>
+        <strong>Location:</strong> Nucleus (centre)<br>
+        <strong>Relative mass:</strong> 1<br>
+        <strong>Key fact:</strong> Protons + Neutrons = <em>Mass Number (A)</em>
+      </div>
+    </div>
+    <div class="spc spc-e">
+      <div class="spc-icon">⊖</div>
+      <div class="spc-name" style="color:var(--teal);">ELECTRON</div>
+      <div class="spc-fact">
+        <strong>Charge:</strong> Negative (−1)<br>
+        <strong>Location:</strong> Energy levels / orbitals<br>
+        <strong>Relative mass:</strong> 1/1840 ≈ negligible<br>
+        <strong>Key fact:</strong> In neutral atom, electrons = protons
+      </div>
+    </div>
+  </div>
+
+  <!-- Animated atom SVG -->
+  <div class="atom-wrap">
+    <svg width="280" height="280" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="140" cy="140" rx="90" ry="32" fill="none" stroke="#1e2d45" stroke-width="1.5"/>
+      <ellipse cx="140" cy="140" rx="90" ry="32" fill="none" stroke="#1e2d45" stroke-width="1.5" transform="rotate(60 140 140)"/>
+      <ellipse cx="140" cy="140" rx="90" ry="32" fill="none" stroke="#1e2d45" stroke-width="1.5" transform="rotate(120 140 140)"/>
+      <!-- Nucleus -->
+      <circle cx="140" cy="140" r="34" fill="rgba(239,68,68,0.15)" stroke="#ef4444" stroke-width="2"/>
+      <text x="140" y="136" text-anchor="middle" fill="#fff" font-size="10" font-family="JetBrains Mono">p⁺ n°</text>
+      <text x="140" y="150" text-anchor="middle" fill="#fca5a5" font-size="8.5" font-family="JetBrains Mono">NUCLEUS</text>
+      <!-- Orbiting electrons -->
+      <circle r="8" fill="#00e5c8" stroke="#080c14" stroke-width="1.5">
+        <animateMotion dur="2.8s" repeatCount="indefinite" path="M 50,140 A 90,32 0 0 1 230,140 A 90,32 0 0 1 50,140"/>
+      </circle>
+      <circle r="8" fill="#00e5c8" stroke="#080c14" stroke-width="1.5">
+        <animateMotion dur="4.2s" repeatCount="indefinite" path="M 78,62 A 90,32 0 0 1 202,218 A 90,32 0 0 1 78,62" keyPoints="0.5;1;0.5" keyTimes="0;0.5;1" calcMode="linear"/>
+      </circle>
+      <circle r="8" fill="#00e5c8" stroke="#080c14" stroke-width="1.5">
+        <animateMotion dur="3.5s" repeatCount="indefinite" path="M 202,62 A 90,32 0 0 0 78,218 A 90,32 0 0 0 202,62" keyPoints="0;0.5;1" keyTimes="0;0.5;1" calcMode="linear"/>
+      </circle>
+      <text x="140" y="272" text-anchor="middle" fill="var(--teal)" font-size="11" font-family="Outfit">● Electrons orbit in energy levels</text>
+    </svg>
+  </div>
+
+  <div class="card card-teal">
+    <h3>🧮 Essential Formulas — Must Know!</h3>
+    <div class="grid2">
+      <div class="fbox fbox-teal" style="margin:0;">
+        <div style="font-size:.78rem;color:var(--muted);margin-bottom:6px;">ATOMIC NUMBER</div>
+        <div class="fbox-big">Z = No. of Protons</div>
+        <p style="font-size:.78rem;margin-top:6px;">In a neutral atom: Protons = Electrons</p>
+      </div>
+      <div class="fbox fbox-amber" style="margin:0;">
+        <div style="font-size:.78rem;color:var(--muted);margin-bottom:6px;">MASS NUMBER</div>
+        <div class="fbox-big">A = Protons + Neutrons</div>
+        <p style="font-size:.78rem;margin-top:6px;">∴ Neutrons = A − Z</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px;">
+    <h3>Particle Comparison Table</h3>
+    <div class="prow hdr"><div>Particle</div><div>Charge</div><div>Rel. Mass</div><div>Location</div></div>
+    <div class="prow">
+      <div><span style="color:var(--red);">●</span> Proton</div>
+      <div style="color:var(--red);font-weight:700;">+1</div>
+      <div>1</div><div>Nucleus</div>
+    </div>
+    <div class="prow">
+      <div><span style="color:var(--light);">●</span> Neutron</div>
+      <div style="color:var(--muted);font-weight:700;">0</div>
+      <div>1</div><div>Nucleus</div>
+    </div>
+    <div class="prow">
+      <div><span style="color:var(--teal);">●</span> Electron</div>
+      <div style="color:var(--teal);font-weight:700;">−1</div>
+      <div>1/1840 ≈ 0</div><div>Energy levels</div>
+    </div>
+  </div>
+
+  <div class="slide-nav">
+    <button class="btn btn-muted" onclick="go(0)">← Home</button>
+    <button class="btn" onclick="go(2)">Element Explorer →</button>
+  </div>
+</div>
+
+<!-- ══════════ SLIDE 2 – ELEMENT EXPLORER ══════════ -->
+<div class="slide" id="s2">
+  <div class="pill pill-blue">TOPIC 1 · SECTION 2</div>
+  <h2>Element Explorer — First 20 Elements</h2>
+  <p style="margin-bottom:16px;">Click any element to reveal its full atomic structure, electronic configuration, period &amp; group.</p>
+
+  <div class="elem-grid" id="elemGrid"></div>
+  <div class="dpanel" id="detailPanel">
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;">
+      <div style="text-align:center;min-width:120px;">
+        <div class="notation-big">
+          <span class="nA" id="dp-A"></span>
+          <span class="nZ" id="dp-Z"></span>
+          <span id="dp-sym" style="color:var(--teal);"></span>
+        </div>
+        <div id="dp-name" style="font-weight:800;font-size:1.1rem;margin-top:8px;"></div>
+        <div id="dp-type" style="font-size:.8rem;margin-top:4px;"></div>
+      </div>
+      <div style="flex:1;min-width:200px;">
+        <div class="prow hdr"><div>Property</div><div>Value</div><div>Property</div><div>Value</div></div>
+        <div class="prow">
+          <div>Protons</div><div id="dp-p" style="color:var(--red);font-weight:800;"></div>
+          <div>Neutrons</div><div id="dp-n" style="color:var(--light);font-weight:800;"></div>
+        </div>
+        <div class="prow">
+          <div>Electrons</div><div id="dp-e" style="color:var(--teal);font-weight:800;"></div>
+          <div>Period</div><div id="dp-per" style="color:var(--amber);font-weight:800;"></div>
+        </div>
+        <div class="prow">
+          <div>Group</div><div id="dp-grp" style="color:var(--purple);font-weight:800;"></div>
+          <div>Mass No.</div><div id="dp-ma" style="color:var(--green);font-weight:800;"></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <div style="font-size:.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:8px;">ELECTRONIC CONFIGURATION</div>
+      <div id="dp-shells" style="display:flex;flex-wrap:wrap;align-items:center;gap:4px;"></div>
+      <div id="dp-cfg" style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;color:var(--teal);margin-top:10px;font-weight:700;"></div>
+    </div>
+    <div id="dp-note" style="margin-top:10px;font-size:.82rem;color:var(--muted);line-height:1.7;"></div>
+  </div>
+
+  <div class="slide-nav">
+    <button class="btn btn-muted" onclick="go(1)">← Particles</button>
+    <button class="btn" onclick="go(3)">Isotopes →</button>
+  </div>
+</div>
+
+<!-- ══════════ SLIDE 3 – ISOTOPES & NOTATION ══════════ -->
+<div class="slide" id="s3">
+  <div class="pill pill-amber">TOPIC 1 · SECTION 3</div>
+  <h2>Isotopes &amp; Atomic Notation</h2>
+
+  <div class="card card-amber">
+    <h3>Standard Atomic Notation</h3>
+    <p style="margin-bottom:14px;">By convention, the <span style="color:var(--amber);">mass number</span> is written as a superscript and the <span style="color:var(--green);">atomic number</span> as a subscript to the <strong>left</strong> of the chemical symbol:</p>
+    <div style="text-align:center;padding:20px 0;">
+      <div class="notation-big" style="font-size:4rem;">
+        <span class="nA" style="font-size:1.3rem;">A</span>
+        <span class="nZ" style="font-size:1.3rem;">Z</span>
+        X
+      </div>
+      <div style="margin-top:10px;font-size:.88rem;color:var(--muted);">
+        Example: Carbon-12 → <span style="font-family:'JetBrains Mono',monospace;color:var(--teal);">¹²₆C</span>
+        &nbsp;→&nbsp; 6 protons, 6 neutrons, 6 electrons
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-teal">
+    <div class="pill pill-teal">DEFINITION</div>
+    <h3>What are Isotopes?</h3>
+    <p><strong>Isotopes</strong> are atoms of the same element having the <strong>same atomic number</strong> (same protons) but a <strong>different mass number</strong> (different neutrons). They have identical chemical properties but different physical properties.</p>
+  </div>
+
+  <h3 style="margin:20px 0 12px;">⚗ Explore Common Isotopes — Click to Reveal</h3>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;" id="isoBtns"></div>
+  <div class="card" id="isoDisplay" style="min-height:60px;"></div>
+
+  <div class="slide-nav">
+    <button class="btn btn-muted" onclick="go(2)">← Explorer</button>
+    <button class="btn" onclick="go(4)">RAM Calculator →</button>
+  </div>
+</div>
+
+<!-- ══════════ SLIDE 4 – RAM CALCULATOR ══════════ -->
+<div class="slide" id="s4">
+  <div class="pill pill-amber">TOPIC 1 · SECTION 4</div>
+  <h2>Relative Atomic Mass (RAM)</h2>
+
+  <div class="card card-amber">
+    <div class="pill pill-amber">DEFINITION</div>
+    <h3>What is RAM?</h3>
+    <p>The <strong>Relative Atomic Mass (RAM)</strong> is the mass of an average atom of an element compared to <strong>1/12 of one atom of ¹²C</strong>, whose mass is arbitrarily fixed as 12.000 atomic mass units (a.m.u).</p>
+    <div class="fbox fbox-amber" style="margin-top:12px;">
+      <div class="fbox-big">RAM = Σ [(abundance % ÷ 100) × mass number]</div>
+    </div>
+    <div class="grid2" style="margin-top:10px;">
+      <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:12px;">
+        <div style="font-weight:800;color:var(--amber);margin-bottom:4px;">⚠️ Key Rules</div>
+        <ul style="list-style:none;font-size:.82rem;color:var(--muted);line-height:2;">
+          <li>✓ RAM has <strong>no units</strong></li>
+          <li>✓ RAM is always closer to the most abundant isotope</li>
+          <li>✓ Determined using a mass spectrometer</li>
+        </ul>
+      </div>
+      <div style="background:rgba(0,229,200,.06);border:1px solid rgba(0,229,200,.2);border-radius:10px;padding:12px;">
+        <div style="font-weight:800;color:var(--teal);margin-bottom:4px;">📊 From Mass Spectrometer</div>
+        <p style="font-size:.82rem;">The mass spectrometer determines each isotope and its relative abundance. These abundances are then used in the RAM calculation.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin:22px 0 12px;">📚 Worked Examples — Click to See Full Working</h3>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+    <button class="btn btn-purple" onclick="showWorked(0)">Chlorine</button>
+    <button class="btn btn-purple" onclick="showWorked(1)">Potassium</button>
+    <button class="btn btn-purple" onclick="showWorked(2)">Neon</button>
+  </div>
+  <div class="card card-purple" id="workedBox" style="display:none;"></div>
+
+  <div class="card card-green" style="margin-top:20px;">
+    <h3>🧮 RAM Calculator — Try It Yourself</h3>
+    <p style="margin-bottom:14px;font-size:.88rem;">Enter up to 3 isotopes with their mass numbers and natural abundances (must total 100%).</p>
+    <div id="ramInputs"></div>
+    <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+      <button class="btn btn-amber" onclick="calcRAM()">Calculate RAM</button>
+      <button class="btn btn-muted" onclick="resetRAM()">Reset</button>
+    </div>
+    <div class="result-box" id="ramResult"></div>
+  </div>
+
+  <div class="slide-nav">
+    <button class="btn btn-muted" onclick="go(3)">← Isotopes</button>
+    <button class="btn" onclick="go(5)">Electron Config →</button>
+  </div>
+</div>
+
+<!-- ══════════ SLIDE 5 – ELECTRONIC CONFIGURATION ══════════ -->
+<div class="slide" id="s5">
+  <div class="pill pill-blue">TOPIC 1 · SECTION 5</div>
+  <h2>Electronic Configuration</h2>
+
+  <div class="card card-blue">
+    <div class="pill pill-blue">DEFINITION</div>
+    <h3>Energy Levels / Orbitals</h3>
+    <p>An <strong>energy level</strong> is a fixed region surrounding the nucleus occupied by electrons of the same potential energy. Numbered <strong>1, 2, 3, 4…</strong> outward from the nucleus. The arrangement of electrons across levels is called the <strong>electronic configuration</strong>.</p>
+  </div>
+
+  <div class="grid2" style="margin-top:14px;">
+    <div class="card" style="border-color:rgba(239,68,68,.4);text-align:center;">
+      <div class="pill pill-red">Level 1</div>
+      <div style="font-size:2rem;color:var(--red);font-family:'JetBrains Mono',monospace;font-weight:900;">max 2e⁻</div>
+      <p style="font-size:.82rem;margin-top:6px;">Closest to nucleus</p>
+    </div>
+    <div class="card" style="border-color:rgba(245,158,11,.4);text-align:center;">
+      <div class="pill pill-amber">Level 2</div>
+      <div style="font-size:2rem;color:var(--amber);font-family:'JetBrains Mono',monospace;font-weight:900;">max 8e⁻</div>
+      <p style="font-size:.82rem;margin-top:6px;">Second shell</p>
+    </div>
+    <div class="card" style="border-color:rgba(34,197,94,.4);text-align:center;">
+      <div class="pill pill-green">Level 3</div>
+      <div style="font-size:2rem;color:var(--green);font-family:'JetBrains Mono',monospace;font-weight:900;">max 8e⁻</div>
+      <p style="font-size:.82rem;margin-top:6px;">(or 18 if available)</p>
+    </div>
+    <div class="card" style="border-color:rgba(0,229,200,.4);text-align:center;">
+      <div class="pill pill-teal">Level 4</div>
+      <div style="font-size:2rem;color:var(--teal);font-family:'JetBrains Mono',monospace;font-weight:900;">max 8e⁻</div>
+      <p style="font-size:.82rem;margin-top:6px;">(or 18/32 if available)</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px;">
+    <h3>🎯 How to Find Period &amp; Group from Configuration</h3>
+    <div class="grid2">
+      <div class="card card-purple" style="margin-bottom:0;">
+        <div class="pill pill-purple">PERIOD</div>
+        <p>Count the number of <strong>occupied energy levels</strong> = Period number</p>
+        <div class="eq" style="margin-top:8px;">Na = 2:8:1 → 3 levels → Period 3</div>
+        <div class="eq">K = 2:8:8:1 → 4 levels → Period 4</div>
+      </div>
+      <div class="card card-green" style="margin-bottom:0;">
+        <div class="pill pill-green">GROUP</div>
+        <p>Count the <strong>outer energy level electrons</strong> = Group number</p>
+        <div class="eq" style="margin-top:8px;">Na = 2:8:1 → 1 outer e⁻ → Group I</div>
+        <div class="eq">Cl = 2:8:7 → 7 outer e⁻ → Group VII</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-teal" style="margin-top:14px;">
+    <h3>🔨 Interactive Configuration Builder</h3>
+    <select class="cfg-sel" id="cfgSelect" onchange="showCfg()">
+      <option value="">— Select an element —</option>
+    </select>
+    <div id="cfgDisplay" style="display:none;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted);margin-bottom:8px;">ELECTRON SHELLS</div>
+      <div id="cfgShells" style="display:flex;flex-wrap:wrap;align-items:center;gap:5px;"></div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;color:var(--teal);margin-top:12px;font-weight:700;" id="cfgStr"></div>
+      <div id="cfgInfo" style="margin-top:8px;font-size:.88rem;"></div>
+    </div>
+  </div>
+
+  <div class="slide-nav">
+    <button class="btn btn-muted" onclick="go(4)">← RAM</button>
+    <button class="btn" onclick="go(6)">Periodic Table →</button>
+  </div>
+</div>
+
+<!-- ══════════ SLIDE 6 – PERIODIC TABLE ══════════ -->
+<div class="slide" id="s6">
+  <div class="pill pill-green">TOPIC 2 · SECTION 1</div>
+  <h2>The Periodic Table</h2>
+
+  <div class="card card-green">
+    <div class="pill pill-green">DEFINITION</div>
+    <p><strong>A periodic table</strong> is a horizontal and vertical arrangement of elements according to their <strong>atomic numbers</strong>. Arranged in 1913 by British scientist <strong>Henry Moseley</strong>, building on earlier work by Russian scientist <strong>Dmitri Mendeleev</strong>.</p>
+    <div class="grid2" style="margin-top:14px;">
+      <div style="text-align:center;">
+        <div style="font-size:2rem;">↔</div>
+        <div style="font-weight:800;color:var(--amber);">PERIODS (Horizontal)</div>
+        <p style="font-size:.85rem;margin-top:4px;">7 periods total · Same number of occupied energy levels · Named 1, 2, 3…</p>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:2rem;">↕</div>
+        <div style="font-weight:800;color:var(--purple);">GROUPS (Vertical)</div>
+        <p style="font-size:.85rem;margin-top:4px;">18 groups total · Same number of outer electrons · Named I, II, III…</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin:20px 0 10px;">📊 First 20 Elements — Click any element to inspect</h3>
+  <div id="miniPT" style="overflow-x:auto;margin-bottom:14px;"></div>
+  <div class="mpt-detail" id="ptDetail"></div>
+
+  <div class="card" style="margin-top:14px;">
+    <h3>Stability, Ions &amp; Valency</h3>
+    <div class="grid2" style="margin-top:10px;">
+      <div class="card card-green" style="margin-bottom:0;">
+        <div class="pill pill-green">STABLE ATOM</div>
+        <p>An atom with a <strong>full outer energy level</strong> is stable. Group 8/18 elements (noble gases) are all stable — outer level is complete.</p>
+      </div>
+      <div class="card card-red" style="margin-bottom:0;">
+        <div class="pill pill-red">UNSTABLE ATOM</div>
+        <p>All other atoms are unstable and react to achieve stability by <strong>gaining or losing</strong> outer electrons, forming <strong>ions</strong>.</p>
+      </div>
+      <div class="card" style="border-color:rgba(239,68,68,.4);margin-bottom:0;">
+        <div style="font-weight:800;color:var(--red);margin-bottom:6px;">CATION (+ion)</div>
+        <p style="font-size:.85rem;">Elements with <strong>&lt;4 outer e⁻</strong> lose/donate electrons → positively charged ion. Generally metals form cations.</p>
+        <div class="eq">Na → Na⁺ + e⁻</div>
+        <div class="eq">Al → Al³⁺ + 3e⁻</div>
+      </div>
+      <div class="card" style="border-color:rgba(0,229,200,.4);margin-bottom:0;">
+        <div style="font-weight:800;color:var(--teal);margin-bottom:6px;">ANION (−ion)</div>
+        <p style="font-size:.85rem;">Elements with <strong>&gt;4 outer e⁻</strong> gain/acquire electrons → negatively charged ion. Generally non-metals form anions.</p>
+        <div class="eq">F + e⁻ → F⁻</div>
+        <div class="eq">O + 2e⁻ → O²⁻</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-nav">
+    <button class="btn btn-muted" onclick="go(5)">← Electron Config</button>
+    <button class="btn" onclick="go(7)">Chemical Families →</button>
+  </div>
+</div>
+
+<!-- ══════════ SLIDE 7 – CHEMICAL FAMILIES ══════════ -->
+<div class="slide" id="s7">
+  <div class="pill pill-green">TOPIC 2 · SECTION 2</div>
+  <h2>Chemical Families — Patterns Down the Group</h2>
+  <p style="margin-bottom:20px;">Elements in the same group form a <strong>chemical family</strong> with similar properties that follow predictable trends going down the group.</p>
+
+  <div class="gtabs">
+    <button class="gtab gtab-g1 on" onclick="showGroup('g1')">Group I · Alkali Metals</button>
+    <button class="gtab gtab-g2"    onclick="showGroup('g2')">Group II · Alkaline Earth</button>
+    <button class="gtab gtab-g7"    onclick="showGroup('g7')">Group VII · Halogens</button>
+    <button class="gtab gtab-g8"    onclick="showGroup('g8')">Group VIII · Noble Gases</button>
+  </div>
+
+  <!-- GROUP I -->
+  <div class="gcontent on" id="gc-g1">
+    <div class="card card-red"><h3 style="color:var(--red);">⚗ Group I — Alkali Metals</h3><p>All have <strong>1 electron</strong> in the outer energy level → monovalent → oxidation state <strong>M⁺</strong>. Soft, reactive metals that tarnish rapidly in air.</p></div>
+    <div class="dt-wrap"><table class="dt">
+      <tr><th>Element</th><th>Sym</th><th>Z</th><th>Config</th><th>At.R (nM)</th><th>Ion.R (nM)</th><th>1st IE (kJ/mol)</th><th>M.Pt (°C)</th><th>Flame colour</th></tr>
+      <tr><td>Lithium</td><td>Li</td><td>3</td><td>2:1</td><td>0.133</td><td>0.060</td><td>520</td><td>180</td><td style="color:#ef4444;">Crimson/deep red</td></tr>
+      <tr><td>Sodium</td><td>Na</td><td>11</td><td>2:8:1</td><td>0.157</td><td>0.095</td><td>496</td><td>98</td><td style="color:#fde047;">Yellow</td></tr>
+      <tr><td>Potassium</td><td>K</td><td>19</td><td>2:8:8:1</td><td>0.203</td><td>0.133</td><td>419</td><td>64</td><td style="color:#c084fc;">Lilac/purple</td></tr>
+      <tr><td>Rubidium</td><td>Rb</td><td>37</td><td>2:8:18:8:1</td><td>—</td><td>—</td><td>—</td><td>39</td><td>—</td></tr>
+      <tr><td>Caesium</td><td>Cs</td><td>55</td><td>2:8:18:18:8:1</td><td>—</td><td>—</td><td>—</td><td>29</td><td>—</td></tr>
+    </table></div>
+    <div class="grid2" style="margin-top:14px;">
+      <div class="card"><div class="pill pill-green">Down Group I ↓</div>
+        <p style="font-size:.88rem;line-height:2.2;">
+          <span class="arr-up">↑</span> Atomic &amp; ionic radius<br>
+          <span class="arr-up">↑</span> Electropositivity<br>
+          <span class="arr-up">↑</span> Reactivity<br>
+          <span class="arr-down">↓</span> 1st Ionization energy<br>
+          <span class="arr-down">↓</span> Melting &amp; boiling points<br>
+          <span class="arr-down">↓</span> Hardness (softer)
+        </p>
+      </div>
+      <div class="card"><div class="pill pill-blue">Why these trends?</div>
+        <p style="font-size:.85rem;line-height:1.8;">More energy levels → bigger atom → outer electron farther from nucleus → weaker nuclear attraction on outer electron → <strong>easier to lose</strong> → more reactive. Weaker metallic bonds also cause lower melting points.</p>
+      </div>
+    </div>
+    <div class="rxncard" style="margin-top:12px;"><div style="font-weight:700;margin-bottom:6px;">Reaction with Water (reactivity ↑ down group)</div>
+      <div class="eq">2Li(s) + 2H₂O(l) → 2LiOH(aq) + H₂(g) — moderately vigorous; Li floats &amp; fizzes</div>
+      <div class="eq">2Na(s) + 2H₂O(l) → 2NaOH(aq) + H₂(g) — very vigorous; Na melts into a ball</div>
+      <div class="eq">2K(s) + 2H₂O(l) → 2KOH(aq) + H₂(g) — explosive! K bursts into lilac flame</div>
+    </div>
+    <div class="rxncard amb"><div style="font-weight:700;margin-bottom:6px;">Burning in Air/Oxygen</div>
+      <div class="eq">4Li(s) + O₂(g) → 2Li₂O(s) — crimson flame</div>
+      <div class="eq">4Na(s) + O₂(g) → 2Na₂O(s) — yellow flame</div>
+      <div class="eq">4K(s) + O₂(g) → 2K₂O(s) — lilac/purple flame</div>
+    </div>
+    <div class="rxncard teal"><div style="font-weight:700;margin-bottom:6px;">Reaction with Chlorine</div>
+      <div class="eq">2Li(s) + Cl₂(g) → 2LiCl(s)</div>
+      <div class="eq">2Na(s) + Cl₂(g) → 2NaCl(s) — burns with yellow flame, white solid</div>
+      <div class="eq">2K(s) + Cl₂(g) → 2KCl(s) — Reactivity increases ↓ group</div>
+    </div>
+    <div class="card" style="margin-top:12px;"><div style="font-weight:700;color:var(--amber);margin-bottom:6px;">🔑 Uses of Alkali Metals</div>
+      <ul style="color:var(--light);font-size:.85rem;line-height:2.2;padding-left:18px;">
+        <li>Sodium → making NaCN (extracts gold) · NaOH for detergents · reducing agent for Ti extraction</li>
+        <li>Sodium chloride → seasoning food</li>
+        <li>Molten Na/K mixture → coolant in nuclear reactors</li>
+        <li>Lithium → high-strength glass · dry cells (phones/laptops)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- GROUP II -->
+  <div class="gcontent" id="gc-g2">
+    <div class="card card-amber"><h3 style="color:var(--amber);">⚗ Group II — Alkaline Earth Metals</h3><p>All have <strong>2 electrons</strong> in the outer energy level → divalent → oxidation state <strong>M²⁺</strong>. Harder, higher melting points, better conductors than Group I.</p></div>
+    <div class="dt-wrap"><table class="dt">
+      <tr><th>Element</th><th>Sym</th><th>Z</th><th>Config</th><th>At.R (nM)</th><th>Ion.R (nM)</th><th>1st IE</th><th>2nd IE</th><th>M.Pt (°C)</th></tr>
+      <tr><td>Beryllium</td><td>Be</td><td>4</td><td>2:2</td><td>0.089</td><td>0.031</td><td>900</td><td>1800</td><td>1280</td></tr>
+      <tr><td>Magnesium</td><td>Mg</td><td>12</td><td>2:8:2</td><td>0.136</td><td>0.065</td><td>736</td><td>1450</td><td>650</td></tr>
+      <tr><td>Calcium</td><td>Ca</td><td>20</td><td>2:8:8:2</td><td>0.174</td><td>0.099</td><td>590</td><td>970</td><td>850</td></tr>
+      <tr><td>Strontium</td><td>Sr</td><td>38</td><td>2:8:18:8:2</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>Barium</td><td>Ba</td><td>56</td><td>2:8:18:18:8:2</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+    </table></div>
+    <div class="grid2" style="margin-top:14px;">
+      <div class="card"><div class="pill pill-amber">Down Group II ↓</div>
+        <p style="font-size:.88rem;line-height:2.2;">
+          <span class="arr-up">↑</span> Atomic &amp; ionic radius<br>
+          <span class="arr-up">↑</span> Electropositivity<br>
+          <span class="arr-up">↑</span> Electrical conductivity<br>
+          <span class="arr-down">↓</span> 1st &amp; 2nd Ionization energy<br>
+          <span class="arr-down">↓</span> Melting &amp; boiling points
+        </p>
+      </div>
+      <div class="card"><div class="pill pill-blue">Group I vs Group II</div>
+        <p style="font-size:.85rem;line-height:1.8;">Group II uses <strong>2 delocalized electrons</strong> in metallic bonds vs Group I's 1 → <strong>stronger bonds</strong> → harder, higher melting point, better conductor. BUT smaller atomic radius than Group I (same period) → less electropositive.</p>
+      </div>
+    </div>
+    <div class="rxncard" style="margin-top:12px;"><div style="font-weight:700;margin-bottom:6px;">Reactions with Water</div>
+      <div class="eq">Mg(s) + 2H₂O(l) → Mg(OH)₂(aq) + H₂(g) — very slow with cold water (bubbles cling to ribbon)</div>
+      <div class="eq">Mg(s) + H₂O(g) → MgO(s) + H₂(g) — burns vigorously in steam!</div>
+      <div class="eq">Ca(s) + 2H₂O(l) → Ca(OH)₂(aq) + H₂(g) — moderate, steady effervescence</div>
+    </div>
+    <div class="rxncard amb"><div style="font-weight:700;margin-bottom:6px;">Burning in Air</div>
+      <div class="eq">2Mg(s) + O₂(g) → 2MgO(s) — bright blinding white flame!</div>
+      <div class="eq">3Mg(s) + N₂(g) → Mg₃N₂(s) — also reacts with nitrogen in air</div>
+      <div class="eq">2Ca(s) + O₂(g) → 2CaO(s) — faint orange-red flame</div>
+    </div>
+    <div class="rxncard teal"><div style="font-weight:700;margin-bottom:6px;">Reactions with Dilute Acids</div>
+      <div class="eq">Mg(s) + 2HCl(aq) → MgCl₂(aq) + H₂(g)</div>
+      <div class="eq">Mg(s) + H₂SO₄(aq) → MgSO₄(aq) + H₂(g)</div>
+      <div class="eq">Ca(s) + H₂SO₄(aq) → CaSO₄(s) + H₂(g) [CaSO₄ coats Ca, slowing reaction]</div>
+    </div>
+    <div class="card" style="margin-top:12px;"><div style="font-weight:700;color:var(--amber);margin-bottom:6px;">🔑 Uses of Alkaline Earth Metals</div>
+      <ul style="color:var(--light);font-size:.85rem;line-height:2.2;padding-left:18px;">
+        <li>Mg(OH)₂ → antacid medicine (relieves stomach acidity)</li>
+        <li>Duralumin (Mg + Al alloy) → aeroplane bodies (light &amp; strong)</li>
+        <li>CaSO₄ (Plaster of Paris) → setting broken bones in hospitals</li>
+        <li>CaCO₃ → cement production; added to blast furnace</li>
+        <li>CaO (quicklime) → neutralizes acidic soils in farming</li>
+        <li>Ca(NO₃)₂ → nitrogenous fertilizer</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- GROUP VII -->
+  <div class="gcontent" id="gc-g7">
+    <div class="card card-teal"><h3 style="color:var(--teal);">⚗ Group VII — Halogens (Non-metals)</h3><p>All have <strong>7 outer electrons</strong> → gain 1 electron → oxidation state <strong>X⁻</strong> → monovalent. Exist as diatomic molecules. All are electronegative.</p></div>
+    <div class="dt-wrap"><table class="dt">
+      <tr><th>Element</th><th>Formula</th><th>Z</th><th>Config</th><th>State (RTP)</th><th>At.R (nM)</th><th>Ion.R (nM)</th><th>Electronegativity</th></tr>
+      <tr><td>Fluorine</td><td>F₂</td><td>9</td><td>2:7</td><td style="color:#a7f3d0;">Pale yellow gas</td><td>0.064</td><td>0.136</td><td>4.0</td></tr>
+      <tr><td>Chlorine</td><td>Cl₂</td><td>17</td><td>2:8:7</td><td style="color:#a7f3d0;">Pale green gas</td><td>0.099</td><td>0.181</td><td>3.0</td></tr>
+      <tr><td>Bromine</td><td>Br₂</td><td>35</td><td>2:8:18:7</td><td style="color:#fbbf24;">Red/brown liquid</td><td>0.114</td><td>0.195</td><td>2.8</td></tr>
+      <tr><td>Iodine</td><td>I₂</td><td>53</td><td>2:8:18:18:7</td><td style="color:#c4b5fd;">Grey-black solid</td><td>0.133</td><td>0.216</td><td>2.5</td></tr>
+      <tr><td>Astatine</td><td>At₂</td><td>85</td><td>2:8:18:32:18:7</td><td style="color:#f87171;">Radioactive</td><td>—</td><td>—</td><td>2.2</td></tr>
+    </table></div>
+    <div class="grid2" style="margin-top:14px;">
+      <div class="card"><div class="pill pill-teal">Down Group VII ↓</div>
+        <p style="font-size:.88rem;line-height:2.2;">
+          <span class="arr-up">↑</span> Atomic &amp; ionic radius<br>
+          <span class="arr-up">↑</span> Melting &amp; boiling points<br>
+          <span class="arr-up">↑</span> Solubility in non-polar solvents<br>
+          <span class="arr-down">↓</span> Electronegativity<br>
+          <span class="arr-down">↓</span> Reactivity (oxidising power)<br>
+          <span class="arr-down">↓</span> Solubility in water
+        </p>
+      </div>
+      <div class="card"><div class="pill pill-blue">⚡ Key Difference — Ionic Radius</div>
+        <p style="font-size:.85rem;line-height:1.8;">Halogen <strong>ionic radius &gt; atomic radius</strong>. When halogens gain an electron, the extra electron-electron repulsion expands the outer shell, and the nuclear attraction on the new electron decreases — making the ion larger than the atom.</p>
+      </div>
+    </div>
+    <div class="rxncard teal" style="margin-top:12px;">
+      <div style="font-weight:700;margin-bottom:10px;">Halogen Displacement Reactions</div>
+      <p style="font-size:.82rem;margin-bottom:10px;color:var(--muted);">More electronegative halogens displace less electronegative ones from their solutions. ✓ = displacement occurs | ✗ = no displacement</p>
+      <div class="dt-wrap"><table class="dt" style="font-size:.8rem;">
+        <tr><th>Halogen added ↓</th><th>F⁻ solution</th><th>Cl⁻ solution</th><th>Br⁻ solution</th><th>I⁻ solution</th></tr>
+        <tr><td>F₂</td><td style="color:var(--muted);">—</td><td style="color:var(--green);">✓ displaces</td><td style="color:var(--green);">✓ displaces</td><td style="color:var(--green);">✓ displaces</td></tr>
+        <tr><td>Cl₂</td><td style="color:var(--red);">✗</td><td style="color:var(--muted);">—</td><td style="color:var(--green);">✓ displaces</td><td style="color:var(--green);">✓ displaces</td></tr>
+        <tr><td>Br₂</td><td style="color:var(--red);">✗</td><td style="color:var(--red);">✗</td><td style="color:var(--muted);">—</td><td style="color:var(--green);">✓ displaces</td></tr>
+        <tr><td>I₂</td><td style="color:var(--red);">✗</td><td style="color:var(--red);">✗</td><td style="color:var(--red);">✗</td><td style="color:var(--muted);">—</td></tr>
+      </table></div>
+      <div class="eq" style="margin-top:10px;">Cl₂(g) + 2NaBr(aq) → 2NaCl(aq) + Br₂(aq)</div>
+      <div class="eq">Cl₂(g) + 2NaI(aq) → 2NaCl(aq) + I₂(aq)</div>
+      <div class="eq">Br₂(aq) + 2NaI(aq) → 2NaBr(aq) + I₂(aq)</div>
+    </div>
+    <div class="card" style="margin-top:12px;"><div style="font-weight:700;color:var(--teal);margin-bottom:6px;">🔑 Uses of Halogens</div>
+      <ul style="color:var(--light);font-size:.85rem;line-height:2.2;padding-left:18px;">
+        <li>Fluorine → manufacture of PTFE (Teflon synthetic fibre) · added to toothpaste to reduce tooth decay</li>
+        <li>HF (hydrogen fluoride) → engraving words/pictures on glass</li>
+        <li>Bromine → AgBr used in light-sensitive photographic paper/films</li>
+        <li>Iodine → tincture of iodine (iodine in alcohol) → antiseptic for skin cuts</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- GROUP VIII -->
+  <div class="gcontent" id="gc-g8">
+    <div class="card card-purple"><h3 style="color:var(--purple);">⚗ Group VIII — Noble Gases</h3><p>All have <strong>full outer energy levels</strong> (duplet for He; octet for others) → <strong>zerovalent</strong> → extremely unreactive/inert. All colourless gases at RTP. Argon is most abundant (0.9% of atmosphere).</p></div>
+    <div class="dt-wrap"><table class="dt">
+      <tr><th>Element</th><th>Sym</th><th>Z</th><th>Config</th><th>At.R (nM)</th><th>1st IE (kJ/mol)</th><th>M.Pt (°C)</th><th>B.Pt (°C)</th></tr>
+      <tr><td>Helium</td><td>He</td><td>2</td><td>2:</td><td>0.128</td><td>2372</td><td>−270</td><td>−269</td></tr>
+      <tr><td>Neon</td><td>Ne</td><td>10</td><td>2:8</td><td>0.160</td><td>2080</td><td>−249</td><td>−246</td></tr>
+      <tr><td>Argon</td><td>Ar</td><td>18</td><td>2:8:8</td><td>0.192</td><td>1520</td><td>−189</td><td>−186</td></tr>
+      <tr><td>Krypton</td><td>Kr</td><td>36</td><td>2:8:18:8</td><td>0.197</td><td>1350</td><td>−157</td><td>−152</td></tr>
+      <tr><td>Xenon</td><td>Xe</td><td>54</td><td>2:8:18:18:8</td><td>0.217</td><td>1170</td><td>−112</td><td>−108</td></tr>
+      <tr><td>Radon</td><td>Rn</td><td>86</td><td>2:8:18:32:18:8</td><td>0.221</td><td>1134</td><td>−104</td><td>−93</td></tr>
+    </table></div>
+    <div class="grid2" style="margin-top:14px;">
+      <div class="card"><div class="pill pill-purple">Down Group VIII ↓</div>
+        <p style="font-size:.88rem;line-height:2.2;">
+          <span class="arr-up">↑</span> Atomic radius<br>
+          <span class="arr-up">↑</span> Melting &amp; boiling points<br>
+          <span class="arr-up">↑</span> Van der Waals forces<br>
+          <span class="arr-down">↓</span> 1st ionization energy<br>
+          <span class="arr-down">↓</span> Stability (lower members can react)
+        </p>
+      </div>
+      <div class="card"><div class="pill pill-blue">Why unreactive?</div>
+        <p style="font-size:.85rem;line-height:1.8;">The stable full outer energy level gives noble gases a very <strong>high 1st ionization energy</strong> — it takes enormous energy to remove an electron from a stable configuration. As atomic radius increases down the group, the 1st IE decreases, allowing very electronegative elements (O, F) to react with lower noble gases (e.g. XeF₆).</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px;"><div style="font-weight:700;color:var(--purple);margin-bottom:6px;">🔑 Uses of Noble Gases</div>
+      <ul style="color:var(--light);font-size:.85rem;line-height:2.2;padding-left:18px;">
+        <li>Argon → light bulbs (inert atmosphere prevents filament oxidation) · arc welding (insulator)</li>
+        <li>Neon → street &amp; advertisement lighting</li>
+        <li>Helium → weather balloons (safer than H₂, won't ignite) · deep-sea diving (mixed with O₂) · low-temperature thermometers</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="slide-nav">
+    <button class="btn btn-muted" onclick="go(6)">← Periodic Table</button>
+    <button class="btn" onclick="go(8)">Reactions →</button>
+  </div>
+</div>
+
+<!-- ══════════ SLIDE 8 – REACTIONS ══════════ -->
+<div class="slide" id="s8">
+  <div class="pill pill-green">TOPIC 2 · SECTION 3</div>
+  <h2>Key Reactions Summary</h2>
+
+  <div class="card card-teal" style="margin-bottom:16px;">
+    <h3>Ion Formation — Oxidation &amp; Reduction</h3>
+    <div class="grid2">
+      <div>
+        <div class="pill pill-red">OXIDATION — lose electrons → cation</div>
+        <div class="eq">Na → Na⁺ + e⁻ (loses 1 e⁻)</div>
+        <div class="eq">Mg → Mg²⁺ + 2e⁻ (loses 2 e⁻)</div>
+        <div class="eq">Al → Al³⁺ + 3e⁻ (loses 3 e⁻)</div>
+      </div>
+      <div>
+        <div class="pill pill-teal">REDUCTION — gain electrons → anion</div>
+        <div class="eq">F + e⁻ → F⁻ (gains 1 e⁻)</div>
+        <div class="eq">O + 2e⁻ → O²⁻ (gains 2 e⁻)</div>
+        <div class="eq">N + 3e⁻ → N³⁻ (gains 3 e⁻)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <h3>Balancing Equations — Steps</h3>
+    <p style="font-size:.85rem;margin-bottom:10px;">1. Word equation → 2. Chemical formulas → 3. Check atom counts → 4. Balance → 5. Add state symbols (s)(l)(g)(aq)</p>
+    <div id="rxnList"></div>
+  </div>
+
+  <div class="card card-purple">
+    <h3>Variable Oxidation States</h3>
+    <p style="font-size:.85rem;margin-bottom:12px;">Some elements exist in more than one oxidation state. Roman numerals in compound names indicate this.</p>
+    <div class="dt-wrap"><table class="dt" style="font-size:.82rem;">
+      <tr><th>Element</th><th>Ion</th><th>Ox. State</th><th>Example Compound</th></tr>
+      <tr><td>Copper</td><td>Cu⁺ / Cu²⁺</td><td>+1 / +2</td><td>Copper(I) oxide / Copper(II) sulphate(VI)</td></tr>
+      <tr><td>Iron</td><td>Fe²⁺ / Fe³⁺</td><td>+2 / +3</td><td>Iron(II) sulphide / Iron(III) chloride</td></tr>
+      <tr><td>Lead</td><td>Pb²⁺ / Pb⁴⁺</td><td>+2 / +4</td><td>Lead(II) oxide / Lead(IV) oxide</td></tr>
+      <tr><td>Sulphur</td><td>S⁴⁺ / S⁶⁺</td><td>+4 / +6</td><td>Sulphur(IV) oxide / Sulphur(VI) oxide</td></tr>
+      <tr><td>Carbon</td><td>C²⁺ / C⁴⁺</td><td>+2 / +4</td><td>Carbon(II) oxide / Carbon(IV) oxide</td></tr>
+      <tr><td>Manganese</td><td>Mn²⁺ / Mn⁷⁺</td><td>+2 / +7</td><td>Mn(II) oxide / Manganate(VII)</td></tr>
+    </table></div>
+  </div>
+
+  <div class="slide-nav">
+    <button class="btn btn-muted" onclick="go(7)">← Families</button>
+    <button class="btn btn-purple" onclick="go(9)">Take Quiz →</button>
+  </div>
+</div>
+
+<!-- ══════════ SLIDE 9 – QUIZ ══════════ -->
+<div class="slide" id="s9">
+  <div class="pill pill-purple">REVISION</div>
+  <h2>Knowledge Check — 12 Questions</h2>
+  <div class="prog-wrap"><div class="prog-bar" id="qProg" style="width:0%"></div></div>
+  <div id="quizWrap"></div>
+  <div id="scoreCard">
+    <div style="font-size:3.5rem;margin-bottom:12px;" id="scoreEmoji"></div>
+    <div style="font-size:1.6rem;font-weight:900;" id="scoreTxt"></div>
+    <p id="scoreMsg" style="margin-top:10px;"></p>
+    <button class="btn" style="margin-top:20px;" onclick="initQuiz()">Try Again</button>
+  </div>
+  <div class="slide-nav">
+    <button class="btn btn-muted" onclick="go(8)">← Reactions</button>
+    <button class="btn" onclick="go(0)">🏠 Home</button>
+  </div>
+</div>
+
+</div><!-- /slides-wrap -->
+
+<script>
+/* ────────────────────── DATA ────────────────────── */
+const ELEMS = [
+  {sym:'H', name:'Hydrogen',   Z:1,  A:1,  cfg:[1],       grp:'I',   metal:false, note:'Only non-metal in Group I.'},
+  {sym:'He',name:'Helium',     Z:2,  A:4,  cfg:[2],       grp:'VIII',metal:false, note:'Noble gas — stable duplet. Most abundant element in the universe after H.'},
+  {sym:'Li',name:'Lithium',    Z:3,  A:7,  cfg:[2,1],     grp:'I',   metal:true,  note:'Softest, least dense alkali metal. Burns with crimson flame.'},
+  {sym:'Be',name:'Beryllium',  Z:4,  A:9,  cfg:[2,2],     grp:'II',  metal:true},
+  {sym:'B', name:'Boron',      Z:5,  A:11, cfg:[2,3],     grp:'III', metal:false},
+  {sym:'C', name:'Carbon',     Z:6,  A:12, cfg:[2,4],     grp:'IV',  metal:false, note:'Basis of all organic chemistry. RAM standard = 12.000 a.m.u.'},
+  {sym:'N', name:'Nitrogen',   Z:7,  A:14, cfg:[2,5],     grp:'V',   metal:false, note:'78% of atmosphere as N₂.'},
+  {sym:'O', name:'Oxygen',     Z:8,  A:16, cfg:[2,6],     grp:'VI',  metal:false, note:'21% of atmosphere. Supports combustion.'},
+  {sym:'F', name:'Fluorine',   Z:9,  A:19, cfg:[2,7],     grp:'VII', metal:false, note:'Most electronegative element (Pauling scale: 4.0). Most reactive non-metal.'},
+  {sym:'Ne',name:'Neon',       Z:10, A:20, cfg:[2,8],     grp:'VIII',metal:false, note:'Noble gas — stable octet. Used in advertising/street lights.'},
+  {sym:'Na',name:'Sodium',     Z:11, A:23, cfg:[2,8,1],   grp:'I',   metal:true,  note:'Burns with yellow flame. Very reactive with water. NaCl = table salt.'},
+  {sym:'Mg',name:'Magnesium',  Z:12, A:24, cfg:[2,8,2],   grp:'II',  metal:true,  note:'Burns with brilliant white flame. Used in flares and alloys.'},
+  {sym:'Al',name:'Aluminium',  Z:13, A:27, cfg:[2,8,3],   grp:'III', metal:true,  note:'Most abundant metal in Earth\'s crust. Used in Duralumin alloys.'},
+  {sym:'Si',name:'Silicon',    Z:14, A:28, cfg:[2,8,4],   grp:'IV',  metal:false, note:'Metalloid / semiconductor. Used in microchips.'},
+  {sym:'P', name:'Phosphorus', Z:15, A:31, cfg:[2,8,5],   grp:'V',   metal:false},
+  {sym:'S', name:'Sulphur',    Z:16, A:32, cfg:[2,8,6],   grp:'VI',  metal:false},
+  {sym:'Cl',name:'Chlorine',   Z:17, A:35, cfg:[2,8,7],   grp:'VII', metal:false, note:'Pale green toxic gas. RAM = 35.5 (³⁵Cl 75% + ³⁷Cl 25%).'},
+  {sym:'Ar',name:'Argon',      Z:18, A:40, cfg:[2,8,8],   grp:'VIII',metal:false, note:'Most abundant noble gas in atmosphere (0.9%). Used in light bulbs.'},
+  {sym:'K', name:'Potassium',  Z:19, A:39, cfg:[2,8,8,1], grp:'I',   metal:true,  note:'Burns with lilac/purple flame. Explosive reaction with water!'},
+  {sym:'Ca',name:'Calcium',    Z:20, A:40, cfg:[2,8,8,2], grp:'II',  metal:true,  note:'Burns with orange-red flame. Used in cement and as agricultural lime.'},
+];
+const SHCLS = ['sh1','sh2','sh3','sh4'];
+
+const ISOTOPES = {
+  H:  {name:'Hydrogen',  list:[{m:1,z:1,n:'Protium',pct:99.98},{m:2,z:1,n:'Deuterium',pct:0.015},{m:3,z:1,n:'Tritium',pct:0.005}]},
+  Cl: {name:'Chlorine',  list:[{m:35,z:17,n:'Cl-35',pct:75},{m:37,z:17,n:'Cl-37',pct:25}]},
+  K:  {name:'Potassium', list:[{m:39,z:19,n:'K-39',pct:93.1},{m:40,z:19,n:'K-40',pct:0.01},{m:41,z:19,n:'K-41',pct:6.89}]},
+  Ne: {name:'Neon',      list:[{m:20,z:10,n:'Ne-20',pct:90.92},{m:21,z:10,n:'Ne-21',pct:0.26},{m:22,z:10,n:'Ne-22',pct:8.82}]},
+  O:  {name:'Oxygen',    list:[{m:16,z:8,n:'O-16',pct:99.76},{m:18,z:8,n:'O-18',pct:0.21}]},
+  U:  {name:'Uranium',   list:[{m:235,z:92,n:'U-235',pct:0.72},{m:238,z:92,n:'U-238',pct:99.27}]},
+};
+
+const WORKED = [
+  {
+    element:'Chlorine (Cl)',
+    isotopes:[{m:35,pct:75},{m:37,pct:25}],
+    steps:[
+      '100 atoms of Cl: 75 atoms of ³⁵Cl and 25 atoms of ³⁷Cl',
+      'RAM = (75/100 × 35) + (25/100 × 37)',
+      '     = 26.25 + 9.25',
+      '     = <strong style="color:var(--amber)">35.5</strong>',
+      'RAM is nearer to 35 because ³⁵Cl is more abundant (75%). RAM has no units.'
+    ]
+  },
+  {
+    element:'Potassium (K)',
+    isotopes:[{m:39,pct:93.1},{m:40,pct:0.01},{m:41,pct:6.89}],
+    steps:[
+      '100 atoms of K: 93.1 of ³⁹K, 0.01 of ⁴⁰K, 6.89 of ⁴¹K',
+      'RAM = (93.1/100 × 39) + (0.01/100 × 40) + (6.89/100 × 41)',
+      '     = 36.309 + 0.004 + 2.825',
+      '     = <strong style="color:var(--amber)">39.14 ≈ 39.1</strong>',
+      'RAM closer to 39 because ³⁹K is most abundant (93.1%). RAM has no units.'
+    ]
+  },
+  {
+    element:'Neon (Ne)',
+    isotopes:[{m:20,pct:90.92},{m:21,pct:0.26},{m:22,pct:8.82}],
+    steps:[
+      '100 atoms of Ne: 90.92 of ²⁰Ne, 0.26 of ²¹Ne, 8.82 of ²²Ne',
+      'RAM = (90.92/100 × 20) + (0.26/100 × 21) + (8.82/100 × 22)',
+      '     = 18.184 + 0.0546 + 1.9404',
+      '     = <strong style="color:var(--amber)">20.18</strong>',
+      'RAM closer to 20 because ²⁰Ne is most abundant (90.92%). RAM has no units.'
+    ]
+  }
+];
+
+const RXNS = [
+  {title:'H₂ from Zn + dilute HCl', eq:'Zn(s) + 2HCl(aq) → ZnCl₂(aq) + H₂(g)'},
+  {title:'O₂ from H₂O₂ decomposition', eq:'2H₂O₂(aq) → 2H₂O(l) + O₂(g)'},
+  {title:'CO₂ from CaCO₃ + HCl', eq:'CaCO₃(s) + 2HCl(aq) → CaCl₂(aq) + H₂O(l) + CO₂(g)'},
+  {title:'Na + water', eq:'2Na(s) + 2H₂O(l) → 2NaOH(aq) + H₂(g)'},
+  {title:'Ca + water', eq:'Ca(s) + 2H₂O(l) → Ca(OH)₂(aq) + H₂(g)'},
+  {title:'Mg + steam', eq:'Mg(s) + H₂O(g) → MgO(s) + H₂(g)'},
+  {title:'Mg burning in air', eq:'2Mg(s) + O₂(g) → 2MgO(s)'},
+  {title:'Mg + N₂ (in air)', eq:'3Mg(s) + N₂(g) → Mg₃N₂(s)'},
+  {title:'Mg + chlorine', eq:'Mg(s) + Cl₂(g) → MgCl₂(s)'},
+  {title:'Acid-base neutralisation', eq:'NaOH(aq) + HCl(aq) → NaCl(aq) + H₂O(l)'},
+  {title:'Mg + H₂SO₄', eq:'Mg(s) + H₂SO₄(aq) → MgSO₄(aq) + H₂(g)'},
+  {title:'Ethane combustion', eq:'2C₂H₆(g) + 7O₂(g) → 4CO₂(g) + 6H₂O(l)'},
+];
+
+const QUIZ = [
+  {q:'What is the Atomic Number of an element?', opts:['Number of neutrons','Number of protons','Number of electrons + protons','Mass number'], ans:1, exp:'Atomic Number (Z) = number of PROTONS in the nucleus. In a neutral atom, it also equals the number of electrons.'},
+  {q:'An element has 11 protons and mass number 23. How many neutrons does it have?', opts:['11','12','23','34'], ans:1, exp:'Neutrons = Mass Number − Atomic Number = 23 − 11 = 12. This element is Sodium (Na).'},
+  {q:'What are isotopes?', opts:['Atoms of different elements with the same mass','Atoms of same element, same protons, different neutrons','Atoms of same element, different protons','Charged atoms'], ans:1, exp:'Isotopes = same element (same Z/protons), DIFFERENT number of neutrons (different mass number). Same chemical properties, different physical properties.'},
+  {q:'Chlorine exists as ³⁵Cl (75%) and ³⁷Cl (25%). What is its RAM?', opts:['35','36','35.5','37'], ans:2, exp:'RAM = (75/100 × 35) + (25/100 × 37) = 26.25 + 9.25 = 35.5. RAM has no units! It is closer to 35 (more abundant isotope).'},
+  {q:'An element has electronic configuration 2:8:7. What period and group is it in?', opts:['Period 2, Group VII','Period 3, Group VII','Period 3, Group I','Period 7, Group III'], ans:1, exp:'Period = number of occupied energy levels = 3. Group = outer electrons = 7 → Group VII. This is Chlorine!'},
+  {q:'Which particles are found in the nucleus?', opts:['Protons and electrons','Electrons and neutrons','Protons and neutrons','All three particles'], ans:2, exp:'The nucleus contains PROTONS (positive charge) and NEUTRONS (neutral). Electrons orbit the nucleus in energy levels/shells.'},
+  {q:'Why does reactivity of alkali metals INCREASE going down Group I?', opts:['Atomic radius decreases','Ionization energy increases','Atomic radius increases — outer electron lost more easily','More protons attract the outer electron more strongly'], ans:2, exp:'Larger atomic radius → outer electron farther from nucleus → less nuclear attraction → easier to donate/lose the electron → MORE reactive.'},
+  {q:'Fluorine forms which ion, and why?', opts:['F⁺ — it loses 1 electron','F²⁻ — it gains 2 electrons','F⁻ — it gains 1 electron','F³⁻ — it gains 3 electrons'], ans:2, exp:'Fluorine has 7 outer electrons. It needs just 1 more to achieve a stable octet (8). It GAINS 1 electron → F⁻. It is the most electronegative element.'},
+  {q:'Why are noble gases unreactive?', opts:['They have no protons','Their outer energy level is completely full','They have no electrons at all','They are too small to react'], ans:1, exp:'Noble gases have a full outer energy level (duplet for He; octet for others) — they are already stable and do not need to gain or lose electrons.'},
+  {q:'The ionic radius of halogens is LARGER than their atomic radius. Why?', opts:['They lose electrons and expand','They gain an extra electron — repulsion expands the outer shell','The nucleus shrinks when forming an ion','They gain protons when reacting'], ans:1, exp:'Halogens GAIN an extra electron. The extra electron-electron repulsion expands the outer shell, and the nuclear attraction on the gained electron decreases — so ionic radius > atomic radius.'},
+  {q:'What does the 2nd ionization energy represent?', opts:['Energy to remove one electron from a neutral atom','Energy to remove a second electron from an ion','Energy released when an atom gains an electron','Energy of the 2nd energy level'], ans:1, exp:'The 2nd ionization energy is the minimum energy to remove a second electron from an already +1 ion. It is always HIGHER than the 1st IE because the ion has increased nuclear attraction on remaining electrons.'},
+  {q:'Which of these statements about alkali metals vs alkaline earth metals is CORRECT?', opts:['Alkali metals have higher melting points','Alkaline earth metals are softer','Alkaline earth metals have higher melting points and are better conductors','Alkali metals have 2 delocalized electrons'], ans:2, exp:'Alkaline earth metals use 2 delocalized electrons in metallic bonds (vs 1 for alkali metals) → stronger bonds → harder, higher melting points, better electrical conductors.'},
+];
+
+/* ────────────────────── NAVIGATION ────────────────────── */
+function go(n){
+  document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('on',i===n));
+  document.querySelectorAll('.tnb').forEach((b,i)=>b.classList.toggle('on',i===n));
+  window.scrollTo(0,0);
+}
+
+/* ────────────────────── ELEMENT EXPLORER ────────────────────── */
+function buildExplorer(){
+  const g=document.getElementById('elemGrid');
+  ELEMS.forEach((el,i)=>{
+    const d=document.createElement('div');
+    d.className='elem-card'; d.id='ec'+i;
+    d.innerHTML=`<div class="esym" style="color:${el.metal?'#f59e0b':'#00e5c8'}">${el.sym}</div><div class="ename">${el.name}</div><div class="enum">${el.Z}</div>`;
+    d.onclick=()=>showElem(i);
+    g.appendChild(d);
+  });
+}
+function showElem(i){
+  document.querySelectorAll('.elem-card').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('ec'+i).classList.add('sel');
+  const el=ELEMS[i], pan=document.getElementById('detailPanel');
+  pan.classList.add('show');
+  document.getElementById('dp-A').textContent=el.A;
+  document.getElementById('dp-Z').textContent=el.Z;
+  document.getElementById('dp-sym').textContent=el.sym;
+  document.getElementById('dp-name').textContent=el.name;
+  document.getElementById('dp-type').textContent=(el.metal?'⚙️ Metal':'🌿 Non-metal');
+  document.getElementById('dp-type').style.color=el.metal?'#f59e0b':'#00e5c8';
+  document.getElementById('dp-p').textContent=el.Z;
+  document.getElementById('dp-n').textContent=el.A-el.Z;
+  document.getElementById('dp-e').textContent=el.Z;
+  document.getElementById('dp-per').textContent=el.cfg.length;
+  document.getElementById('dp-grp').textContent=el.grp;
+  document.getElementById('dp-ma').textContent=el.A;
+  const sv=document.getElementById('dp-shells'); sv.innerHTML='';
+  el.cfg.forEach((n,idx)=>{
+    const sp=document.createElement('span'); sp.className='shell-dot '+SHCLS[idx];
+    sp.innerHTML=`<span style="font-size:8px;opacity:.6;">L${idx+1}</span>${n}`;
+    sv.appendChild(sp);
+    if(idx<el.cfg.length-1){const a=document.createElement('span');a.textContent='→';a.style.cssText='color:var(--muted);font-size:1.1rem;font-weight:900;';sv.appendChild(a);}
+  });
+  document.getElementById('dp-cfg').textContent=el.cfg.join(':');
+  document.getElementById('dp-note').innerHTML=el.note?`💡 ${el.note}`:'';
+}
+
+/* ────────────────────── ISOTOPES ────────────────────── */
+function buildIsoButtons(){
+  const wrap=document.getElementById('isoBtns');
+  Object.keys(ISOTOPES).forEach(sym=>{
+    const b=document.createElement('button'); b.className='btn btn-amber';
+    b.textContent=ISOTOPES[sym].name+' ('+sym+')';
+    b.onclick=()=>showIso(sym);
+    wrap.appendChild(b);
+  });
+}
+function showIso(sym){
+  const d=ISOTOPES[sym];
+  let html=`<h3 style="margin-bottom:12px;">${d.name} — ${d.list.length} Natural Isotopes</h3>`;
+  html+=`<div class="grid3">`;
+  d.list.forEach(iso=>{
+    const neu=iso.m-iso.z;
+    html+=`<div style="background:rgba(0,229,200,.06);border:1px solid rgba(0,229,200,.2);border-radius:12px;padding:16px;text-align:center;">
+      <div style="position:relative;display:inline-block;font-family:'JetBrains Mono',monospace;font-size:2.4rem;font-weight:900;padding-left:22px;padding-right:4px;">
+        <span style="position:absolute;top:2px;left:0;font-size:.85rem;color:var(--amber);font-weight:900;">${iso.m}</span>
+        <span style="position:absolute;bottom:2px;left:0;font-size:.85rem;color:var(--green);font-weight:900;">${iso.z}</span>
+        ${sym}
+      </div>
+      <div style="font-weight:800;margin-top:8px;">${iso.n}</div>
+      <div style="display:flex;justify-content:center;gap:12px;margin-top:8px;font-size:.8rem;">
+        <span><span style="color:var(--red);">●</span> ${iso.z} p⁺</span>
+        <span><span style="color:var(--light);">●</span> ${neu} n°</span>
+        <span><span style="color:var(--teal);">●</span> ${iso.z} e⁻</span>
+      </div>
+      <div style="margin-top:8px;color:var(--amber);font-weight:800;font-size:.95rem;">${iso.pct}%</div>
+    </div>`;
+  });
+  html+=`</div>`;
+  const ram=d.list.reduce((s,iso)=>s+(iso.pct/100)*iso.m,0);
+  html+=`<div class="fbox fbox-amber" style="margin-top:14px;">
+    <div style="font-size:.8rem;color:var(--muted);margin-bottom:6px;">RAM CALCULATION</div>
+    <div class="fbox-big">RAM = ${d.list.map(i=>`(${i.pct}/100 × ${i.m})`).join(' + ')} = <span style="color:var(--green);">${ram.toFixed(2)}</span></div>
+    <p style="font-size:.78rem;margin-top:6px;">No units · Closest to most abundant isotope</p>
+  </div>`;
+  document.getElementById('isoDisplay').innerHTML=html;
+}
+
+/* ────────────────────── RAM WORKED EXAMPLES ────────────────────── */
+function showWorked(i){
+  const d=WORKED[i];
+  let html=`<h3 style="margin-bottom:12px;">Worked Example: ${d.element}</h3>`;
+  html+=`<div class="grid3" style="margin-bottom:14px;">`;
+  d.isotopes.forEach(iso=>{
+    html+=`<div class="fbox fbox-amber" style="margin:0;"><div style="font-size:.75rem;color:var(--muted);margin-bottom:4px;">Isotope</div><div class="fbox-big">Mass ${iso.m} · ${iso.pct}%</div></div>`;
+  });
+  html+=`</div>`;
+  d.steps.forEach((s,idx)=>{
+    html+=`<div class="step-row"><div class="step-num">${idx+1}</div><div class="eq" style="flex:1;margin:0;">${s}</div></div>`;
+  });
+  const wb=document.getElementById('workedBox'); wb.innerHTML=html; wb.style.display='block';
+}
+
+/* ────────────────────── RAM CALCULATOR ────────────────────── */
+function buildRAMCalc(){
+  let h='';
+  for(let i=1;i<=3;i++){
+    h+=`<div class="iso-row"><label>Isotope ${i} — Mass No.:</label>
+      <input type="number" id="rm${i}m" class="iso-input" placeholder="e.g. ${i===1?35:i===2?37:0}">
+      <label style="min-width:auto;margin-left:10px;">Abundance %:</label>
+      <input type="number" id="rm${i}p" class="iso-input" placeholder="e.g. ${i===1?75:i===2?25:0}"></div>`;
+  }
+  document.getElementById('ramInputs').innerHTML=h;
+}
+function calcRAM(){
+  let sum=0,tot=0,steps=[],ok=false;
+  for(let i=1;i<=3;i++){
+    const m=parseFloat(document.getElementById('rm'+i+'m').value);
+    const p=parseFloat(document.getElementById('rm'+i+'p').value);
+    if(!isNaN(m)&&!isNaN(p)&&p>0){sum+=(p/100)*m;tot+=p;steps.push(`(${p}/100 × ${m}) = ${((p/100)*m).toFixed(4)}`);ok=true;}
+  }
+  const rb=document.getElementById('ramResult');
+  if(!ok){rb.innerHTML='⚠️ Please enter at least one isotope.';rb.classList.add('show');return;}
+  const warn=Math.abs(tot-100)>0.5?`<br><span style="color:var(--amber);">⚠ Abundances total ${tot.toFixed(2)}% (should be 100%)</span>`:'';
+  rb.innerHTML=`<div style="color:var(--teal);margin-bottom:8px;font-weight:700;">Calculation:</div>
+    RAM = ${steps.join(' + ')}<br>
+    <strong style="font-size:1.1rem;color:var(--amber);">RAM = ${sum.toFixed(4)}</strong>${warn}
+    <br><span style="color:var(--muted);font-size:.8rem;margin-top:6px;display:block;">RAM has no units.</span>`;
+  rb.classList.add('show');
+}
+function resetRAM(){
+  for(let i=1;i<=3;i++){document.getElementById('rm'+i+'m').value='';document.getElementById('rm'+i+'p').value='';}
+  const rb=document.getElementById('ramResult'); rb.innerHTML=''; rb.classList.remove('show');
+}
+
+/* ────────────────────── CONFIG BUILDER ────────────────────── */
+function buildCfgSelect(){
+  const sel=document.getElementById('cfgSelect');
+  ELEMS.forEach((el,i)=>{const o=document.createElement('option');o.value=i;o.textContent=`${el.sym} — ${el.name} (Z=${el.Z})`;sel.appendChild(o);});
+}
+function showCfg(){
+  const i=document.getElementById('cfgSelect').value; if(i==='') return;
+  const el=ELEMS[i]; const disp=document.getElementById('cfgDisplay'); disp.style.display='block';
+  const sh=document.getElementById('cfgShells'); sh.innerHTML='';
+  el.cfg.forEach((n,idx)=>{
+    const sp=document.createElement('span'); sp.className='shell-dot '+SHCLS[idx];
+    sp.innerHTML=`<span style="font-size:8px;opacity:.6;">L${idx+1}</span>${n}`;
+    sh.appendChild(sp);
+    if(idx<el.cfg.length-1){const a=document.createElement('span');a.textContent=':';a.style.cssText='font-size:1.5rem;color:var(--muted);font-weight:900;margin:0 2px;';sh.appendChild(a);}
+  });
+  document.getElementById('cfgStr').textContent=el.cfg.join(':');
+  document.getElementById('cfgInfo').innerHTML=
+    `<span style="color:var(--amber);font-weight:700;">Period ${el.cfg.length}</span> — ${el.cfg.length} occupied energy level${el.cfg.length>1?'s':''}<br>
+     <span style="color:var(--purple);font-weight:700;">Group ${el.grp}</span> — ${el.cfg[el.cfg.length-1]} electron${el.cfg[el.cfg.length-1]>1?'s':''} in outer energy level`;
+}
+
+/* ────────────────────── MINI PERIODIC TABLE ────────────────────── */
+function buildMiniPT(){
+  const rows=[
+    [{el:0,c:1},{el:1,c:18}],
+    [{el:2,c:1},{el:3,c:2},{el:4,c:13},{el:5,c:14},{el:6,c:15},{el:7,c:16},{el:8,c:17},{el:9,c:18}],
+    [{el:10,c:1},{el:11,c:2},{el:12,c:13},{el:13,c:14},{el:14,c:15},{el:15,c:16},{el:16,c:17},{el:17,c:18}],
+    [{el:18,c:1},{el:19,c:2}],
+  ];
+  let html='<table style="border-collapse:separate;border-spacing:3px;">';
+  rows.forEach(row=>{
+    html+='<tr>';
+    for(let col=1;col<=18;col++){
+      const f=row.find(r=>r.c===col);
+      if(f!=null){
+        const el=ELEMS[f.el];
+        const gc=el.grp==='I'?'g1c':el.grp==='II'?'g2c':el.grp==='VII'?'g7c':el.grp==='VIII'?'g8c':'';
+        html+=`<td class="mpt-cell ${gc}" onclick="showPTD(${f.el})" title="${el.name}"><div class="ms" style="color:${el.metal?'#f59e0b':'#00e5c8'}">${el.sym}</div><div class="mn">${el.Z}</div></td>`;
+      } else {
+        html+='<td style="background:transparent;border:none;min-width:32px;"></td>';
+      }
+    }
+    html+='</tr>';
+  });
+  html+='</table>';
+  html+=`<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;font-size:.78rem;">
+    <span style="border-left:2.5px solid var(--red);padding-left:5px;">Group I</span>
+    <span style="border-left:2.5px solid var(--amber);padding-left:5px;">Group II</span>
+    <span style="border-left:2.5px solid var(--teal);padding-left:5px;">Group VII</span>
+    <span style="border-left:2.5px solid var(--purple);padding-left:5px;">Group VIII</span>
+    <span style="color:#f59e0b;">● Metal</span>
+    <span style="color:#00e5c8;">● Non-metal</span>
+  </div>`;
+  document.getElementById('miniPT').innerHTML=html;
+}
+function showPTD(i){
+  const el=ELEMS[i]; const pan=document.getElementById('ptDetail'); pan.classList.add('show');
+  pan.innerHTML=`<div style="display:flex;gap:18px;flex-wrap:wrap;">
+    <div style="text-align:center;min-width:100px;">
+      <div class="notation-big" style="font-size:3rem;">
+        <span class="nA">${el.A}</span><span class="nZ">${el.Z}</span>
+        <span style="color:${el.metal?'#f59e0b':'#00e5c8'}">${el.sym}</span>
+      </div>
+      <div style="font-weight:800;">${el.name}</div>
+      <div style="font-size:.8rem;color:${el.metal?'#f59e0b':'#00e5c8'};margin-top:3px;">${el.metal?'Metal':'Non-metal'}</div>
+    </div>
+    <div style="flex:1;min-width:200px;">
+      <div class="prow hdr"><div>Property</div><div>Value</div><div>Property</div><div>Value</div></div>
+      <div class="prow"><div>At. No.</div><div style="color:var(--green);font-weight:800;">${el.Z}</div><div>Mass No.</div><div style="color:var(--amber);font-weight:800;">${el.A}</div></div>
+      <div class="prow"><div>Neutrons</div><div style="font-weight:700;">${el.A-el.Z}</div><div>Group</div><div style="color:var(--purple);font-weight:800;">${el.grp}</div></div>
+      <div class="prow"><div>Period</div><div style="color:var(--amber);font-weight:800;">${el.cfg.length}</div><div>Config</div><div style="color:var(--teal);font-family:'JetBrains Mono',monospace;font-weight:700;">${el.cfg.join(':')}</div></div>
+    </div>
+  </div>${el.note?`<p style="margin-top:10px;font-size:.82rem;color:var(--amber);">💡 ${el.note}</p>`:''}`;
+}
+
+/* ────────────────────── GROUPS ────────────────────── */
+function showGroup(id){
+  document.querySelectorAll('.gtab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.gcontent').forEach(c=>c.classList.remove('on'));
+  document.querySelector('.gtab-'+id).classList.add('on');
+  document.getElementById('gc-'+id).classList.add('on');
+}
+
+/* ────────────────────── REACTIONS ────────────────────── */
+function buildRxns(){
+  const cls=['','amb','teal','','red','','','','teal','','amb',''];
+  document.getElementById('rxnList').innerHTML=RXNS.map((r,i)=>`
+    <div class="rxncard ${cls[i]||''}">
+      <div style="font-weight:700;margin-bottom:5px;">${r.title}</div>
+      <div class="eq">${r.eq}</div>
+    </div>`).join('');
+}
+
+/* ────────────────────── QUIZ ────────────────────── */
+let qAnswered=[], qCurrent=0;
+function initQuiz(){
+  qAnswered=new Array(QUIZ.length).fill(null); qCurrent=0;
+  document.getElementById('scoreCard').style.display='none';
+  showQ(0);
+}
+function showQ(i){
+  if(i>=QUIZ.length){showScore();return;}
+  const q=QUIZ[i];
+  let h=`<div class="card card-purple">
+    <div style="font-size:.75rem;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:10px;">Question ${i+1} of ${QUIZ.length}</div>
+    <div class="qbox">${q.q}</div>`;
+  q.opts.forEach((opt,oi)=>{h+=`<button class="qopt" id="qo${oi}" onclick="ansQ(${i},${oi})">${opt}</button>`;});
+  h+=`<div class="qfb" id="qfb"></div>
+    <div style="display:flex;justify-content:flex-end;margin-top:12px;">
+      <button class="btn btn-purple" id="qnxt" style="display:none;" onclick="showQ(${i+1})">Next →</button>
+    </div>
+  </div>`;
+  document.getElementById('quizWrap').innerHTML=h;
+  document.getElementById('scoreCard').style.display='none';
+  document.getElementById('qProg').style.width=((i/QUIZ.length)*100)+'%';
+}
+function ansQ(qi,oi){
+  const q=QUIZ[qi];
+  document.querySelectorAll('.qopt').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('qfb');
+  if(oi===q.ans){
+    document.getElementById('qo'+oi).classList.add('ok');
+    fb.className='qfb show ok'; fb.innerHTML='✅ Correct! '+q.exp;
+    qAnswered[qi]=true;
+  } else {
+    document.getElementById('qo'+oi).classList.add('bad');
+    document.getElementById('qo'+q.ans).classList.add('ok');
+    fb.className='qfb show bad'; fb.innerHTML='❌ Incorrect. '+q.exp;
+    qAnswered[qi]=false;
+  }
+  document.getElementById('qnxt').style.display='block';
+}
+function showScore(){
+  document.getElementById('quizWrap').innerHTML='';
+  document.getElementById('qProg').style.width='100%';
+  const sc=qAnswered.filter(a=>a===true).length;
+  const pct=Math.round((sc/QUIZ.length)*100);
+  const emoji=pct>=90?'🏆':pct>=70?'🎉':pct>=50?'👍':'📖';
+  const msg=pct>=90?'Outstanding! You\'ve mastered these topics!':pct>=70?'Great work! Review the slides for any missed questions.':pct>=50?'Good effort! Go back through the slides and try again.':'Keep studying — the slides cover everything you need!';
+  document.getElementById('scoreCard').style.display='block';
+  document.getElementById('scoreEmoji').textContent=emoji;
+  document.getElementById('scoreTxt').textContent=`${sc} / ${QUIZ.length}  (${pct}%)`;
+  document.getElementById('scoreMsg').textContent=msg;
+}
+
+/* ────────────────────── INIT ────────────────────── */
+buildExplorer();
+buildIsoButtons();
+buildRAMCalc();
+buildCfgSelect();
+buildMiniPT();
+buildRxns();
+initQuiz();
+</script>
+</body>
+</html>
